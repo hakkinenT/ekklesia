@@ -1,0 +1,28 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Ekklesia API",
+    "description": "Software gerenciador de Igrejas"
+  },
+  "host": "http://localhost:3333",
+  "tags": [
+    {
+      "name": "Igreja",
+      "description": "Tudo sobre o módulo Igreja"
+    },
+    {
+      "name": "Membro",
+      "description": "Tudo sobre o módulo Membro"
+    },
+    {
+      "name": "Grupo",
+      "description": "Tudo sobre o módulo Grupo"
+    },
+    {
+      "name": "Cargo",
+      "description": "Tudo sobre o módulo Cargo"
+    }
+  ],
+  "schemes": ["http", "https"]
+}
