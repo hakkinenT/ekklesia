@@ -2,24 +2,32 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("Positions", {
+    return queryInterface.createTable("Churches_Groups", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      name: {
+      churchCnpj: {
         type: Sequelize.STRING,
         allowNull: false,
+        references: {
+          model: "Churches",
+          key: "cnpj",
+        },
       },
-      memberId: {
+      groupId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Members",
+          model: "Groups",
           key: "id",
         },
+      },
+      amountOfPeople: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -33,6 +41,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("Positions");
+    return queryInterface.dropTable("Churches_Groups");
   },
 };

@@ -2,26 +2,22 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("Groups_Positions", {
+    return queryInterface.createTable("Roles", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      groupId: {
-        type: Sequelize.INTEGER,
+      name: {
+        type: Sequelize.STRING,
         allowNull: false,
-        references: {
-          model: "Groups",
-          key: "id",
-        },
       },
-      positionId: {
+      memberId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Positions",
+          model: "Members",
           key: "id",
         },
       },
@@ -37,6 +33,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("Groups_Positions");
+    return queryInterface.dropTable("Roles");
   },
 };

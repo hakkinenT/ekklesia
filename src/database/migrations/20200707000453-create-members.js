@@ -41,7 +41,7 @@ module.exports = {
         type: Sequelize.DATEONLY,
         allowNull: false,
       },
-      churchId: {
+      churchCnpj: {
         type: Sequelize.STRING,
         allowNull: false,
         references: {
