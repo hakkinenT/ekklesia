@@ -8,21 +8,67 @@
   "host": "http://localhost:3333",
   "tags": [
     {
-      "name": "Igreja",
-      "description": "Tudo sobre o módulo Igreja"
+      "name": "Login",
+      "description": "All about the Login module"
     },
     {
-      "name": "Membro",
-      "description": "Tudo sobre o módulo Membro"
+      "name": "Church",
+      "description": "All about the Church module"
     },
     {
-      "name": "Grupo",
-      "description": "Tudo sobre o módulo Grupo"
+      "name": "Member",
+      "description": "All about the Member module"
     },
     {
-      "name": "Cargo",
-      "description": "Tudo sobre o módulo Cargo"
+      "name": "Group",
+      "description": "All about the Group module"
+    },
+    {
+      "name": "Role",
+      "description": "All about the Role module"
     }
   ],
-  "schemes": ["http", "https"]
+  "schemes": ["http", "https"],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": ["Login"],
+        "summary": "Realiza o login",
+        "consumes": ["application/json"],
+        "produces": ["application/json"]
+      }
+    },
+    "/church": {
+      "post": {
+        "tags": ["Church"],
+        "summary": "Cadastra as igrejas",
+        "consumes": ["application/json"],
+        "produces": ["application/json"]
+      }
+    },
+    "/member": {
+      "post": {
+        "tags": ["Member"],
+        "summary": "Cadastra os membros",
+        "consumes": ["application/json"],
+        "produces": ["application/json"]
+      }
+    },
+    "/group": {
+      "post": {
+        "tags": ["Group"],
+        "summary": "Cadastra os grupos",
+        "consumes": ["application/json"],
+        "produces": ["application/json"]
+      }
+    },
+    "/role": {
+      "post": {
+        "tags": ["Role"],
+        "summary": "Cadastra os cargos",
+        "consumes": ["application/json"],
+        "produces": ["application/json"]
+      }
+    }
+  }
 }
