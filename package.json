@@ -6,19 +6,26 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js --ignore __tests__",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "set NODE_ENV=test&&sequelize db:migrate",
+    "test": "jest",
+    "posttest": "set NODE_ENV=test&&sequelize db:migrate:undo:all"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "pg": "^8.2.1",
     "sequelize": "^6.3.0",
     "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
+    "factory-girl": "^5.0.4",
+    "faker": "^4.1.0",
+    "jest": "^26.1.0",
     "nodemon": "^2.0.4",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^4.0.2"
   }
 }
