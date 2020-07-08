@@ -3,15 +3,23 @@ module.exports = (sequelize, DataTypes) => {
     street: DataTypes.STRING,
     number: DataTypes.STRING,
     neighborhood: DataTypes.STRING,
-    zipCode: DataTypes.STRING,
+    zip_code: DataTypes.STRING,
     complement: DataTypes.STRING,
-    city: DataTypes,
+    city: DataTypes.STRING,
     state: DataTypes.STRING,
   });
 
   Address.associate = function (models) {
-    Address.hasMany(models.Church, { as: "Church" });
-    Address.hasMany(models.Member, { as: "Member" });
+    Address.hasOne(models.Church, {
+      as: "Church",
+      foreignKey: "address_id",
+      sourceKey: "id",
+    });
+    Address.hasOne(models.Member, {
+      as: "Member",
+      foreignKey: "address_id",
+      sourceKey: "id",
+    });
   };
 
   return Address;

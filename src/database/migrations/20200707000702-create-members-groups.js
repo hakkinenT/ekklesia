@@ -9,7 +9,7 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      memberId: {
+      member_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -17,7 +17,7 @@ module.exports = {
           key: "id",
         },
       },
-      groupId: {
+      group_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -25,19 +25,19 @@ module.exports = {
           key: "id",
         },
       },
-      entryDate: {
+      entry_date: {
         type: Sequelize.DATEONLY,
         allowNull: true,
       },
-      departureDate: {
+      departure_date: {
         type: Sequelize.DATEONLY,
         allowNull: true,
       },
-      createdAt: {
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },

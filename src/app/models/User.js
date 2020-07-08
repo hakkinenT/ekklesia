@@ -8,11 +8,11 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     permission: DataTypes.ENUM("admin", "comum"),
-    memberId: DataTypes.INTEGER,
+    member_id: DataTypes.INTEGER,
   });
 
   User.associate = function (models) {
-    User.belongsTo(models.Member, { foreignKey: "memberId", as: "Member" });
+    User.belongsTo(models.Member, { foreignKey: "member_id", as: "Member" });
   };
   return User;
 };

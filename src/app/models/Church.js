@@ -7,24 +7,24 @@ module.exports = (sequelize, DataTypes) => {
         len: 14,
       },
     },
-    creationDate: DataTypes.DATEONLY,
-    addressId: DataTypes.INTEGER,
+    creation_date: DataTypes.DATEONLY,
+    address_id: DataTypes.INTEGER,
   });
 
   Church.associate = function (models) {
     Church.belongsTo(models.Address, {
-      foreignKey: "addressId",
-      as: "Address",
+      foreignKey: "address_id",
+      targetKey: "id",
     });
     Church.hasMany(models.Member, { as: "Member" });
-    Church.belongsToMany(models.Groups, {
+    Church.belongsToMany(models.Group, {
       through: "Churches_Groups",
-      foreignKey: "churchCnpj",
+      foreignKey: "church_cnpj",
       as: "Group",
     });
     Church.belongsToMany(models.Role, {
       through: "Churches_Roles",
-      foreignKey: "churchCnpj",
+      foreignKey: "church_cnpj",
       as: "Role",
     });
   };

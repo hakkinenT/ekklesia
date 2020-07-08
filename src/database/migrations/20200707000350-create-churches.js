@@ -18,15 +18,15 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      creationDate: {
+      creation_date: {
         type: Sequelize.DATEONLY,
         allowNull: false,
       },
-      addressId: {
+      address_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Adresses",
+          model: "Addresses",
           key: "id",
         },
       },

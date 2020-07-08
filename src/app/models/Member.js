@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   const Member = sequelize.define("Member", {
     name: DataTypes.STRING,
     genre: DataTypes.STRING,
-    dateOfBirth: DataTypes.DATEONLY,
+    date_of_birth: DataTypes.DATEONLY,
     email: {
       type: DataTypes.STRING,
       validate: {
@@ -17,28 +17,31 @@ module.exports = (sequelize, DataTypes) => {
       min: 10,
     },
     profession: DataTypes.STRING,
-    conversionDate: DataTypes.DATEONLY,
-    baptismDate: DataTypes.DATEONLY,
-    churchCnpj: {
+    conversion_date: DataTypes.DATEONLY,
+    baptism_date: DataTypes.DATEONLY,
+    church_cnpj: {
       type: DataTypes.STRING,
       validate: {
         len: 14,
       },
     },
-    addressId: DataTypes.INTERGER,
+    address_id: DataTypes.INTEGER,
   });
 
   Member.associate = function (models) {
     Member.belongsTo(models.Address, {
-      foreignKey: "addressId",
-      as: "Address",
+      foreignKey: "address_id",
+      targetKey: "id",
     });
-    Member.belongsTo(models.Church, { foreignKey: "churchCnpj", as: "Church" });
-    Member.hasOne(models.User, { foreignKey: "memberId" });
+    Member.belongsTo(models.Church, {
+      foreignKey: "church_cnpj",
+      as: "Church",
+    });
+    Member.hasOne(models.User, { foreignKey: "member_id" });
     Member.hasMany(models.Role, { as: "Role" });
     Member.belongsToMany(models.Group, {
       through: "Members_Groups",
-      foreignKey: "memberId",
+      foreignKey: "member_id",
       as: "Group",
     });
   };

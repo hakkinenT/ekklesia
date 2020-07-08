@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      dateOfBirth: {
+      date_of_birth: {
         type: Sequelize.DATEONLY,
         allowNull: false,
       },
@@ -33,15 +33,15 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      conversionDate: {
+      conversion_date: {
         type: Sequelize.DATEONLY,
         allowNull: false,
       },
-      baptismDate: {
+      baptism_date: {
         type: Sequelize.DATEONLY,
         allowNull: false,
       },
-      churchCnpj: {
+      church_cnpj: {
         type: Sequelize.STRING,
         allowNull: false,
         references: {
@@ -49,19 +49,19 @@ module.exports = {
           key: "cnpj",
         },
       },
-      addressId: {
+      address_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Adresses",
+          model: "Addresses",
           key: "id",
         },
       },
-      createdAt: {
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },

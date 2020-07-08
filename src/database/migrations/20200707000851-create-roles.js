@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      memberId: {
+      member_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -21,11 +21,11 @@ module.exports = {
           key: "id",
         },
       },
-      createdAt: {
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },

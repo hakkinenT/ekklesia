@@ -9,7 +9,7 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      churchCnpj: {
+      church_cnpj: {
         type: Sequelize.STRING,
         allowNull: false,
         references: {
@@ -17,7 +17,7 @@ module.exports = {
           key: "cnpj",
         },
       },
-      groupId: {
+      group_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -25,15 +25,15 @@ module.exports = {
           key: "id",
         },
       },
-      amountOfPeople: {
+      amount_of_people: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      createdAt: {
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
