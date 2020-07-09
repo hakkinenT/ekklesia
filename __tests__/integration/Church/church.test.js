@@ -1,7 +1,7 @@
 const request = require("supertest");
 
 const app = require("../../../src/app");
-//const factory = require("../../factories");
+const factory = require("../../factories");
 //const { Address, Church } = require("../../../src/app/models");
 
 describe("Church model", () => {
@@ -33,7 +33,7 @@ describe("Church model", () => {
     done();
   });
 
-  it("shouldn't register a church", async (done) => {
+  it("shouldn't register a church if the CNPJ has already been registered", async (done) => {
     const church = {
       name: "igreja batista do centenário",
       cnpj: "08133802000181",
@@ -56,7 +56,6 @@ describe("Church model", () => {
         ...church,
         ...address,
       });
-
     expect(response.status).toBe(400);
     done();
   });
@@ -86,6 +85,32 @@ describe("Church model", () => {
       });
 
     expect(response.status).toBe(400);
+    done();
+  });
+
+  it("should find a church through CNPJ", async (done) => {
+    const address = await factory.create("Address");
+    const church = await factory.create("Church", {
+      cnpj: "39477955000170",
+      address_id: address.id,
+    });
+
+    const response = await request(app).get(`/church/${church.get().cnpj}`);
+
+    expect(response.status).toBe(200);
+    done();
+  });
+
+  it("should return a church with your address", async (done) => {
+    const address = await factory.create("Address");
+    const church = await factory.create("Church", {
+      cnpj: "59415581000175",
+      address_id: address.id,
+    });
+
+    const response = await request(app).get(`/church/${church.get().cnpj}`);
+
+    expect(response.body.Address.street).toBe(address.get().street);
     done();
   });
 });

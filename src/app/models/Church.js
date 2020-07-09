@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Church.associate = function (models) {
     Church.belongsTo(models.Address, {
+      as: "Address",
       foreignKey: "address_id",
       targetKey: "id",
     });

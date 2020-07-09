@@ -2,6 +2,19 @@ const { Church, Address } = require("../models");
 const { cnpj } = require("cpf-cnpj-validator");
 
 class ChurchController {
+  async show(req, res) {
+    try {
+      const church = await Church.findOne({
+        where: { cnpj: req.params.cnpj },
+        include: ["Address"],
+      });
+
+      return res.status(200).json(church);
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+  }
+
   async store(req, res) {
     try {
       const cnpjIsValid = cnpj.isValid(req.body.cnpj);

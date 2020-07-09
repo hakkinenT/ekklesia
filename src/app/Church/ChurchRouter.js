@@ -6,6 +6,7 @@ const routes = Router();
 
 const churchRouter = () => {
   routes.post("/church", ChurchController.store);
+  routes.get("/church/:cnpj", ChurchController.show);
 
   return routes;
 };
