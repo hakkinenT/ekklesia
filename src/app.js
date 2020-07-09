@@ -6,6 +6,7 @@ const express = require("express");
 const swaggerUi = require("swagger-ui-express");
 
 const swaggerDocument = require("../doc/swagger");
+const churchRouter = require("./app/Church/ChurchRouter");
 
 const app = express();
 
@@ -17,5 +18,7 @@ app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get("/", (req, res) => {
   return res.send("Hello world");
 });
+
+app.use(churchRouter());
 
 module.exports = app;

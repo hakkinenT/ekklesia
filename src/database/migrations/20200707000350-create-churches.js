@@ -6,7 +6,6 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        unique: true,
         allowNull: false,
       },
       name: {
@@ -25,6 +24,9 @@ module.exports = {
       address_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        unique: true,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         references: {
           model: "Addresses",
           key: "id",

@@ -6,6 +6,7 @@ factory.define("Church", Church, {
   name: faker.company.companyName,
   cnpj: "10803785000194",
   creation_date: faker.date.past,
+  address_id: 1,
 });
 
 factory.define("Address", Address, {
@@ -16,7 +17,6 @@ factory.define("Address", Address, {
   complement: faker.random.words,
   city: faker.address.city,
   state: faker.address.state,
-  address_id: 1,
 });
 
 module.exports = factory;
