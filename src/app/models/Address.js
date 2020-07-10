@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Address = sequelize.define("Address", {
-    street: DataTypes.STRING,
+    address: DataTypes.STRING,
     number: DataTypes.STRING,
     neighborhood: DataTypes.STRING,
     zip_code: DataTypes.STRING,

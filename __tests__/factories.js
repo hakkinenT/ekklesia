@@ -9,7 +9,7 @@ factory.define("Church", Church, {
 });
 
 factory.define("Address", Address, {
-  street: faker.address.streetName,
+  address: faker.address.streetName,
   number: faker.random.alphaNumeric,
   neighborhood: faker.address.county,
   zip_code: faker.address.zipCode,

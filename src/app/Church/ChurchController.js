@@ -47,6 +47,34 @@ class ChurchController {
       return res.status(400).json({ error: err.message });
     }
   }
+
+  async update(req, res) {
+    try {
+      const cnpjIsValid = cnpj.isValid(req.params.cnpj);
+
+      if (!cnpjIsValid) {
+        return res.status(400).json({ message: "O CNPJ é inválido" });
+      }
+
+      const church = await Church.findOne({
+        where: { cnpj: req.params.cnpj },
+      });
+
+      if (!church) {
+        return res.status(400).json({ message: "A igreja não foi encontrada" });
+      }
+
+      await church.update(req.body);
+
+      await Address.update(req.body, {
+        where: { id: church.address_id },
+      });
+
+      return res.status(200).json(church);
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = new ChurchController();
