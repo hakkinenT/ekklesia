@@ -146,7 +146,7 @@ describe("Church model", () => {
       address_id: address.id,
     });
 
-    const response = await request(app).put("/church/02505670000190").send({
+    const response = await request(app).put("/church/98126310000151").send({
       name: "Igreja Batista do Centenário",
       cnpj: church.cnpj,
       creation_date: church.creation_date,
@@ -159,7 +159,7 @@ describe("Church model", () => {
       state: address.state,
     });
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
     done();
   });
 
@@ -182,6 +182,32 @@ describe("Church model", () => {
       city: "Riachuelo",
       state: address.state,
     });
+
+    expect(response.status).toBe(400);
+    done();
+  });
+
+  it("should delete a church", async (done) => {
+    const address = await factory.create("Address");
+    const church = await factory.create("Church", {
+      cnpj: "52652407000105",
+      address_id: address.id,
+    });
+
+    const response = await request(app).delete(`/church/${church.get().cnpj}`);
+
+    expect(response.status).toBe(200);
+    done();
+  });
+
+  it("shouldn't delete a church if the CNPJ is invalid", async (done) => {
+    const address = await factory.create("Address");
+    const church = await factory.create("Church", {
+      cnpj: "39401165000100",
+      address_id: address.id,
+    });
+
+    const response = await request(app).delete("/church/394065000100");
 
     expect(response.status).toBe(400);
     done();

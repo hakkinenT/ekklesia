@@ -8,6 +8,7 @@ const churchRouter = () => {
   routes.post("/church", ChurchController.store);
   routes.get("/church/:cnpj", ChurchController.show);
   routes.put("/church/:cnpj", ChurchController.update);
+  routes.delete("/church/:cnpj", ChurchController.destroy);
 
   return routes;
 };

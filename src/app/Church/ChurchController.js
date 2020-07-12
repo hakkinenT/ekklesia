@@ -4,10 +4,20 @@ const { cnpj } = require("cpf-cnpj-validator");
 class ChurchController {
   async show(req, res) {
     try {
+      const cnpjIsValid = cnpj.isValid(req.params.cnpj);
+
+      if (!cnpjIsValid) {
+        return res.status(400).json({ message: "O CNPJ não é válido" });
+      }
+
       const church = await Church.findOne({
         where: { cnpj: req.params.cnpj },
         include: ["Address"],
       });
+
+      if (!church) {
+        return res.status(404).json({ message: "A igreja não foi encontrada" });
+      }
 
       return res.status(200).json(church);
     } catch (err) {
@@ -61,7 +71,7 @@ class ChurchController {
       });
 
       if (!church) {
-        return res.status(400).json({ message: "A igreja não foi encontrada" });
+        return res.status(404).json({ message: "A igreja não foi encontrada" });
       }
 
       await church.update(req.body);
@@ -74,6 +84,33 @@ class ChurchController {
     } catch (err) {
       return res.status(400).json({ error: err.message });
     }
+  }
+
+  async destroy(req, res) {
+    try {
+      const cnpjIsValid = cnpj.isValid(req.params.cnpj);
+
+      if (!cnpjIsValid) {
+        return res.status(400).json({ message: "O CNPJ é inválido!" });
+      }
+
+      const church = await Church.findOne({ where: { cnpj: req.params.cnpj } });
+
+      if (!church) {
+        return res.status(404).json({ message: "A igreja não foi encontrada" });
+      }
+
+      const address = await Address.findOne({
+        where: { id: church.address_id },
+      });
+
+      await church.destroy();
+      await address.destroy();
+
+      return res
+        .status(200)
+        .json({ message: "A igreja foi excluída com sucesso" });
+    } catch (err) {}
   }
 }
 
