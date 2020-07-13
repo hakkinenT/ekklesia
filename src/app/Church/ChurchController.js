@@ -7,7 +7,7 @@ class ChurchController {
       const cnpjIsValid = cnpj.isValid(req.params.cnpj);
 
       if (!cnpjIsValid) {
-        return res.status(400).json({ message: "O CNPJ não é válido" });
+        return res.status(400).json({ message: "CNPJ is invalid!" });
       }
 
       const church = await Church.findOne({
@@ -16,7 +16,7 @@ class ChurchController {
       });
 
       if (!church) {
-        return res.status(404).json({ message: "A igreja não foi encontrada" });
+        return res.status(404).json({ message: "The church was not found" });
       }
 
       return res.status(200).json(church);
@@ -30,7 +30,7 @@ class ChurchController {
       const cnpjIsValid = cnpj.isValid(req.body.cnpj);
 
       if (!cnpjIsValid) {
-        return res.status(400).json({ message: "O CNPJ não é válido" });
+        return res.status(400).json({ message: "CNPJ is invalid!" });
       }
 
       const churchExists = await Church.findOne({
@@ -40,7 +40,7 @@ class ChurchController {
       if (churchExists) {
         return res
           .status(400)
-          .json({ message: "Esta igreja já está cadastrada" });
+          .json({ message: "This church is already registered" });
       }
 
       const address = await Address.create(req.body);
@@ -63,7 +63,7 @@ class ChurchController {
       const cnpjIsValid = cnpj.isValid(req.params.cnpj);
 
       if (!cnpjIsValid) {
-        return res.status(400).json({ message: "O CNPJ é inválido" });
+        return res.status(400).json({ message: "CNPJ is invalid!" });
       }
 
       const church = await Church.findOne({
@@ -71,7 +71,7 @@ class ChurchController {
       });
 
       if (!church) {
-        return res.status(404).json({ message: "A igreja não foi encontrada" });
+        return res.status(404).json({ message: "The church was not found" });
       }
 
       await church.update(req.body);
@@ -91,13 +91,13 @@ class ChurchController {
       const cnpjIsValid = cnpj.isValid(req.params.cnpj);
 
       if (!cnpjIsValid) {
-        return res.status(400).json({ message: "O CNPJ é inválido!" });
+        return res.status(400).json({ message: "CNPJ is invalid!" });
       }
 
       const church = await Church.findOne({ where: { cnpj: req.params.cnpj } });
 
       if (!church) {
-        return res.status(404).json({ message: "A igreja não foi encontrada" });
+        return res.status(404).json({ message: "The church was not found" });
       }
 
       const address = await Address.findOne({
@@ -109,7 +109,7 @@ class ChurchController {
 
       return res
         .status(200)
-        .json({ message: "A igreja foi excluída com sucesso" });
+        .json({ message: "The church was successfully deleted!" });
     } catch (err) {}
   }
 }
