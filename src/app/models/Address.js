@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Address = sequelize.define("Address", {
-    street: DataTypes.STRING,
+    address: DataTypes.STRING,
     number: DataTypes.STRING,
     neighborhood: DataTypes.STRING,
     zip_code: DataTypes.STRING,
@@ -15,10 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "address_id",
       sourceKey: "id",
     });
-    Address.hasOne(models.Member, {
+    Address.hasMany(models.Member, {
       as: "Member",
       foreignKey: "address_id",
-      sourceKey: "id",
     });
   };
 

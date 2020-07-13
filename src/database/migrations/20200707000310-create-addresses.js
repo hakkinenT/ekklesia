@@ -9,7 +9,7 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      street: {
+      address: {
         type: Sequelize.STRING,
         allowNull: false,
       },

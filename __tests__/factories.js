@@ -9,14 +9,13 @@ factory.define("Church", Church, {
 });
 
 factory.define("Address", Address, {
-  street: faker.address.streetName,
+  address: faker.address.streetName,
   number: faker.random.alphaNumeric,
   neighborhood: faker.address.county,
   zip_code: faker.address.zipCode,
   complement: faker.random.words,
   city: faker.address.city,
   state: faker.address.state,
-  address_id: 1,
 });
 
 module.exports = factory;

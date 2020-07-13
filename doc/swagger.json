@@ -41,9 +41,227 @@
     "/church": {
       "post": {
         "tags": ["Church"],
-        "summary": "Cadastra as igrejas",
+        "summary": "Register a church",
         "consumes": ["application/json"],
-        "produces": ["application/json"]
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "json",
+            "description": "The JSON format sent in the body to register a church must be:",
+            "required": true,
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the church",
+                  "example": "Igreja Batista do Brasil"
+                },
+                "cnpj": {
+                  "type": "string",
+                  "description": "The CNPJ of the church",
+                  "example": "35878844000114"
+                },
+                "creation_date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The date of creation of the church",
+                  "example": "1986-08-11"
+                },
+                "address": {
+                  "type": "string",
+                  "description": "The place where the church is located. Example: street, square, avenue...",
+                  "example": "Rua Laranjeiras"
+                },
+                "number": {
+                  "type": "string",
+                  "example": "1234"
+                },
+                "neighborhood": {
+                  "type": "string",
+                  "description": "The area where the church is located",
+                  "example": "Centro"
+                },
+                "zip_code": {
+                  "type": "string",
+                  "description": "The zip code of the area where the church is located.",
+                  "example": "49130000"
+                },
+                "complement": {
+                  "type": "string",
+                  "description": "Information that complements the church's location",
+                  "example": "Ao lado da rodoviária"
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city where the church is located",
+                  "example": "Riachuelo"
+                },
+                "state": {
+                  "type": "string",
+                  "description": "The state where the church is located",
+                  "example": "Sergipe"
+                }
+              },
+              "required": [
+                "cnpj",
+                "name",
+                "creation_date",
+                "address",
+                "number",
+                "neighborhood",
+                "zip_code",
+                "city",
+                "state"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON object containing church information."
+          },
+          "400": {
+            "description": "Bad Request. It can happen if the CNPJ is invalid or if the church is already registered or if any other invalid request happens."
+          }
+        }
+      }
+    },
+    "/church/cnpj": {
+      "get": {
+        "tags": ["Church"],
+        "summary": "Search a church by CNPJ",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cnpj",
+            "description": "The CNPJ of the church to be searched",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON object containing church information including its address."
+          },
+          "400": {
+            "description": "Bad Request. It can happen if the CNPJ is invalid or if any other invalid request happens."
+          },
+          "404": {
+            "description": "Not Found. The church was not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Church"],
+        "summary": "Updates a church and its address",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cnpj",
+            "description": "The CNPJ of the church to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "json",
+            "description": "The JSON format sent in the body to update a church must be:",
+            "required": true,
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the church",
+                  "example": "Igreja Batista do Brasil"
+                },
+                "cnpj": {
+                  "type": "string",
+                  "description": "The CNPJ of the church",
+                  "example": "35878844000114"
+                },
+                "creation_date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The date of creation of the church",
+                  "example": "1986-08-11"
+                },
+                "address": {
+                  "type": "string",
+                  "description": "The place where the church is located. Example: street, square, avenue...",
+                  "example": "Rua Laranjeiras"
+                },
+                "number": {
+                  "type": "string",
+                  "example": "1234"
+                },
+                "neighborhood": {
+                  "type": "string",
+                  "description": "The area where the church is located",
+                  "example": "Centro"
+                },
+                "zip_code": {
+                  "type": "string",
+                  "description": "The zip code of the area where the church is located.",
+                  "example": "49130000"
+                },
+                "complement": {
+                  "type": "string",
+                  "description": "Information that complements the church's location",
+                  "example": "Ao lado da rodoviária"
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city where the church is located",
+                  "example": "Riachuelo"
+                },
+                "state": {
+                  "type": "string",
+                  "description": "The state where the church is located",
+                  "example": "Sergipe"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON object containing church information"
+          },
+          "400": {
+            "description": "Bad Request. It can happen if the CNPJ is invalid or if any other invalid request happens."
+          },
+          "404": {
+            "description": "Not Found. The church was not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Church"],
+        "summary": "Delete a church and its address",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cnpj",
+            "description": "The CNPJ of the church to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The church was successfully deleted"
+          },
+          "400": {
+            "description": "Bad Request. It can happen if the CNPJ is invalid or if any other invalid request happens."
+          },
+          "404": {
+            "description": "Not Found. The church was not found"
+          }
+        }
       }
     },
     "/member": {
@@ -68,6 +286,95 @@
         "summary": "Cadastra os cargos",
         "consumes": ["application/json"],
         "produces": ["application/json"]
+      }
+    }
+  },
+  "definitions": {
+    "Address": {
+      "type": "object",
+      "required": [
+        "address",
+        "number",
+        "neighborhood",
+        "zip_code",
+        "city",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The address id",
+          "example": 1
+        },
+        "address": {
+          "type": "string",
+          "description": "The place where the church is located. Example: street, square, avenue...",
+          "example": "Rua Laranjeiras"
+        },
+        "number": {
+          "type": "string",
+          "example": "1234"
+        },
+        "neighborhood": {
+          "type": "string",
+          "description": "The area where the church is located",
+          "example": "Centro"
+        },
+        "zip_code": {
+          "type": "string",
+          "description": "The zip code of the area where the church is located.",
+          "example": "49130000"
+        },
+        "complement": {
+          "type": "string",
+          "description": "Information that complements the church's location",
+          "example": "Ao lado da rodoviária"
+        },
+        "city": {
+          "type": "string",
+          "description": "The city where the church is located",
+          "example": "Riachuelo"
+        },
+        "state": {
+          "type": "string",
+          "description": "The state where the church is located",
+          "example": "Sergipe"
+        }
+      }
+    },
+    "Church": {
+      "type": "object",
+      "required": ["cnpj", "name", "creation_date", "address_id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The church id",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the church",
+          "example": "Igreja Batista do Brasil"
+        },
+        "cnpj": {
+          "type": "string",
+          "description": "The CNPJ of the church",
+          "example": "35878844000114"
+        },
+        "creation_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The date of creation of the church",
+          "example": "1986-08-11"
+        },
+        "address_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The address id",
+          "example": 1
+        }
       }
     }
   }
