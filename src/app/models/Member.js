@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     address_id: DataTypes.INTEGER,
+    user_id: DataTypes.INTEGER,
   });
 
   Member.associate = function (models) {
@@ -36,6 +37,11 @@ module.exports = (sequelize, DataTypes) => {
     Member.belongsTo(models.Church, {
       foreignKey: "church_cnpj",
       as: "Church",
+    });
+    Member.hasOne(models.User, {
+      as: "User",
+      foreignKey: "user_id",
+      targetKey: "id",
     });
     Member.hasOne(models.User, { foreignKey: "member_id" });
     Member.hasMany(models.Role, { as: "Role" });

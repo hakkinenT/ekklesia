@@ -18,18 +18,9 @@ module.exports = {
         allowNull: false,
       },
       permission: {
-        type: Sequelize.ENUM("admin", "comum"),
-        defaultValue: "admin",
+        type: Sequelize.ENUM("super", "admin", "comum"),
+        defaultValue: "comum",
         allowNull: false,
-      },
-      member_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        unique: true,
-        references: {
-          model: "Members",
-          key: "id",
-        },
       },
       created_at: {
         type: Sequelize.DATE,

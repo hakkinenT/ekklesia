@@ -9,12 +9,18 @@ module.exports = (sequelize, DataTypes) => {
     },
     creation_date: DataTypes.DATEONLY,
     address_id: DataTypes.INTEGER,
+    user_id: DataTypes.INTEGER,
   });
 
   Church.associate = function (models) {
     Church.belongsTo(models.Address, {
       as: "Address",
       foreignKey: "address_id",
+      targetKey: "id",
+    });
+    Church.hasOne(models.User, {
+      as: "User",
+      foreignKey: "user_id",
       targetKey: "id",
     });
     Church.hasMany(models.Member, { as: "Member" });

@@ -7,12 +7,20 @@ module.exports = (sequelize, DataTypes) => {
         len: 8,
       },
     },
-    permission: DataTypes.ENUM("admin", "comum"),
-    member_id: DataTypes.INTEGER,
+    permission: DataTypes.ENUM("super", "admin", "comum"),
   });
 
   User.associate = function (models) {
-    User.belongsTo(models.Member, { foreignKey: "member_id", as: "Member" });
+    User.belongsTo(models.Church, {
+      as: "Church",
+      foreignKey: "user_id",
+      sourceKey: "id",
+    });
+    User.belongsTo(models.Member, {
+      as: "Member",
+      foreignKey: "user_id",
+      sourceKey: "id",
+    });
   };
   return User;
 };
