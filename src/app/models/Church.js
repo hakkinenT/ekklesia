@@ -1,12 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Church = sequelize.define("Church", {
     name: DataTypes.STRING,
-    cnpj: {
-      type: DataTypes.STRING,
-      validate: {
-        len: 14,
-      },
-    },
+    cnpj: DataTypes.STRING,
     creation_date: DataTypes.DATEONLY,
     address_id: DataTypes.INTEGER,
     user_id: DataTypes.INTEGER,
@@ -18,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "address_id",
       targetKey: "id",
     });
-    Church.hasOne(models.User, {
+    Church.belongsTo(models.User, {
       as: "User",
       foreignKey: "user_id",
       targetKey: "id",

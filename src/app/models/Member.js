@@ -38,12 +38,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "church_cnpj",
       as: "Church",
     });
-    Member.hasOne(models.User, {
+
+    Member.belongsTo(models.User, {
       as: "User",
       foreignKey: "user_id",
       targetKey: "id",
     });
-    Member.hasOne(models.User, { foreignKey: "member_id" });
     Member.hasMany(models.Role, { as: "Role" });
     Member.belongsToMany(models.Group, {
       through: "Members_Groups",

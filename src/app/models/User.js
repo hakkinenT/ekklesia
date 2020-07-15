@@ -1,22 +1,17 @@
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define("User", {
     username: DataTypes.STRING,
-    password: {
-      type: DataTypes.STRING,
-      validate: {
-        len: 8,
-      },
-    },
+    password: DataTypes.STRING,
     permission: DataTypes.ENUM("super", "admin", "comum"),
   });
 
   User.associate = function (models) {
-    User.belongsTo(models.Church, {
+    User.hasOne(models.Church, {
       as: "Church",
       foreignKey: "user_id",
       sourceKey: "id",
     });
-    User.belongsTo(models.Member, {
+    User.hasOne(models.Member, {
       as: "Member",
       foreignKey: "user_id",
       sourceKey: "id",
