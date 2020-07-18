@@ -1,1 +1,1 @@
-# Back-end do Projeto do Software de Gerenciamento de Igrejas - Ekklesia
+# Back-end do Software Ekklesia
