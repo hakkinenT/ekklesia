@@ -17,6 +17,10 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       creation_date: {
         type: Sequelize.DATEONLY,
         allowNull: false,

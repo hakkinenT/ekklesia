@@ -1,16 +1,9 @@
 const { Church, Address, User } = require("../models");
-const validationCnpj = require("../../utils/validationCnpj");
 
 class ChurchController {
   async show(req, res) {
     try {
       const { cnpj } = req.params;
-
-      const cnpjIsValid = validationCnpj(cnpj);
-
-      if (!cnpjIsValid) {
-        return res.status(400).json({ message: "CNPJ is invalid!" });
-      }
 
       const church = await Church.findOne({
         where: { cnpj },
@@ -32,6 +25,7 @@ class ChurchController {
       const {
         name,
         cnpj,
+        email,
         creation_date,
         address,
         number,
@@ -43,12 +37,6 @@ class ChurchController {
         username,
         password,
       } = req.body;
-
-      const cnpjIsValid = validationCnpj(cnpj);
-
-      if (!cnpjIsValid) {
-        return res.status(400).json({ message: "CNPJ is invalid!" });
-      }
 
       const churchExists = await Church.findOne({
         where: { cnpj },
@@ -79,6 +67,7 @@ class ChurchController {
       const church = await Church.create({
         name,
         cnpj,
+        email,
         creation_date,
         address_id: createdAddress.id,
         user_id: user.id,
@@ -105,26 +94,12 @@ class ChurchController {
         state,
       } = req.body;
 
-      const paramsCnpjIsValid = validationCnpj(req.params.cnpj);
-
-      if (!paramsCnpjIsValid) {
-        return res.status(400).json({ message: "CNPJ parameter is invalid!" });
-      }
-
       const church = await Church.findOne({
         where: { cnpj: req.params.cnpj },
       });
 
       if (!church) {
         return res.status(404).json({ message: "The church was not found" });
-      }
-
-      const cnpjInBodyIsValid = validationCnpj(cnpj);
-
-      if (!cnpjInBodyIsValid) {
-        return res
-          .status(400)
-          .json({ message: "CNPJ sent in the body is invalid!" });
       }
 
       await church.update({ name, cnpj, creation_date });
@@ -146,12 +121,6 @@ class ChurchController {
     try {
       const { cnpj } = req.params;
 
-      const cnpjIsValid = validationCnpj(cnpj);
-
-      if (!cnpjIsValid) {
-        return res.status(400).json({ message: "CNPJ is invalid!" });
-      }
-
       const church = await Church.findOne({ where: { cnpj } });
 
       if (!church) {
@@ -168,7 +137,9 @@ class ChurchController {
       return res
         .status(200)
         .json({ message: "The church was successfully deleted!" });
-    } catch (err) {}
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
   }
 }
 

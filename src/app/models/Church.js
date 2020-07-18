@@ -2,6 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Church = sequelize.define("Church", {
     name: DataTypes.STRING,
     cnpj: DataTypes.STRING,
+    email: DataTypes.STRING,
     creation_date: DataTypes.DATEONLY,
     address_id: DataTypes.INTEGER,
     user_id: DataTypes.INTEGER,
