@@ -84,6 +84,7 @@ class ChurchController {
       const {
         name,
         cnpj,
+        email,
         creation_date,
         address,
         number,
@@ -102,7 +103,7 @@ class ChurchController {
         return res.status(404).json({ message: "The church was not found" });
       }
 
-      await church.update({ name, cnpj, creation_date });
+      await church.update({ name, cnpj, email, creation_date });
 
       await Address.update(
         { address, number, neighborhood, zip_code, complement, city, state },
