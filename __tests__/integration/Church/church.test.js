@@ -9,7 +9,7 @@ describe("Church model", () => {
       name: "Igreja Batista do Centenário",
       cnpj: "08133802000181",
       email: "igrejabatistadocentenario@hotmail.com",
-      creation_date: 19800819,
+      creation_date: "1980-08-19",
     };
 
     const address = {
@@ -35,6 +35,7 @@ describe("Church model", () => {
         ...user,
       });
 
+    //console.log(response);
     expect(response.status).toBe(200);
     done();
   });
@@ -44,7 +45,7 @@ describe("Church model", () => {
       name: "    ",
       cnpj: "08133802000181",
       email: "igrejabatistadocentenario",
-      creation_date: 19800819,
+      creation_date: "1980-08-19",
     };
 
     const address = {
@@ -78,7 +79,7 @@ describe("Church model", () => {
     const church = {
       name: "igreja batista do centenário",
       cnpj: "19937389300",
-      creation_date: 19800819,
+      creation_date: "1980-08-19",
     };
 
     const address = {
@@ -112,7 +113,7 @@ describe("Church model", () => {
     const church = {
       name: "igreja batista do centenário",
       cnpj: "08133802000181",
-      creation_date: 19800819,
+      creation_date: "1980-08-19",
     };
 
     const address = {

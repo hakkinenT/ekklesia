@@ -1,4 +1,5 @@
 const { Church, Address, User } = require("../models");
+const models = require("../models/index");
 
 class ChurchController {
   async show(req, res) {
@@ -48,32 +49,47 @@ class ChurchController {
           .json({ message: "This church is already registered" });
       }
 
-      const createdAddress = await Address.create({
-        address,
-        number,
-        neighborhood,
-        zip_code,
-        complement,
-        city,
-        state,
-      });
+      const createdChurch = await models.sequelize.transaction(
+        async (transaction) => {
+          const createdAddress = await Address.create(
+            {
+              address,
+              number,
+              neighborhood,
+              zip_code,
+              complement,
+              city,
+              state,
+            },
+            { transaction }
+          );
 
-      const user = await User.create({
-        username,
-        password,
-        permission: "super",
-      });
+          const user = await User.create(
+            {
+              username,
+              password,
+              permission: "super",
+            },
+            { transaction }
+          );
 
-      const church = await Church.create({
-        name,
-        cnpj,
-        email,
-        creation_date,
-        address_id: createdAddress.id,
-        user_id: user.id,
-      });
+          const church = await Church.create(
+            {
+              name,
+              cnpj,
+              email,
+              creation_date,
+              address_id: createdAddress.id,
+              user_id: user.id,
+            },
+            { transaction }
+          );
 
-      return res.status(200).json(church);
+          return church;
+        }
+      );
+
+      return res.status(200).json(createdChurch);
     } catch (err) {
       return res.status(400).json({ error: err.message });
     }
@@ -103,16 +119,34 @@ class ChurchController {
         return res.status(404).json({ message: "The church was not found" });
       }
 
-      await church.update({ name, cnpj, email, creation_date });
+      const updatedChurch = await models.sequelize.transaction(
+        async (transaction) => {
+          const churchUpdate = await church.update(
+            { name, cnpj, email, creation_date },
+            { transaction }
+          );
 
-      await Address.update(
-        { address, number, neighborhood, zip_code, complement, city, state },
-        {
-          where: { id: church.address_id },
+          await Address.update(
+            {
+              address,
+              number,
+              neighborhood,
+              zip_code,
+              complement,
+              city,
+              state,
+            },
+            {
+              where: { id: church.address_id },
+              transaction,
+            }
+          );
+
+          return churchUpdate;
         }
       );
 
-      return res.status(200).json(church);
+      return res.status(200).json(updatedChurch);
     } catch (err) {
       return res.status(400).json({ error: err.message });
     }
@@ -128,12 +162,17 @@ class ChurchController {
         return res.status(404).json({ message: "The church was not found" });
       }
 
-      const address = await Address.findOne({
-        where: { id: church.address_id },
+      await models.sequelize.transaction(async (transaction) => {
+        await church.destroy({ transaction });
+        await Address.destroy({
+          where: { id: church.address_id },
+          transaction,
+        });
+        await User.destroy({
+          where: { id: church.user_id },
+          transaction,
+        });
       });
-
-      await church.destroy();
-      await address.destroy();
 
       return res
         .status(200)
