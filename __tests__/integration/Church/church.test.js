@@ -59,7 +59,7 @@ describe("Church model", () => {
     };
 
     const user = {
-      username: "superman",
+      username: "superman1",
       password: "12345678",
     };
 
@@ -93,7 +93,7 @@ describe("Church model", () => {
     };
 
     const user = {
-      username: "superman",
+      username: "superman2",
       password: "Tab@5678",
     };
 
@@ -127,7 +127,7 @@ describe("Church model", () => {
     };
 
     const user = {
-      username: "superman",
+      username: "superman3",
       password: "Tab@5678",
     };
 
@@ -146,8 +146,9 @@ describe("Church model", () => {
   it("should find a church through CNPJ", async (done) => {
     const address = await factory.create("Address");
 
-    const user = await factory.create("User");
-
+    const user = await factory.create("User", {
+      username: "julia23",
+    });
     const church = await factory.create("Church", {
       cnpj: "39477955000170",
       address_id: address.id,
@@ -163,7 +164,9 @@ describe("Church model", () => {
   it("shouldn't find a church if the CNPJ is invalid", async (done) => {
     const address = await factory.create("Address");
 
-    const user = await factory.create("User");
+    const user = await factory.create("User", {
+      username: "paulo_silva",
+    });
 
     const church = await factory.create("Church", {
       cnpj: "33173763000193",
@@ -179,7 +182,9 @@ describe("Church model", () => {
   it("should return a church with your address", async (done) => {
     const address = await factory.create("Address");
 
-    const user = await factory.create("User");
+    const user = await factory.create("User", {
+      username: "carlaoliver",
+    });
 
     const church = await factory.create("Church", {
       cnpj: "59415581000175",
@@ -196,7 +201,9 @@ describe("Church model", () => {
   it("should update a church's information", async (done) => {
     const address = await factory.create("Address");
 
-    const user = await factory.create("User");
+    const user = await factory.create("User", {
+      username: "marcos32",
+    });
 
     const church = await factory.create("Church", {
       cnpj: "09997950000107",
@@ -225,7 +232,9 @@ describe("Church model", () => {
   it("shouldn't update a church if the fields are empty strings", async (done) => {
     const address = await factory.create("Address");
 
-    const user = await factory.create("User");
+    const user = await factory.create("User", {
+      username: "miguelsantos",
+    });
 
     const church = await factory.create("Church", {
       cnpj: "40754683000197",
@@ -254,7 +263,9 @@ describe("Church model", () => {
   it("shouldn't update a church that was not found", async (done) => {
     const address = await factory.create("Address");
 
-    const user = await factory.create("User");
+    const user = await factory.create("User", {
+      username: "julianapereira",
+    });
 
     const church = await factory.create("Church", {
       cnpj: "02505670000195",
@@ -283,7 +294,9 @@ describe("Church model", () => {
   it("shouldn't update a church if the church's CNPJ is invalid", async (done) => {
     const address = await factory.create("Address");
 
-    const user = await factory.create("User");
+    const user = await factory.create("User", {
+      username: "antonio_carlos",
+    });
 
     const church = await factory.create("Church", {
       cnpj: "30501646000113",
@@ -311,7 +324,9 @@ describe("Church model", () => {
   it("should delete a church", async (done) => {
     const address = await factory.create("Address");
 
-    const user = await factory.create("User");
+    const user = await factory.create("User", {
+      username: "candida_emilia",
+    });
 
     const church = await factory.create("Church", {
       cnpj: "52652407000105",
@@ -328,7 +343,9 @@ describe("Church model", () => {
   it("shouldn't delete a church if the CNPJ is invalid", async (done) => {
     const address = await factory.create("Address");
 
-    const user = await factory.create("User");
+    const user = await factory.create("User", {
+      username: "sandylea",
+    });
 
     const church = await factory.create("Church", {
       cnpj: "39401165000100",

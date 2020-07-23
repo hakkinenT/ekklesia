@@ -4,7 +4,7 @@ const factory = require("../factories");
 const bcrypt = require("bcryptjs");
 
 describe("User password encryption", () => {
-  it("should encrypt user password", async () => {
+  it("should encrypt user password", async (done) => {
     const user = await factory.create("User", {
       permission: "super",
     });
@@ -12,5 +12,7 @@ describe("User password encryption", () => {
     const compareHash = await bcrypt.compare("Th@l1234", user.password);
 
     expect(compareHash).toBe(true);
+
+    done();
   });
 });

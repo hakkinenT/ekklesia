@@ -1,10 +1,10 @@
 const { Router } = require("express");
 
-const churchCreationValidationRules = require("../../utils/validation/Church/churchCreationValidationRules");
-const churchUpdateValidationRules = require("../../utils/validation/Church/churchUpdateValidationRules");
-const cnpjParameterValidation = require("../../utils/validation/Church/cnpjParameterValidation");
+const churchCreationValidationRules = require("../../../utils/validation/Church/churchCreationValidationRules");
+const churchUpdateValidationRules = require("../../../utils/validation/Church/churchUpdateValidationRules");
+const cnpjParameterValidation = require("../../../utils/validation/Church/cnpjParameterValidation");
 
-const validate = require("../../utils/validation/validate");
+const validate = require("../../../utils/validation/validate");
 
 const ChurchController = require("./ChurchController");
 

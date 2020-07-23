@@ -6,7 +6,8 @@ const express = require("express");
 const swaggerUi = require("swagger-ui-express");
 
 const swaggerDocument = require("../doc/swagger");
-const churchRouter = require("./app/Church/ChurchRouter");
+const churchRouter = require("./app/modules/Church/ChurchRouter");
+const userRouter = require("./app/modules/User/UserRouter");
 
 const app = express();
 
@@ -20,5 +21,6 @@ app.get("/", (req, res) => {
 });
 
 app.use(churchRouter());
+app.use(userRouter());
 
 module.exports = app;

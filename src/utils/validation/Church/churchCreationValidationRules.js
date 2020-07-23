@@ -95,12 +95,12 @@ const churchCreationValidationRules = () => {
         "Username must be a string with a minimum length of 3 and a maximum length of 30",
     },
     password: {
-      matches: {
-        options: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8}$/g,
+      custom: {
+        options: (value) => validateString(value),
       },
-      notEmpty: true,
+      isLength: { options: { min: 8, max: 16 } },
       errorMessage:
-        "The password must consist of upper and lower case letters, numbers and special characters",
+        "The password must be a string with a minimum length of 8 and a maximum length of 16",
     },
   });
 };

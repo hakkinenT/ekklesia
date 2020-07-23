@@ -1,5 +1,5 @@
-const { Church, Address, User } = require("../models");
-const models = require("../models/index");
+const { Church, Address, User } = require("../../models");
+const models = require("../../models/index");
 
 class ChurchController {
   async show(req, res) {
