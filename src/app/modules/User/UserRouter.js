@@ -19,6 +19,8 @@ const userRouter = () => {
 
   routes.get("/user/:id", UserController.show);
 
+  routes.get("/user", UserController.index);
+
   return routes;
 };
 

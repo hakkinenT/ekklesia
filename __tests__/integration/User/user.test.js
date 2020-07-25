@@ -201,4 +201,68 @@ describe("User module", () => {
 
     done();
   });
+
+  it("should return all registered users who have administrator or common permission", async (done) => {
+    await factory.create("User", {
+      username: "mulhermaravilha",
+      permission: "admin",
+    });
+
+    await factory.create("User", {
+      username: "homemdeferro",
+      permission: "comum",
+    });
+
+    await factory.create("User", {
+      username: "flash",
+      permission: "comum",
+    });
+
+    const admin = await factory.create("User", {
+      username: "admin",
+      permission: "admin",
+    });
+
+    const token = admin.generateToken();
+
+    const response = await request(app)
+      .get("/user")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+
+    done();
+  });
+
+  it("should not return all users if the user doing the search does not have admin or super permission", async (done) => {
+    await factory.create("User", {
+      username: "mulhermaravilha2",
+      permission: "super",
+    });
+
+    await factory.create("User", {
+      username: "homemdeferro2",
+      permission: "comum",
+    });
+
+    await factory.create("User", {
+      username: "flash2",
+      permission: "comum",
+    });
+
+    const comumUser = await factory.create("User", {
+      username: "comumUser",
+      permission: "comum",
+    });
+
+    const token = comumUser.generateToken();
+
+    const response = await request(app)
+      .get("/user")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(401);
+
+    done();
+  });
 });

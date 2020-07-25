@@ -1,4 +1,5 @@
 const { User } = require("../../models");
+const { Op } = require("sequelize");
 
 class UserController {
   async show(req, res) {
@@ -33,14 +34,34 @@ class UserController {
     }
   }
 
+  async index(req, res) {
+    try {
+      const userPermission = req.userPermission;
+
+      const permissionIsInvalid = userPermission === "comum";
+
+      if (permissionIsInvalid) {
+        return res.status(401).json({ message: "Access denied" });
+      }
+
+      const users = await User.findAll({
+        where: { permission: { [Op.or]: ["admin", "comum"] } },
+        attributes: ["id", "username", "permission"],
+      });
+
+      return res.status(200).json(users);
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+  }
+
   async store(req, res) {
     try {
       const userPermission = req.userPermission;
 
-      const permissionIsValid =
-        userPermission === "super" || userPermission === "admin";
+      const permissionIsInvalid = userPermission === "comum";
 
-      if (!permissionIsValid) {
+      if (permissionIsInvalid) {
         return res.status(401).json({ message: "Access denied" });
       }
 
