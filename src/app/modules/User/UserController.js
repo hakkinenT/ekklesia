@@ -83,6 +83,34 @@ class UserController {
       return res.status(400).send({ error: err.message });
     }
   }
+
+  async update(req, res) {
+    try {
+      const userPermission = req.userPermission;
+
+      const permissionIsInvalid = userPermission === "comum";
+
+      if (permissionIsInvalid) {
+        return res.status(401).json({ message: "Access denied" });
+      }
+
+      const { id } = req.params;
+
+      const { permission } = req.body;
+
+      const user = await User.findOne({ where: { id } });
+
+      const updatedUser = await user.update({ permission });
+
+      if (!user) {
+        return res.status(404).json({ message: "The user doesn't exists" });
+      }
+
+      return res.status(200).send(updatedUser);
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = new UserController();

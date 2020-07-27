@@ -265,4 +265,103 @@ describe("User module", () => {
 
     done();
   });
+  it("should update the permission of a user", async (done) => {
+    const user = await factory.create("User", {
+      username: "elvis",
+      permission: "comum",
+    });
+
+    const admin = await factory.create("User", {
+      username: "admin_user",
+      permission: "admin",
+    });
+
+    const token = admin.generateToken();
+
+    const response = await request(app)
+      .put(`/user/${user.get().id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        permission: "admin",
+      });
+
+    expect(response.status).toBe(200);
+
+    done();
+  });
+
+  it("shouldn't update a user's permission if the user requesting the update doesn't have admin or super permission", async (done) => {
+    const user = await factory.create("User", {
+      username: "railey",
+      permission: "comum",
+    });
+
+    const comum = await factory.create("User", {
+      username: "comum_user",
+      permission: "comum",
+    });
+
+    const token = comum.generateToken();
+
+    const response = await request(app)
+      .put(`/user/${user.get().id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        permission: "admin",
+      });
+
+    expect(response.status).toBe(401);
+
+    done();
+  });
+
+  it("shouldn't update a user's permission if the user doesn't exist", async (done) => {
+    const user = await factory.create("User", {
+      username: "nana",
+      permission: "comum",
+    });
+
+    const admin = await factory.create("User", {
+      username: "admim2_user",
+      permission: "admin",
+    });
+
+    const token = admin.generateToken();
+
+    const response = await request(app)
+      .put("/user/300")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        permission: "admin",
+      });
+
+    expect(response.status).toBe(400);
+
+    done();
+  });
+
+  it("shouldn't update a user's permission if the permission is an empty string", async (done) => {
+    const user = await factory.create("User", {
+      username: "chico_cesar",
+      permission: "comum",
+    });
+
+    const admin = await factory.create("User", {
+      username: "admim3_user",
+      permission: "admin",
+    });
+
+    const token = admin.generateToken();
+
+    const response = await request(app)
+      .put(`/user/${user.get().id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        permission: "    ",
+      });
+
+    expect(response.status).toBe(400);
+
+    done();
+  });
 });

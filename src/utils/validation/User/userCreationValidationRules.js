@@ -30,6 +30,17 @@ const userCreationValidationRules = () => {
       errorMessage:
         "The password must be a string with a minimum length of 8 and a maximum length of 16",
     },
+    permission: {
+      in: ["body"],
+      isString: true,
+      custom: {
+        options: (value) => validateString(value),
+      },
+      isIn: {
+        options: [["admin", "comum"]],
+        errorMessage: "The permission type must be admin or comum",
+      },
+    },
   });
 };
 
