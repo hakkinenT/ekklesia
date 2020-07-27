@@ -100,11 +100,11 @@ class UserController {
 
       const user = await User.findOne({ where: { id } });
 
-      const updatedUser = await user.update({ permission });
-
       if (!user) {
         return res.status(404).json({ message: "The user doesn't exists" });
       }
+
+      const updatedUser = await user.update({ permission });
 
       return res.status(200).send(updatedUser);
     } catch (err) {
