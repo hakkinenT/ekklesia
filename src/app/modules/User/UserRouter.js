@@ -29,6 +29,8 @@ const userRouter = () => {
     UserController.update
   );
 
+  routes.delete("/user/:id", UserController.destroy);
+
   return routes;
 };
 

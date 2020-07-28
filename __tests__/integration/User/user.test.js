@@ -4,7 +4,7 @@ const app = require("../../../src/app");
 const factory = require("../../factories");
 
 describe("User module", () => {
-  it("should register a user", async (done) => {
+  /*it("should register a user", async (done) => {
     const userChurch = await factory.create("User", {
       username: "ibab",
       password: "Ibab$391",
@@ -335,7 +335,7 @@ describe("User module", () => {
         permission: "admin",
       });
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
 
     done();
   });
@@ -362,6 +362,63 @@ describe("User module", () => {
 
     expect(response.status).toBe(400);
 
+    done();
+  });*/
+
+  it("should delete a user", async (done) => {
+    const user = await factory.create("User", {
+      username: "otavio",
+    });
+
+    const admin = await factory.create("User", {
+      username: "admin10",
+      permission: "admin",
+    });
+
+    const token = admin.generateToken();
+
+    const response = await request(app)
+      .delete(`/user/${user.get().id}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+
+    done();
+  });
+
+  it("shouldn't delete a user if the permission of the user requesting the deletion isn't super or admin", async (done) => {
+    const user = await factory.create("User", {
+      username: "diogo",
+    });
+
+    const admin = await factory.create("User", {
+      username: "admin20",
+      permission: "comum",
+    });
+
+    const token = admin.generateToken();
+
+    const response = await request(app)
+      .delete(`/user/${user.get().id}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(401);
+    done();
+  });
+
+  it("shouldn't delete a user if it doesn't exist", async (done) => {
+    const admin = await factory.create("User", {
+      username: "admin28",
+      permission: "admin",
+    });
+
+    const token = admin.generateToken();
+
+    const response = await request(app)
+      .delete("/user/199")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(404);
     done();
   });
 });

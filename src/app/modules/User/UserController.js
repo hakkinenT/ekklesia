@@ -111,6 +111,34 @@ class UserController {
       return res.status(400).json({ error: err.message });
     }
   }
+
+  async destroy(req, res) {
+    try {
+      const userPermission = req.userPermission;
+
+      const permissionIsInvalid = userPermission === "comum";
+
+      if (permissionIsInvalid) {
+        return res.status(401).json({ message: "Access denied" });
+      }
+
+      const { id } = req.params;
+
+      const user = await User.findOne({ where: { id } });
+
+      if (!user) {
+        return res.status(404).json({ message: "The user doesn't exists" });
+      }
+
+      await user.destroy();
+
+      return res
+        .status(200)
+        .json({ message: "The user was successfully deleted!" });
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = new UserController();
