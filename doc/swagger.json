@@ -20,6 +20,10 @@
       "description": "All about the Member module"
     },
     {
+      "name": "User",
+      "description": "All about the User module"
+    },
+    {
       "name": "Group",
       "description": "All about the Group module"
     },
@@ -118,6 +122,8 @@
                 "password": {
                   "type": "string",
                   "format": "password",
+                  "minLength": "8",
+                  "maxLength": "16",
                   "description": "The password of the church. ",
                   "example": "iB@B2020"
                 }
@@ -141,7 +147,7 @@
         ],
         "responses": {
           "200": {
-            "description": "A JSON object containing church information."
+            "description": "Success. A JSON object containing church information will be returned."
           },
           "400": {
             "description": "Bad Request. It can happen if the CNPJ is invalid or if the church is already registered or if any other invalid request happens."
@@ -165,10 +171,13 @@
         ],
         "responses": {
           "200": {
-            "description": "A JSON object containing church information including its address."
+            "description": "Success. A JSON object containing church information including its address will be returned."
           },
           "400": {
             "description": "Bad Request. It can happen if the CNPJ is invalid or if any other invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
           },
           "404": {
             "description": "Not Found. The church was not found"
@@ -256,10 +265,13 @@
         ],
         "responses": {
           "200": {
-            "description": "A JSON object containing church information"
+            "description": "Success. A JSON object containing updated church information will be returned"
           },
           "400": {
             "description": "Bad Request. It can happen if the CNPJ is invalid or if any other invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
           },
           "404": {
             "description": "Not Found. The church was not found"
@@ -281,10 +293,13 @@
         ],
         "responses": {
           "200": {
-            "description": "The church was successfully deleted"
+            "description": "Success. The church was successfully deleted"
           },
           "400": {
             "description": "Bad Request. It can happen if the CNPJ is invalid or if any other invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
           },
           "404": {
             "description": "Not Found. The church was not found"
@@ -298,6 +313,179 @@
         "summary": "Cadastra os membros",
         "consumes": ["application/json"],
         "produces": ["application/json"]
+      }
+    },
+    "user": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Register a user",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "json",
+            "description": "The JSON format sent in the body to register a user must be:",
+            "required": true,
+            "schema": {
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "minLength": "3",
+                  "maxLength": "30",
+                  "description": "The username of the church.",
+                  "example": "joao_carlos"
+                },
+                "password": {
+                  "type": "string",
+                  "minLength": "8",
+                  "maxLength": "16",
+                  "format": "password",
+                  "description": "The password of the church. ",
+                  "example": "i56@JL#0"
+                },
+                "permission": {
+                  "type": "string",
+                  "enum": ["admin", "comum"],
+                  "description": "The permission of the user. The default value is comum.",
+                  "example": "admin"
+                }
+              },
+              "required": ["username", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. A JSON object containing user information will be returned."
+          },
+          "400": {
+            "description": "Bad Request. It can happen if the username already exists or if any other invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "Search for all users who have admin or comum permisson",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Success. A JSON containing an array of all users will be returned."
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          }
+        }
+      }
+    },
+    "user/id": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Search for a user by ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ID",
+            "description": "The ID of the user to be searched",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. A JSON object containing user information will be returned."
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          },
+          "404": {
+            "description": "Not Found. It can happen if the user doesn't exist"
+          }
+        }
+      },
+      "put": {
+        "tags": ["User"],
+        "summary": "Register a user",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ID",
+            "description": "The ID of the user to be updated",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "json",
+            "description": "The JSON format sent in the body to update a user must be:",
+            "required": true,
+            "schema": {
+              "properties": {
+                "permission": {
+                  "type": "string",
+                  "enum": ["super", "admin", "comum"],
+                  "description": "The permission of the user. The default value is comum",
+                  "example": "admin"
+                }
+              },
+              "required": ["permission"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. A JSON object containing updated user information will be returned."
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          },
+          "404": {
+            "description": "Not Found. It can happen if the user doesn't exist"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete a user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ID",
+            "description": "The ID of the user to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. The user was successfully deleted!."
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          },
+          "404": {
+            "description": "Not Found. It can happen if the user doesn't exist"
+          }
+        }
       }
     },
     "/group": {
@@ -391,12 +579,14 @@
         "password": {
           "type": "string",
           "format": "password",
+          "minLength": "8",
+          "maxLength": "16",
           "description": "The password of the church. ",
           "example": "iB@B2020"
         },
         "permission": {
           "type": "string",
-          "description": "The permission of the user.",
+          "description": "The permission of the user. The default value is comum",
           "enum": ["super", "admin", "comum"],
           "example": "super"
         }
