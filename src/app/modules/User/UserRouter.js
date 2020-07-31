@@ -9,7 +9,7 @@ const authentication = require("../../middleware/authentication");
 const routes = Router();
 
 const userRouter = () => {
-  routes.use(authentication);
+  //routes.use(authentication);
 
   routes.post(
     "/user",
