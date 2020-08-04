@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     Member.belongsTo(models.Church, {
       foreignKey: "church_cnpj",
       as: "Church",
+      targetKey: "cnpj",
     });
 
     Member.belongsTo(models.User, {

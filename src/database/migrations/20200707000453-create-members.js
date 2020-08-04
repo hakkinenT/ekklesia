@@ -44,6 +44,8 @@ module.exports = {
       church_cnpj: {
         type: Sequelize.STRING,
         allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         references: {
           model: "Churches",
           key: "cnpj",

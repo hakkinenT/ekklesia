@@ -33,10 +33,15 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  User.prototype.validatePassword = function (password) {
+    return bcrypt.compare(password, this.password);
+  };
+
   User.prototype.generateToken = function () {
     return jwt.sign(
-      { id: this.id, permission: this.permission },
-      process.env.SECRET
+      { id: this.id, permission: this.permission, date: new Date() },
+      process.env.SECRET,
+      { expiresIn: 86400 }
     );
   };
   return User;

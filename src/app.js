@@ -8,6 +8,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("../doc/swagger");
 const churchRouter = require("./app/modules/Church/ChurchRouter");
 const userRouter = require("./app/modules/User/UserRouter");
+const loginRouter = require("./app/modules/Login/LoginRouter");
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
   return res.send("Hello world");
 });
 
+app.use(loginRouter());
 app.use(churchRouter());
 app.use(userRouter());
 

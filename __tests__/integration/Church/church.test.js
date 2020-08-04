@@ -40,7 +40,7 @@ describe("Church model", () => {
     done();
   });
 
-  it("shouldn't register a church if there are invalid fields", async (done) => {
+  /*it("shouldn't register a church if there are invalid fields", async (done) => {
     const church = {
       name: "    ",
       cnpj: "08133802000181",
@@ -357,5 +357,5 @@ describe("Church model", () => {
 
     expect(response.status).toBe(400);
     done();
-  });
+  });*/
 });

@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
+const { Invalid_token } = require("../models");
 
 module.exports = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -12,6 +13,12 @@ module.exports = async (req, res, next) => {
 
   try {
     const decoded = await promisify(jwt.verify)(token, process.env.SECRET);
+
+    const isInvalidToken = await Invalid_token.findOne({ where: { token } });
+
+    if (isInvalidToken) {
+      return res.status(401).json({ message: "This token has expired" });
+    }
 
     req.userId = decoded.id;
     req.userPermission = decoded.permission;

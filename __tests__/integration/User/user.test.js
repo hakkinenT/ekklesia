@@ -4,7 +4,7 @@ const app = require("../../../src/app");
 const factory = require("../../factories");
 
 describe("User module", () => {
-  /*it("should register a user", async (done) => {
+  it("should register a user", async (done) => {
     const userChurch = await factory.create("User", {
       username: "ibab",
       password: "Ibab$391",
@@ -29,7 +29,7 @@ describe("User module", () => {
     done();
   });
 
-  it("shouldn't register a user without a token", async (done) => {
+  /*it("shouldn't register a user without a token", async (done) => {
     const user1 = await factory.create("User", {
       username: "julio32",
       permission: "admin",
@@ -363,7 +363,7 @@ describe("User module", () => {
     expect(response.status).toBe(400);
 
     done();
-  });*/
+  });
 
   it("should delete a user", async (done) => {
     const user = await factory.create("User", {
@@ -420,5 +420,5 @@ describe("User module", () => {
 
     expect(response.status).toBe(404);
     done();
-  });
+  });*/
 });

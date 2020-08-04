@@ -19,7 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "user_id",
       targetKey: "id",
     });
-    Church.hasMany(models.Member, { as: "Member" });
+    Church.hasMany(models.Member, {
+      as: "Member",
+      foreignKey: "church_cnpj",
+      sourceKey: "cnpj",
+    });
     Church.belongsToMany(models.Group, {
       through: "Churches_Groups",
       foreignKey: "church_cnpj",
