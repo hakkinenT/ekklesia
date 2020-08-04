@@ -3,6 +3,7 @@ require("dotenv").config({
 });
 
 const express = require("express");
+const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 
 const swaggerDocument = require("../doc/swagger");
@@ -11,6 +12,8 @@ const userRouter = require("./app/modules/User/UserRouter");
 const loginRouter = require("./app/modules/Login/LoginRouter");
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
