@@ -2,7 +2,7 @@ const { Invalid_token } = require("../app/models");
 
 const jwt = require("jsonwebtoken");
 
-const promisify = require("util");
+const { promisify } = require("util");
 
 module.exports = async (token) => {
   try {

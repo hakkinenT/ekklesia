@@ -6,6 +6,7 @@ const LoginController = require("./LoginController.js");
 
 const loginRouter = () => {
   routes.post("/login", LoginController.login);
+  routes.delete("/logout", LoginController.logout);
 
   return routes;
 };

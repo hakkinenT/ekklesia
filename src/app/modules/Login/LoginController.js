@@ -40,8 +40,8 @@ class LoginController {
       await invalidateToken(token);
 
       return res.status(200).json({ message: "Successfully logged out" });
-    } catch (error) {
-      return res.status(400).json({ error });
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
     }
   }
 }
