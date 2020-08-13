@@ -19,6 +19,8 @@ const memberRouter = () => {
     MemberController.store
   );
 
+  routes.get("/members", MemberController.index);
+
   return routes;
 };
 

@@ -115,7 +115,7 @@ describe("Member model", () => {
     const user_church = await factory.create("User", {
       username: "church1",
       password: "12345678",
-      permission: "comum",
+      permission: "super",
     });
 
     const church = await factory.create("Church", {
@@ -157,6 +157,81 @@ describe("Member model", () => {
       });
 
     expect(response.status).toBe(400);
+
+    done();
+  });
+  it("should list all registered members", async (done) => {
+    const address_church = await factory.create("Address");
+
+    const user_church = await factory.create("User", {
+      username: "church1",
+      password: "12345678",
+      permission: "super",
+    });
+
+    const church = await factory.create("Church", {
+      cnpj: "52777535000177",
+      address_id: address_church.id,
+      user_id: user_church.id,
+    });
+
+    const token = user_church.generateToken();
+
+    const address1 = await factory.create("Address");
+    await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address1.id,
+    });
+
+    const address2 = await factory.create("Address");
+    await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address2.id,
+    });
+
+    const response = await request(app)
+      .get("/members")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+
+    done();
+  });
+
+  it("shouldn't list all registered members if the user requesting the list does not have permission", async (done) => {
+    const address_church = await factory.create("Address");
+
+    const user_church = await factory.create("User", {
+      username: "church1",
+      password: "12345678",
+      permission: "comum",
+    });
+
+    const church = await factory.create("Church", {
+      cnpj: "28492550000194",
+      address_id: address_church.id,
+      user_id: user_church.id,
+    });
+
+    const token = user_church.generateToken();
+
+    const address1 = await factory.create("Address");
+    await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address1.id,
+    });
+
+    const address2 = await factory.create("Address");
+    await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address2.id,
+    });
+
+    const response = await request(app)
+      .get("/members")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(401);
 
     done();
   });

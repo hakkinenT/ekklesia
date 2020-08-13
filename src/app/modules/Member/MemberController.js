@@ -2,6 +2,24 @@ const { Member, Church, Address } = require("../../../app/models");
 const models = require("../../models/index");
 
 class MemberController {
+  async index(req, res) {
+    try {
+      const userPermission = req.userPermission;
+
+      const permissionIsInvalid = userPermission === "comum";
+
+      if (permissionIsInvalid) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
+
+      const members = await Member.findAll();
+
+      return res.status(200).json(members);
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+  }
+
   async store(req, res) {
     try {
       const userPermission = req.userPermission;
