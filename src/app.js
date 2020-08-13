@@ -10,6 +10,7 @@ const swaggerDocument = require("../doc/swagger");
 const churchRouter = require("./app/modules/Church/ChurchRouter");
 const userRouter = require("./app/modules/User/UserRouter");
 const loginRouter = require("./app/modules/Login/LoginRouter");
+const memberRouter = require("./app/modules/Member/MemberRouter");
 
 const app = express();
 
@@ -27,5 +28,6 @@ app.get("/", (req, res) => {
 app.use(loginRouter());
 app.use(churchRouter());
 app.use(userRouter());
+app.use(memberRouter());
 
 module.exports = app;
