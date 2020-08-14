@@ -1,4 +1,4 @@
-const { Member, Church, Address } = require("../../../app/models");
+const { Member, Church, Address, User } = require("../../../app/models");
 const models = require("../../models/index");
 
 class MemberController {
@@ -166,7 +166,7 @@ class MemberController {
         return res.status(404).json({ message: "This member doesn't exists" });
       }
 
-      const { address_id } = member;
+      const { address_id, user_id } = member;
 
       await models.sequelize.transaction(async (transaction) => {
         await member.destroy({ transaction });
@@ -179,6 +179,10 @@ class MemberController {
 
         if (isEqualToOne) {
           await Address.destroy({ where: { id: address_id }, transaction });
+        }
+
+        if (user_id) {
+          await User.destroy({ where: { id: user_id }, transaction });
         }
       });
 
