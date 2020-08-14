@@ -191,8 +191,12 @@ describe("Member model", () => {
 
     const response = await request(app)
       .get("/members")
-      .set("Authorization", `Bearer ${token}`);
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        church_name: church.name,
+      });
 
+    //console.log(response);
     expect(response.status).toBe(200);
 
     done();
@@ -229,7 +233,10 @@ describe("Member model", () => {
 
     const response = await request(app)
       .get("/members")
-      .set("Authorization", `Bearer ${token}`);
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        church_name: church.name,
+      });
 
     expect(response.status).toBe(401);
 

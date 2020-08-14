@@ -12,7 +12,17 @@ class MemberController {
         return res.status(401).json({ message: "Access denied!" });
       }
 
-      const members = await Member.findAll();
+      const { church_name } = req.body;
+
+      const church = await Church.findOne({ where: { name: church_name } });
+
+      if (!church) {
+        return res.status(404).json({ message: "This church doesn't exists" });
+      }
+
+      const { cnpj } = church;
+
+      const members = await Member.findAll({ where: { church_cnpj: cnpj } });
 
       return res.status(200).json(members);
     } catch (err) {
