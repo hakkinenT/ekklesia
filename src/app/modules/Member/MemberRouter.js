@@ -21,6 +21,7 @@ const memberRouter = () => {
 
   routes.get("/members", MemberController.index);
   routes.get("/member/:id", MemberController.show);
+  routes.delete("/member/:id", MemberController.destroy);
 
   return routes;
 };

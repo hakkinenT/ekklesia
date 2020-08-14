@@ -134,6 +134,61 @@ class MemberController {
       return res.status(400).json({ error: err.message });
     }
   }
+
+  async destroy(req, res) {
+    try {
+      const userPermission = req.userPermission;
+      const { church_name } = req.body;
+      const { id } = req.params;
+
+      const permissionIsInvalid = userPermission === "comum";
+
+      if (permissionIsInvalid) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
+
+      const church = await Church.findOne({ where: { name: church_name } });
+
+      if (!church) {
+        return res.status(404).json({ message: "This church doesn't exists" });
+      }
+
+      const { cnpj } = church;
+
+      const member = await Member.findOne({
+        where: {
+          id,
+          church_cnpj: cnpj,
+        },
+      });
+
+      if (!member) {
+        return res.status(404).json({ message: "This member doesn't exists" });
+      }
+
+      const { address_id } = member;
+
+      await models.sequelize.transaction(async (transaction) => {
+        await member.destroy({ transaction });
+
+        const totalOfAdresses = await Address.count({
+          where: { id: address_id },
+        });
+
+        const isEqualToOne = totalOfAdresses === 1;
+
+        if (isEqualToOne) {
+          await Address.destroy({ where: { id: address_id }, transaction });
+        }
+      });
+
+      return res
+        .status(200)
+        .json({ message: "The member was successfully deleted!" });
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = new MemberController();
