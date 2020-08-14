@@ -2,9 +2,11 @@ const { Member, Church, Address } = require("../../../app/models");
 const models = require("../../models/index");
 
 class MemberController {
-  async index(req, res) {
+  async show(req, res) {
     try {
       const userPermission = req.userPermission;
+      const { church_name } = req.body;
+      const { id } = req.params;
 
       const permissionIsInvalid = userPermission === "comum";
 
@@ -12,7 +14,37 @@ class MemberController {
         return res.status(401).json({ message: "Access denied!" });
       }
 
+      const church = await Church.findOne({ where: { name: church_name } });
+
+      if (!church) {
+        return res.status(404).json({ message: "This church doesn't exists" });
+      }
+
+      const { cnpj } = church;
+
+      const member = await Member.findOne({
+        where: {
+          id,
+          church_cnpj: cnpj,
+        },
+      });
+
+      return res.status(200).json(member);
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+  }
+
+  async index(req, res) {
+    try {
+      const userPermission = req.userPermission;
       const { church_name } = req.body;
+
+      const permissionIsInvalid = userPermission === "comum";
+
+      if (permissionIsInvalid) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
 
       const church = await Church.findOne({ where: { name: church_name } });
 
@@ -33,13 +65,6 @@ class MemberController {
   async store(req, res) {
     try {
       const userPermission = req.userPermission;
-
-      const permissionIsInvalid = userPermission === "comum";
-
-      if (permissionIsInvalid) {
-        return res.status(401).json({ message: "Access denied!" });
-      }
-
       const {
         name,
         genre,
@@ -58,6 +83,12 @@ class MemberController {
         state,
         church_name,
       } = req.body;
+
+      const permissionIsInvalid = userPermission === "comum";
+
+      if (permissionIsInvalid) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
 
       const church = await Church.findOne({ where: { name: church_name } });
 

@@ -58,12 +58,20 @@ describe("Member model", () => {
   });
 
   it("shouldn't register a member if the user who is registering does not have permission", async (done) => {
+    const user = await factory.create("User", {
+      username: "comum1",
+      password: "12345678",
+      permission: "comum",
+    });
+
+    const token = user.generateToken();
+
     const address_church = await factory.create("Address");
 
     const user_church = await factory.create("User", {
       username: "church1",
       password: "12345678",
-      permission: "comum",
+      permission: "super",
     });
 
     const church = await factory.create("Church", {
@@ -71,8 +79,6 @@ describe("Member model", () => {
       address_id: address_church.id,
       user_id: user_church.id,
     });
-
-    const token = user_church.generateToken();
 
     const address_member = {
       address: "Rua Guarani",
@@ -160,6 +166,7 @@ describe("Member model", () => {
 
     done();
   });
+
   it("should list all registered members", async (done) => {
     const address_church = await factory.create("Address");
 
@@ -203,12 +210,20 @@ describe("Member model", () => {
   });
 
   it("shouldn't list all registered members if the user requesting the list does not have permission", async (done) => {
+    const user = await factory.create("User", {
+      username: "comum1",
+      password: "12345678",
+      permission: "comum",
+    });
+
+    const token = user.generateToken();
+
     const address_church = await factory.create("Address");
 
     const user_church = await factory.create("User", {
       username: "church1",
       password: "12345678",
-      permission: "comum",
+      permission: "super",
     });
 
     const church = await factory.create("Church", {
@@ -216,8 +231,6 @@ describe("Member model", () => {
       address_id: address_church.id,
       user_id: user_church.id,
     });
-
-    const token = user_church.generateToken();
 
     const address1 = await factory.create("Address");
     await factory.create("Member", {
@@ -240,6 +253,80 @@ describe("Member model", () => {
 
     expect(response.status).toBe(401);
 
+    done();
+  });
+
+  it("should get a member by ID", async (done) => {
+    const address_church = await factory.create("Address");
+
+    const user_church = await factory.create("User", {
+      username: "church1",
+      password: "12345678",
+      permission: "super",
+    });
+
+    const church = await factory.create("Church", {
+      cnpj: "33834893000120",
+      address_id: address_church.id,
+      user_id: user_church.id,
+    });
+
+    const token = user_church.generateToken();
+
+    const address1 = await factory.create("Address");
+    const member = await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address1.id,
+    });
+
+    const response = await request(app)
+      .get(`/member/${member.get().id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        church_name: church.name,
+      });
+
+    expect(response.status).toBe(200);
+    done();
+  });
+
+  it("should get a member if the user requesting the information does not have permission", async (done) => {
+    const user = await factory.create("User", {
+      username: "comum1",
+      password: "12345678",
+      permission: "comum",
+    });
+
+    const token = user.generateToken();
+
+    const address_church = await factory.create("Address");
+
+    const user_church = await factory.create("User", {
+      username: "church1",
+      password: "12345678",
+      permission: "super",
+    });
+
+    const church = await factory.create("Church", {
+      cnpj: "57670712000135",
+      address_id: address_church.id,
+      user_id: user_church.id,
+    });
+
+    const address1 = await factory.create("Address");
+    const member = await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address1.id,
+    });
+
+    const response = await request(app)
+      .get(`/member/${member.get().id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        church_name: church.name,
+      });
+
+    expect(response.status).toBe(401);
     done();
   });
 });

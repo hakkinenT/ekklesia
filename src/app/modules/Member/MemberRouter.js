@@ -20,6 +20,7 @@ const memberRouter = () => {
   );
 
   routes.get("/members", MemberController.index);
+  routes.get("/member/:id", MemberController.show);
 
   return routes;
 };
