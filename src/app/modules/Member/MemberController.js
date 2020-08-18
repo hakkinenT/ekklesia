@@ -170,22 +170,20 @@ class MemberController {
 
       const { address_id } = foundMember;
 
-      const updatedMember = await models.sequelize.transaction(
-        async (transaction) => {
-          if (address) {
-            await Address.update(address, {
-              where: { id: address_id },
-              transaction,
-            });
-          }
-
-          const newMember = await foundMember.update(member, { transaction });
-
-          return newMember;
+      await models.sequelize.transaction(async (transaction) => {
+        if (address) {
+          await Address.update(address, {
+            where: { id: address_id },
+            transaction,
+          });
         }
-      );
 
-      return res.status(200).json(updatedMember);
+        if (member) {
+          await foundMember.update(member, { transaction });
+        }
+      });
+
+      return res.status(200).json("Member updated with success");
     } catch (err) {
       return res.status(400).json({ error: err.message });
     }
