@@ -135,6 +135,60 @@ class MemberController {
     }
   }
 
+  async update(req, res) {
+    try {
+      const userPermission = req.userPermission;
+
+      const { member, address, church_name } = req.body;
+
+      const { id } = req.params;
+
+      const permissionIsInvalid = userPermission === "comum";
+
+      if (permissionIsInvalid) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
+
+      const church = await Church.findOne({ where: { name: church_name } });
+
+      if (!church) {
+        return res.status(404).json({ message: "This church doesn't exists" });
+      }
+
+      const { cnpj } = church;
+
+      const foundMember = await Member.findOne({
+        where: {
+          id,
+          church_cnpj: cnpj,
+        },
+      });
+
+      if (!foundMember) {
+        return res.status(404).json({ message: "This member doesn't exists" });
+      }
+
+      const { address_id } = foundMember;
+
+      const updatedMember = await models.sequelize.transaction(
+        async (transaction) => {
+          await Address.update(address, {
+            where: { id: address_id },
+            transaction,
+          });
+
+          const newMember = await foundMember.update(member, { transaction });
+
+          return newMember;
+        }
+      );
+
+      return res.status(200).json(updatedMember);
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
+  }
+
   async destroy(req, res) {
     try {
       const userPermission = req.userPermission;
