@@ -172,10 +172,12 @@ class MemberController {
 
       const updatedMember = await models.sequelize.transaction(
         async (transaction) => {
-          await Address.update(address, {
-            where: { id: address_id },
-            transaction,
-          });
+          if (address) {
+            await Address.update(address, {
+              where: { id: address_id },
+              transaction,
+            });
+          }
 
           const newMember = await foundMember.update(member, { transaction });
 
