@@ -2,7 +2,6 @@ const request = require("supertest");
 
 const app = require("../../../src/app");
 const factory = require("../../factories");
-const { internet } = require("faker/lib/locales/pt_BR");
 
 describe("Member model", () => {
   it("should register a member", async (done) => {
@@ -22,7 +21,7 @@ describe("Member model", () => {
 
     const token = user_church.generateToken();
 
-    const address_member = {
+    const address = {
       address: "Rua Guarani",
       number: "1234",
       neighborhood: "centro",
@@ -34,7 +33,7 @@ describe("Member model", () => {
 
     const member = {
       name: "Augusto da Silva",
-      genre: "maculino",
+      genre: "masculino",
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
       whatsapp: "79999999999",
@@ -48,10 +47,10 @@ describe("Member model", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         ...member,
-        ...address_member,
+        ...address,
         church_name: church.name,
       });
-    //console.log(response);
+
     expect(response.status).toBe(200);
 
     done();
@@ -80,7 +79,7 @@ describe("Member model", () => {
       user_id: user_church.id,
     });
 
-    const address_member = {
+    const address = {
       address: "Rua Guarani",
       number: "1234",
       neighborhood: "centro",
@@ -106,7 +105,8 @@ describe("Member model", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         ...member,
-        ...address_member,
+        ...address,
+
         church_name: church.name,
       });
 
@@ -132,7 +132,7 @@ describe("Member model", () => {
 
     const token = user_church.generateToken();
 
-    const address_member = {
+    const address = {
       address: "Rua Guarani",
       number: "1234",
       neighborhood: "centro",
@@ -158,11 +158,63 @@ describe("Member model", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         ...member,
-        ...address_member,
+        ...address,
         church_name: church.name,
       });
 
     expect(response.status).toBe(400);
+
+    done();
+  });
+
+  it("shouldn't register a member if the church does not exist", async (done) => {
+    const address_church = await factory.create("Address");
+
+    const user_church = await factory.create("User", {
+      username: "church1",
+      password: "12345678",
+      permission: "super",
+    });
+
+    const church = await factory.create("Church", {
+      cnpj: "52854119000125",
+      address_id: address_church.id,
+      user_id: user_church.id,
+    });
+
+    const token = user_church.generateToken();
+
+    const address = {
+      address: "Rua Guarani",
+      number: "1234",
+      neighborhood: "centro",
+      zip_code: "49130000",
+      complement: "do lado da prefeitura",
+      city: "riachuelo",
+      state: "sergipe",
+    };
+
+    const member = {
+      name: "Augusto da Silva",
+      genre: "masculino",
+      date_of_birth: "1990-10-02",
+      email: "augustosilva@hotmail.com",
+      whatsapp: "79999999999",
+      profession: "professor",
+      conversion_date: "1996-01-08",
+      baptism_date: "1997-01-20",
+    };
+
+    const response = await request(app)
+      .post("/member")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        ...member,
+        ...address,
+        church_name: "Igreja Universal do Reino de Deus",
+      });
+
+    expect(response.status).toBe(404);
 
     done();
   });
@@ -203,7 +255,6 @@ describe("Member model", () => {
         church_name: church.name,
       });
 
-    //console.log(response);
     expect(response.status).toBe(200);
 
     done();
@@ -331,14 +382,6 @@ describe("Member model", () => {
   });
 
   it("should delete a member", async (done) => {
-    const user = await factory.create("User", {
-      username: "admin1",
-      password: "12345678",
-      permission: "admin",
-    });
-
-    const token = user.generateToken();
-
     const address_church = await factory.create("Address");
 
     const user_church = await factory.create("User", {
@@ -353,10 +396,25 @@ describe("Member model", () => {
       user_id: user_church.id,
     });
 
+    const user = await factory.create("User", {
+      username: "admin1",
+      password: "12345678",
+      permission: "admin",
+    });
+
     const address1 = await factory.create("Address");
-    const member = await factory.create("Member", {
+    const member1 = await factory.create("Member", {
       church_cnpj: church.cnpj,
       address_id: address1.id,
+      user_id: user.id,
+    });
+
+    const token = user.generateToken();
+
+    const address2 = await factory.create("Address");
+    const member = await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address2.id,
     });
 
     const response = await request(app)
@@ -365,21 +423,13 @@ describe("Member model", () => {
       .send({
         church_name: church.name,
       });
-
+    //console.log(response);
     expect(response.status).toBe(200);
 
     done();
   });
 
   it("should delete a member if the user requesting the exclusion does not have permission", async (done) => {
-    const user = await factory.create("User", {
-      username: "admin1",
-      password: "12345678",
-      permission: "comum",
-    });
-
-    const token = user.generateToken();
-
     const address_church = await factory.create("Address");
 
     const user_church = await factory.create("User", {
@@ -394,10 +444,25 @@ describe("Member model", () => {
       user_id: user_church.id,
     });
 
+    const user = await factory.create("User", {
+      username: "admin1",
+      password: "12345678",
+      permission: "comum",
+    });
+
     const address1 = await factory.create("Address");
-    const member = await factory.create("Member", {
+    const member1 = await factory.create("Member", {
       church_cnpj: church.cnpj,
       address_id: address1.id,
+      user_id: user.id,
+    });
+
+    const token = user.generateToken();
+
+    const address2 = await factory.create("Address");
+    const member = await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address2.id,
     });
 
     const response = await request(app)
@@ -413,14 +478,6 @@ describe("Member model", () => {
   });
 
   it("should update a member's information", async (done) => {
-    const user = await factory.create("User", {
-      username: "admin1",
-      password: "12345678",
-      permission: "admin",
-    });
-
-    const token = user.generateToken();
-
     const address_church = await factory.create("Address");
 
     const user_church = await factory.create("User", {
@@ -435,9 +492,22 @@ describe("Member model", () => {
       user_id: user_church.id,
     });
 
-    const address = await factory.create("Address", {
-      address: "Rua Laranjeiras",
+    const user = await factory.create("User", {
+      username: "admin2s",
+      password: "12345678",
+      permission: "admin",
     });
+
+    const address1 = await factory.create("Address");
+    await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address1.id,
+      user_id: user.id,
+    });
+
+    const token = user.generateToken();
+
+    const address = await factory.create("Address");
     const member = await factory.create("Member", {
       church_cnpj: church.cnpj,
       address_id: address.id,
@@ -465,14 +535,6 @@ describe("Member model", () => {
   });
 
   it("shouldn't update a member's information if the user requesting the update does not have permission", async (done) => {
-    const user = await factory.create("User", {
-      username: "admin1",
-      password: "12345678",
-      permission: "comum",
-    });
-
-    const token = user.generateToken();
-
     const address_church = await factory.create("Address");
 
     const user_church = await factory.create("User", {
@@ -487,12 +549,25 @@ describe("Member model", () => {
       user_id: user_church.id,
     });
 
-    const address = await factory.create("Address", {
-      address: "Rua Laranjeiras",
+    const user = await factory.create("User", {
+      username: "admin1",
+      password: "12345678",
+      permission: "comum",
     });
+
+    const address1 = await factory.create("Address");
+    const member1 = await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address1.id,
+      user_id: user.id,
+    });
+
+    const token = user.generateToken();
+
+    const address2 = await factory.create("Address");
     const member = await factory.create("Member", {
       church_cnpj: church.cnpj,
-      address_id: address.id,
+      address_id: address2.id,
     });
 
     const response = await request(app)
@@ -500,7 +575,7 @@ describe("Member model", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         member: member.get(),
-        address: address.get(),
+        address: address2.get(),
         church_name: church.name,
       });
 
@@ -510,14 +585,6 @@ describe("Member model", () => {
   });
 
   it("shouldn't update a member's information if any information is invalid", async (done) => {
-    const user = await factory.create("User", {
-      username: "admin1",
-      password: "12345678",
-      permission: "admin",
-    });
-
-    const token = user.generateToken();
-
     const address_church = await factory.create("Address");
 
     const user_church = await factory.create("User", {
@@ -532,10 +599,25 @@ describe("Member model", () => {
       user_id: user_church.id,
     });
 
-    const address = await factory.create("Address");
+    const user = await factory.create("User", {
+      username: "admin1",
+      password: "12345678",
+      permission: "admin",
+    });
+
+    const address1 = await factory.create("Address");
+    const member1 = await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address1.id,
+      user_id: user.id,
+    });
+
+    const token = user.generateToken();
+
+    const address2 = await factory.create("Address");
     const member = await factory.create("Member", {
       church_cnpj: church.cnpj,
-      address_id: address.id,
+      address_id: address2.id,
     });
 
     member.name = "   ";
@@ -546,7 +628,7 @@ describe("Member model", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({
         member: member.get(),
-        address: address.get(),
+        address: address2.get(),
         church_name: church.name,
       });
 

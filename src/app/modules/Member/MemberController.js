@@ -1,26 +1,26 @@
-const { Member, Church, Address, User } = require("../../../app/models");
+const { Member, Address, User } = require("../../../app/models");
 const models = require("../../models/index");
+const checkUserPermission = require("../../../utils/validation/checkUserPermission");
+const checkChurch = require("../../../utils/validation/checkChurch");
+const paginate = require("../../../utils/paginate");
+const { response } = require("express");
 
 class MemberController {
   async show(req, res) {
     try {
-      const userPermission = req.userPermission;
-      const { church_name } = req.body;
       const { id } = req.params;
 
-      const permissionIsInvalid = userPermission === "comum";
+      const cnpj = await checkChurch(req);
 
-      if (permissionIsInvalid) {
-        return res.status(401).json({ message: "Access denied!" });
-      }
-
-      const church = await Church.findOne({ where: { name: church_name } });
-
-      if (!church) {
+      if (!cnpj) {
         return res.status(404).json({ message: "This church doesn't exists" });
       }
 
-      const { cnpj } = church;
+      const userHasPermission = await checkUserPermission(req, cnpj);
+
+      if (!userHasPermission) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
 
       const member = await Member.findOne({
         where: {
@@ -31,40 +31,42 @@ class MemberController {
 
       return res.status(200).json(member);
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
   async index(req, res) {
     try {
-      const userPermission = req.userPermission;
-      const { church_name } = req.body;
+      const { page = 1 } = req.query;
 
-      const permissionIsInvalid = userPermission === "comum";
+      const cnpj = await checkChurch(req);
 
-      if (permissionIsInvalid) {
-        return res.status(401).json({ message: "Access denied!" });
-      }
-
-      const church = await Church.findOne({ where: { name: church_name } });
-
-      if (!church) {
+      if (!cnpj) {
         return res.status(404).json({ message: "This church doesn't exists" });
       }
 
-      const { cnpj } = church;
+      const userHasPermission = await checkUserPermission(req, cnpj);
 
-      const members = await Member.findAll({ where: { church_cnpj: cnpj } });
+      if (!userHasPermission) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
+
+      const { count, members } = await Member.findAndCountAll({
+        where: { church_cnpj: cnpj },
+        order: [["name", "ASC"]],
+        ...paginate(page),
+      });
+
+      res.header("X-Total-Count", count["count(*)"]);
 
       return res.status(200).json(members);
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
   async store(req, res) {
     try {
-      const userPermission = req.userPermission;
       const {
         name,
         genre,
@@ -81,36 +83,27 @@ class MemberController {
         complement,
         city,
         state,
-        church_name,
       } = req.body;
 
-      const permissionIsInvalid = userPermission === "comum";
+      const cnpj = await checkChurch(req);
 
-      if (permissionIsInvalid) {
-        return res.status(401).json({ message: "Access denied!" });
-      }
-
-      const church = await Church.findOne({ where: { name: church_name } });
-
-      if (!church) {
+      if (!cnpj) {
         return res.status(404).json({ message: "This church doesn't exists" });
       }
 
-      const member = await models.sequelize.transaction(async (transaction) => {
-        const createdAddress = await Address.create(
-          {
-            address,
-            number,
-            neighborhood,
-            zip_code,
-            complement,
-            city,
-            state,
-          },
-          { transaction }
-        );
+      const userHasPermission = await checkUserPermission(req, cnpj);
 
-        const createdMember = await Member.create(
+      if (!userHasPermission) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
+
+      const [createdAddress] = await Address.findOrCreate({
+        where: { address, number, zip_code },
+        defaults: { neighborhood, complement, city, state },
+      });
+
+      const member = await models.sequelize.transaction(async (transaction) => {
+        return await Member.create(
           {
             name,
             genre,
@@ -120,42 +113,36 @@ class MemberController {
             profession,
             conversion_date,
             baptism_date,
-            church_cnpj: church.cnpj,
+            church_cnpj: cnpj,
             address_id: createdAddress.id,
           },
           { transaction }
         );
-
-        return createdMember;
       });
 
       return res.status(200).json(member);
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
   async update(req, res) {
     try {
-      const userPermission = req.userPermission;
-
-      const { member, address, church_name } = req.body;
+      const { member, address } = req.body;
 
       const { id } = req.params;
 
-      const permissionIsInvalid = userPermission === "comum";
+      const cnpj = await checkChurch(req);
 
-      if (permissionIsInvalid) {
-        return res.status(401).json({ message: "Access denied!" });
-      }
-
-      const church = await Church.findOne({ where: { name: church_name } });
-
-      if (!church) {
+      if (!cnpj) {
         return res.status(404).json({ message: "This church doesn't exists" });
       }
 
-      const { cnpj } = church;
+      const userHasPermission = await checkUserPermission(req, cnpj);
+
+      if (!userHasPermission) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
 
       const foundMember = await Member.findOne({
         where: {
@@ -185,29 +172,25 @@ class MemberController {
 
       return res.status(200).json("Member updated with success");
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
   async destroy(req, res) {
     try {
-      const userPermission = req.userPermission;
-      const { church_name } = req.body;
       const { id } = req.params;
 
-      const permissionIsInvalid = userPermission === "comum";
+      const cnpj = await checkChurch(req);
 
-      if (permissionIsInvalid) {
-        return res.status(401).json({ message: "Access denied!" });
-      }
-
-      const church = await Church.findOne({ where: { name: church_name } });
-
-      if (!church) {
+      if (!cnpj) {
         return res.status(404).json({ message: "This church doesn't exists" });
       }
 
-      const { cnpj } = church;
+      const userHasPermission = await checkUserPermission(req, cnpj);
+
+      if (!userHasPermission) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
 
       const member = await Member.findOne({
         where: {
@@ -244,7 +227,7 @@ class MemberController {
         .status(200)
         .json({ message: "The member was successfully deleted!" });
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 }
