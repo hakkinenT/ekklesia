@@ -12,7 +12,7 @@ class LoginController {
       const userExists = church || member;
 
       if (!userExists) {
-        return res.status(401).json({ message: "User doesn't exists" });
+        return res.status(404).json({ message: "User doesn't exists" });
       }
 
       const id = church ? church.user_id : member.user_id;

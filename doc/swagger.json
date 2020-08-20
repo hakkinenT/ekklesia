@@ -37,9 +37,65 @@
     "/login": {
       "post": {
         "tags": ["Login"],
-        "summary": "Realiza o login",
+        "summary": "Log in",
         "consumes": ["application/json"],
-        "produces": ["application/json"]
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "login",
+            "description": "The JSON format sent in the body to log in",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "description": "Member or church email",
+                  "example": "jose_silva@hotmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "format": "password",
+                  "minLength": "8",
+                  "maxLength": "16",
+                  "description": "The member or church password. ",
+                  "example": "js$45iG0"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. An object containing user information and the generated token will be returned."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          },
+          "404": {
+            "description": "Not Found. It can happen if the user doesn't exist"
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Login"],
+        "summary": "Logout",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+
+        "responses": {
+          "200": {
+            "description": "Success. Successfully logged out."
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
       }
     },
     "/church": {
