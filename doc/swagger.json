@@ -52,7 +52,7 @@
           {
             "in": "body",
             "name": "json",
-            "description": "The JSON format sent in the body to register a church must be:",
+            "description": "The JSON format sent in the body to register a church must be",
             "required": true,
             "schema": {
               "properties": {
@@ -78,7 +78,7 @@
                   "description": "The date of creation of the church",
                   "example": "1986-08-11"
                 },
-                "address": {
+                "street": {
                   "type": "string",
                   "description": "The place where the church is located. Example: street, square, avenue...",
                   "example": "Rua Laranjeiras"
@@ -133,7 +133,7 @@
                 "cnpj",
                 "email",
                 "creation_date",
-                "address",
+                "street",
                 "number",
                 "neighborhood",
                 "zip_code",
@@ -225,7 +225,7 @@
                   "description": "The date of creation of the church",
                   "example": "1986-08-11"
                 },
-                "address": {
+                "street": {
                   "type": "string",
                   "description": "The place where the church is located. Example: street, square, avenue...",
                   "example": "Rua Laranjeiras"
@@ -310,9 +310,390 @@
     "/member": {
       "post": {
         "tags": ["Member"],
-        "summary": "Cadastra os membros",
+        "summary": "Register a member",
         "consumes": ["application/json"],
-        "produces": ["application/json"]
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "json",
+            "description": "The JSON format sent in the body to register a member must be",
+            "required": true,
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The member's name",
+                  "example": "José Luis da Silva"
+                },
+                "genre": {
+                  "type": "string",
+                  "description": "The gender of the member",
+                  "example": "Masculino"
+                },
+                "date_of_birth": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The member's birth date",
+                  "example": "1986-08-11"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "description": "Member email",
+                  "example": "jose_silva@hotmail.com"
+                },
+                "whatsapp": {
+                  "type": "string",
+                  "description": "The member's whatsapp",
+                  "example": "79999999999"
+                },
+                "profession": {
+                  "type": "string",
+                  "description": "The member's profession",
+                  "example": "Médico"
+                },
+                "conversion_date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The member's conversion date",
+                  "example": "1998-09-21"
+                },
+                "baptism_date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The member's baptism date",
+                  "example": "1999-12-11"
+                },
+                "street": {
+                  "type": "string",
+                  "description": "The place where the member lives. Example: street, square, avenue...",
+                  "example": "Rua Laranjeiras"
+                },
+                "number": {
+                  "type": "string",
+                  "example": "1234"
+                },
+                "neighborhood": {
+                  "type": "string",
+                  "description": "The area where the member lives",
+                  "example": "Centro"
+                },
+                "zip_code": {
+                  "type": "string",
+                  "description": "The zip code of the area where the member lives",
+                  "example": "49130000"
+                },
+                "complement": {
+                  "type": "string",
+                  "description": "Information that complements the member's address",
+                  "example": "Ao lado da rodoviária"
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city where the member lives",
+                  "example": "Riachuelo"
+                },
+                "state": {
+                  "type": "string",
+                  "description": "The state where the member lives",
+                  "example": "Sergipe"
+                },
+                "church_name": {
+                  "type": "string",
+                  "description": "The name of the church the member belongs to",
+                  "example": "Igreja Batista do Brasil"
+                }
+              },
+              "required": [
+                "name",
+                "genre",
+                "date_of_birth",
+                "email",
+                "profession",
+                "street",
+                "number",
+                "neighborhood",
+                "zip_code",
+                "city",
+                "state",
+                "church_name"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. A JSON object containing member information will be returned."
+          },
+          "400": {
+            "description": "Bad Request. It can happen if any field is invalid or if any other invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist"
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Member"],
+        "summary": "Search for all members",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The number of page. Each page will return 10 items from the array",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "body",
+            "name": "json",
+            "description": "The JSON format sent in the body to get all member must be",
+            "required": true,
+            "schema": {
+              "properties": {
+                "church_name": {
+                  "type": "string",
+                  "description": "The name of the church the member belongs to",
+                  "example": "Igreja Batista do Brasil"
+                }
+              },
+              "required": ["church_name"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. A JSON containing an array of all members will be returned."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist"
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      }
+    },
+    "/member/id": {
+      "get": {
+        "tags": ["Member"],
+        "summary": "Search for a member by ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ID",
+            "description": "The ID of the member to be searched",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "json",
+            "description": "The JSON format sent in the body to get a member must be",
+            "required": true,
+            "schema": {
+              "properties": {
+                "church_name": {
+                  "type": "string",
+                  "description": "The name of the church the member belongs to",
+                  "example": "Igreja Batista do Brasil"
+                }
+              },
+              "required": ["church_name"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. A JSON object containing member information will be returned."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          },
+          "404": {
+            "description": "Not Found. It can happen if the member and the church he belongs to don't exist."
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Member"],
+        "summary": "Updates a member and its address",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "json",
+            "description": "The JSON format sent in the body to update a member must be",
+            "required": true,
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The member's name",
+                  "example": "José Luis da Silva"
+                },
+                "genre": {
+                  "type": "string",
+                  "description": "The gender of the member",
+                  "example": "Masculino"
+                },
+                "date_of_birth": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The member's birth date",
+                  "example": "1986-08-11"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "description": "Member email",
+                  "example": "jose_silva@hotmail.com"
+                },
+                "whatsapp": {
+                  "type": "string",
+                  "description": "The member's whatsapp",
+                  "example": "79999999999"
+                },
+                "profession": {
+                  "type": "string",
+                  "description": "The member's profession",
+                  "example": "Médico"
+                },
+                "conversion_date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The member's conversion date",
+                  "example": "1998-09-21"
+                },
+                "baptism_date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The member's baptism date",
+                  "example": "1999-12-11"
+                },
+                "street": {
+                  "type": "string",
+                  "description": "The place where the member lives. Example: street, square, avenue...",
+                  "example": "Rua Laranjeiras"
+                },
+                "number": {
+                  "type": "string",
+                  "example": "1234"
+                },
+                "neighborhood": {
+                  "type": "string",
+                  "description": "The area where the member lives",
+                  "example": "Centro"
+                },
+                "zip_code": {
+                  "type": "string",
+                  "description": "The zip code of the area where the member lives",
+                  "example": "49130000"
+                },
+                "complement": {
+                  "type": "string",
+                  "description": "Information that complements the member's address",
+                  "example": "Ao lado da rodoviária"
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city where the member lives",
+                  "example": "Riachuelo"
+                },
+                "state": {
+                  "type": "string",
+                  "description": "The state where the member lives",
+                  "example": "Sergipe"
+                },
+                "church_name": {
+                  "type": "string",
+                  "description": "The name of the church the member belongs to",
+                  "example": "Igreja Batista do Brasil"
+                }
+              },
+              "required": ["church_name"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Will return a message stating that the member has been successfully updated."
+          },
+          "400": {
+            "description": "Bad Request. It can happen if any field is invalid or if any other invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          },
+          "404": {
+            "description": "Not Found. It can happen if the member and the church he belongs to don't exist."
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Member"],
+        "summary": "Deletes a member, his address and his user information if it exists",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ID",
+            "description": "The ID of the member to be deleted",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "json",
+            "description": "The JSON format sent in the body to delete a member must be",
+            "required": true,
+            "schema": {
+              "properties": {
+                "church_name": {
+                  "type": "string",
+                  "description": "The name of the church the member belongs to",
+                  "example": "Igreja Batista do Brasil"
+                }
+              },
+              "required": ["church_name"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Will return a message stating that the member has been successfully deleted."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          },
+          "404": {
+            "description": "Not Found. It can happen if the member and the church he belongs to don't exist."
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
       }
     },
     "user": {
@@ -415,7 +796,7 @@
       },
       "put": {
         "tags": ["User"],
-        "summary": "Register a user",
+        "summary": "Updates a user",
         "consumes": ["application/json"],
         "produces": ["application/json"],
         "parameters": [
@@ -509,7 +890,7 @@
     "Address": {
       "type": "object",
       "required": [
-        "address",
+        "street",
         "number",
         "neighborhood",
         "zip_code",
@@ -523,7 +904,7 @@
           "description": "The address id",
           "example": 1
         },
-        "address": {
+        "street": {
           "type": "string",
           "description": "The place where the church is located. Example: street, square, avenue...",
           "example": "Rua Laranjeiras"
@@ -642,6 +1023,108 @@
           "format": "int32",
           "description": "The user id",
           "example": 1
+        }
+      }
+    },
+    "Member": {
+      "type": "object",
+      "required": [
+        "name",
+        "genre",
+        "date_of_birth",
+        "email",
+        "profession",
+        "street",
+        "number",
+        "neighborhood",
+        "zip_code",
+        "city",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The church id",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "description": "The member's name",
+          "example": "José Luis da Silva"
+        },
+        "genre": {
+          "type": "string",
+          "description": "The gender of the member",
+          "example": "Masculino"
+        },
+        "date_of_birth": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's birth date",
+          "example": "1986-08-11"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Member email",
+          "example": "jose_silva@hotmail.com"
+        },
+        "whatsapp": {
+          "type": "string",
+          "description": "The member's whatsapp",
+          "example": "79999999999"
+        },
+        "profession": {
+          "type": "string",
+          "description": "The member's profession",
+          "example": "Médico"
+        },
+        "conversion_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's conversion date",
+          "example": "1998-09-21"
+        },
+        "baptism_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's baptism date",
+          "example": "1999-12-11"
+        },
+        "street": {
+          "type": "string",
+          "description": "The place where the member lives. Example: street, square, avenue...",
+          "example": "Rua Laranjeiras"
+        },
+        "number": {
+          "type": "string",
+          "example": "1234"
+        },
+        "neighborhood": {
+          "type": "string",
+          "description": "The area where the member lives",
+          "example": "Centro"
+        },
+        "zip_code": {
+          "type": "string",
+          "description": "The zip code of the area where the member lives",
+          "example": "49130000"
+        },
+        "complement": {
+          "type": "string",
+          "description": "Information that complements the member's address",
+          "example": "Ao lado da rodoviária"
+        },
+        "city": {
+          "type": "string",
+          "description": "The city where the member lives",
+          "example": "Riachuelo"
+        },
+        "state": {
+          "type": "string",
+          "description": "The state where the member lives",
+          "example": "Sergipe"
         }
       }
     }

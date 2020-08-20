@@ -27,7 +27,7 @@ module.exports = {
       },
       whatsapp: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       profession: {
         type: Sequelize.STRING,
@@ -35,11 +35,11 @@ module.exports = {
       },
       conversion_date: {
         type: Sequelize.DATEONLY,
-        allowNull: false,
+        allowNull: true,
       },
       baptism_date: {
         type: Sequelize.DATEONLY,
-        allowNull: false,
+        allowNull: true,
       },
       church_cnpj: {
         type: Sequelize.STRING,

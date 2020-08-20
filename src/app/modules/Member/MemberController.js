@@ -29,6 +29,10 @@ class MemberController {
         },
       });
 
+      if (!member) {
+        return res.status(404).json({ message: "This member doesn't exists" });
+      }
+
       return res.status(200).json(member);
     } catch (err) {
       return res.status(500).json({ error: err.message });
