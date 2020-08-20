@@ -22,7 +22,7 @@ describe("Member model", () => {
     const token = user_church.generateToken();
 
     const address = {
-      address: "Rua Guarani",
+      street: "Rua Guarani",
       number: "1234",
       neighborhood: "centro",
       zip_code: "49130000",
@@ -80,7 +80,7 @@ describe("Member model", () => {
     });
 
     const address = {
-      address: "Rua Guarani",
+      street: "Rua Guarani",
       number: "1234",
       neighborhood: "centro",
       zip_code: "49130000",
@@ -133,7 +133,7 @@ describe("Member model", () => {
     const token = user_church.generateToken();
 
     const address = {
-      address: "Rua Guarani",
+      street: "Rua Guarani",
       number: "1234",
       neighborhood: "centro",
       zip_code: "49130000",
@@ -185,7 +185,7 @@ describe("Member model", () => {
     const token = user_church.generateToken();
 
     const address = {
-      address: "Rua Guarani",
+      street: "Rua Guarani",
       number: "1234",
       neighborhood: "centro",
       zip_code: "49130000",

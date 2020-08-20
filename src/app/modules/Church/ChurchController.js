@@ -28,7 +28,7 @@ class ChurchController {
         cnpj,
         email,
         creation_date,
-        address,
+        street,
         number,
         neighborhood,
         zip_code,
@@ -53,7 +53,7 @@ class ChurchController {
         async (transaction) => {
           const createdAddress = await Address.create(
             {
-              address,
+              street,
               number,
               neighborhood,
               zip_code,
@@ -102,7 +102,7 @@ class ChurchController {
         cnpj,
         email,
         creation_date,
-        address,
+        street,
         number,
         neighborhood,
         zip_code,
@@ -128,7 +128,7 @@ class ChurchController {
 
           await Address.update(
             {
-              address,
+              street,
               number,
               neighborhood,
               zip_code,

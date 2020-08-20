@@ -37,7 +37,7 @@ const churchCreationValidationRules = () => {
         options: (value) => validateString(value),
       },
     },
-    address: {
+    street: {
       isString: true,
       custom: {
         options: (value) => validateString(value),

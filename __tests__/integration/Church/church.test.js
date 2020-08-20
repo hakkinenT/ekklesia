@@ -13,7 +13,7 @@ describe("Church model", () => {
     };
 
     const address = {
-      address: "Rua Guarani",
+      street: "Rua Guarani",
       number: "1234",
       neighborhood: "centro",
       zip_code: "49130000",
@@ -40,7 +40,7 @@ describe("Church model", () => {
     done();
   });
 
-  /*it("shouldn't register a church if there are invalid fields", async (done) => {
+  it("shouldn't register a church if there are invalid fields", async (done) => {
     const church = {
       name: "    ",
       cnpj: "08133802000181",
@@ -49,7 +49,7 @@ describe("Church model", () => {
     };
 
     const address = {
-      address: "     ",
+      street: "     ",
       number: "1234$",
       neighborhood: "",
       zip_code: "4913000A",
@@ -83,7 +83,7 @@ describe("Church model", () => {
     };
 
     const address = {
-      address: "Rua Guarani",
+      street: "Rua Guarani",
       number: "1234",
       neighborhood: "centro",
       zip_code: "49130000",
@@ -117,7 +117,7 @@ describe("Church model", () => {
     };
 
     const address = {
-      address: "Rua Guarani",
+      street: "Rua Guarani",
       number: "1234",
       neighborhood: "centro",
       zip_code: "49130000",
@@ -218,7 +218,7 @@ describe("Church model", () => {
         cnpj: church.cnpj,
         creation_date: church.creation_date,
         email: "igreja@hotmail.com",
-        address: address.address,
+        street: address.street,
         zip_code: "49130000",
         complement: address.complement,
         city: "Riachuelo",
@@ -249,7 +249,7 @@ describe("Church model", () => {
         cnpj: church.cnpj,
         creation_date: church.creation_date,
         email: "igreja@hotmail.com",
-        address: address.address,
+        street: address.street,
         zip_code: "49130000",
         complement: address.complement,
         city: "     ",
@@ -277,7 +277,7 @@ describe("Church model", () => {
       name: "Igreja Batista do Centenário",
       cnpj: church.cnpj,
       creation_date: church.creation_date,
-      address: "Rua Laranjeiras",
+      street: "Rua Laranjeiras",
       number: "12345",
       neighborhood: "Centro",
       zip_code: "49130000",
@@ -308,7 +308,7 @@ describe("Church model", () => {
       name: "Igreja Batista do Centenário",
       cnpj: church.cnpj,
       creation_date: church.creation_date,
-      address: address.address,
+      street: address.street,
       number: "1234",
       neighborhood: "Centro",
       zip_code: "49130000",
@@ -357,5 +357,5 @@ describe("Church model", () => {
 
     expect(response.status).toBe(400);
     done();
-  });*/
+  });
 });

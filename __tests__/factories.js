@@ -10,7 +10,7 @@ factory.define("Church", Church, {
 });
 
 factory.define("Address", Address, {
-  address: faker.address.streetName,
+  street: faker.address.streetName,
   number: faker.random.number({ min: 1, max: 5000 }),
   neighborhood: faker.address.county,
   zip_code: "49100000",

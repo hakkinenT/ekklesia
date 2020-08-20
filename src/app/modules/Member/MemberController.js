@@ -76,7 +76,7 @@ class MemberController {
         profession,
         conversion_date,
         baptism_date,
-        address,
+        street,
         number,
         neighborhood,
         zip_code,
@@ -97,8 +97,8 @@ class MemberController {
         return res.status(401).json({ message: "Access denied!" });
       }
 
-      const [createdAddress] = await Address.findOrCreate({
-        where: { address, number, zip_code },
+      const [address] = await Address.findOrCreate({
+        where: { street, number, zip_code },
         defaults: { neighborhood, complement, city, state },
       });
 
@@ -114,7 +114,7 @@ class MemberController {
             conversion_date,
             baptism_date,
             church_cnpj: cnpj,
-            address_id: createdAddress.id,
+            address_id: address.id,
           },
           { transaction }
         );

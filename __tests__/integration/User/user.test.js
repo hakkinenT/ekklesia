@@ -29,7 +29,7 @@ describe("User module", () => {
     done();
   });
 
-  /*it("shouldn't register a user without a token", async (done) => {
+  it("shouldn't register a user without a token", async (done) => {
     const user1 = await factory.create("User", {
       username: "julio32",
       permission: "admin",
@@ -420,5 +420,5 @@ describe("User module", () => {
 
     expect(response.status).toBe(404);
     done();
-  });*/
+  });
 });
