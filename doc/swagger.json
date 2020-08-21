@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.1",
+  "swagger": "2.0",
   "info": {
     "version": "1.0.0",
     "title": "Ekklesia API",
@@ -410,6 +410,7 @@
                 "genre": {
                   "type": "string",
                   "description": "The gender of the member",
+                  "enum": ["Masculino", "Feminino"],
                   "example": "Masculino"
                 },
                 "date_of_birth": {
@@ -649,6 +650,7 @@
                 "genre": {
                   "type": "string",
                   "description": "The gender of the member",
+                  "enum": ["Masculino", "Feminino"],
                   "example": "Masculino"
                 },
                 "date_of_birth": {
@@ -1187,6 +1189,7 @@
         "genre": {
           "type": "string",
           "description": "The gender of the member",
+          "enum": ["Masculino", "Feminino"],
           "example": "Masculino"
         },
         "date_of_birth": {

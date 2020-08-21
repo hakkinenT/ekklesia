@@ -3,7 +3,7 @@ const sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   const Member = sequelize.define("Member", {
     name: DataTypes.STRING,
-    genre: DataTypes.STRING,
+    genre: DataTypes.ENUM("Masculino", "Feminino"),
     date_of_birth: DataTypes.DATEONLY,
     email: {
       type: DataTypes.STRING,

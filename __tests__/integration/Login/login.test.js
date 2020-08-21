@@ -69,7 +69,7 @@ describe("Login", () => {
       password: "12345679",
     });
 
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(404);
 
     done();
   });
@@ -197,7 +197,7 @@ describe("Login", () => {
       password: "12345679",
     });
 
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(404);
 
     done();
   });

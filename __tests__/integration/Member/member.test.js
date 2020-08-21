@@ -33,7 +33,7 @@ describe("Member model", () => {
 
     const member = {
       name: "Augusto da Silva",
-      genre: "masculino",
+      genre: "Masculino",
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
       whatsapp: "79999999999",
@@ -91,7 +91,7 @@ describe("Member model", () => {
 
     const member = {
       name: "Augusto da Silva",
-      genre: "maculino",
+      genre: "Masculino",
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
       whatsapp: "79999999999",
@@ -196,7 +196,7 @@ describe("Member model", () => {
 
     const member = {
       name: "Augusto da Silva",
-      genre: "masculino",
+      genre: "Masculino",
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
       whatsapp: "79999999999",
