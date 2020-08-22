@@ -35,7 +35,7 @@ const checkUserPermission = async (req, cnpj) => {
   if (!cnpjIsEqual) {
     return false;
   }
-
+  console.log("cheguei aqui");
   return true;
 };
 

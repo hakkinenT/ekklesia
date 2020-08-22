@@ -9,7 +9,6 @@ class LoginController {
       const church = await Church.findOne({ where: { email } });
       const member = await Member.findOne({ where: { email } });
 
-      //const userExists = church || member;
       const id = church ? church.user_id : member ? member.user_id : 0;
 
       const user = await User.findOne({ where: { id } });

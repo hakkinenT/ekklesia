@@ -521,7 +521,9 @@
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
           }
         }
-      },
+      }
+    },
+    "/members": {
       "get": {
         "tags": ["Member"],
         "summary": "Search for all members",
@@ -733,7 +735,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. Will return a message stating that the member has been successfully updated."
+            "description": "Success. A JSON object containing member information will be returned.."
           },
           "400": {
             "description": "Bad Request. It can happen if any field is invalid or if any other invalid request happens."

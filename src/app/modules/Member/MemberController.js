@@ -3,7 +3,6 @@ const models = require("../../models/index");
 const checkUserPermission = require("../../../utils/validation/checkUserPermission");
 const checkChurch = require("../../../utils/validation/checkChurch");
 const paginate = require("../../../utils/paginate");
-const { response } = require("express");
 
 class MemberController {
   async show(req, res) {
@@ -55,15 +54,15 @@ class MemberController {
         return res.status(401).json({ message: "Access denied!" });
       }
 
-      const { count, members } = await Member.findAndCountAll({
+      const { count, rows } = await Member.findAndCountAll({
         where: { church_cnpj: cnpj },
         order: [["name", "ASC"]],
         ...paginate(page),
       });
 
-      res.header("X-Total-Count", count["count(*)"]);
+      res.header("X-Total-Count", count);
 
-      return res.status(200).json(members);
+      return res.status(200).json(rows);
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -161,20 +160,26 @@ class MemberController {
 
       const { address_id } = foundMember;
 
-      await models.sequelize.transaction(async (transaction) => {
-        if (address) {
-          await Address.update(address, {
-            where: { id: address_id },
-            transaction,
-          });
-        }
+      const updatedMember = await models.sequelize.transaction(
+        async (transaction) => {
+          let updateMember = null;
 
-        if (member) {
-          await foundMember.update(member, { transaction });
-        }
-      });
+          if (address) {
+            await Address.update(address, {
+              where: { id: address_id },
+              transaction,
+            });
+          }
 
-      return res.status(200).json("Member updated with success");
+          if (member) {
+            updateMember = await foundMember.update(member, { transaction });
+          }
+
+          return updateMember;
+        }
+      );
+
+      return res.status(200).json(updatedMember);
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -210,13 +215,13 @@ class MemberController {
       const { address_id, user_id } = member;
 
       await models.sequelize.transaction(async (transaction) => {
-        await member.destroy({ transaction });
-
-        const totalOfAdresses = await Address.count({
-          where: { id: address_id },
+        const membersWithSameAddress = await Member.count({
+          where: { address_id },
         });
 
-        const isEqualToOne = totalOfAdresses === 1;
+        await member.destroy({ transaction });
+
+        const isEqualToOne = membersWithSameAddress === 1;
 
         if (isEqualToOne) {
           await Address.destroy({ where: { id: address_id }, transaction });
