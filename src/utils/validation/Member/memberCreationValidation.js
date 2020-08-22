@@ -3,129 +3,123 @@
  *
  * File with the validations rules of the fields
  *
- * This file contains only the validation rules for updating a member.
+ * This file contains only the validation rules for creating a member.
  */
 
 const { checkSchema } = require("express-validator");
 const validateString = require("../validateString");
 
-const memberUpdateValidationRules = () => {
+const memberCreationValidation = () => {
   return checkSchema({
-    "*.name": {
+    name: {
       isString: true,
       custom: {
         options: (value) => validateString(value),
       },
-      optional: true,
       errorMessage: "The name must be a string",
     },
-    "*.genre": {
+    genre: {
       isString: true,
       custom: {
         options: (value) => validateString(value),
       },
-      optional: true,
       errorMessage: "The genre must be a string",
     },
-    "*.date_of_birth": {
+    date_of_birth: {
       custom: {
         options: (value) => validateString(value),
       },
-      optional: true,
     },
-    "*.email": {
+    email: {
       isEmail: true,
       custom: {
         options: (value) => validateString(value),
       },
-      optional: true,
       errorMessage: "The email has an invalid format",
     },
-    "*.whatsapp": {
+    whatsapp: {
       isString: true,
       custom: {
         options: (value) => validateString(value),
       },
-      optional: true,
       isLength: { options: { min: 10, max: 11 } },
       errorMessage: "The whatsapp must be a string",
     },
-    "*.profession": {
+    profession: {
       isString: true,
       custom: {
         options: (value) => validateString(value),
       },
-      optional: true,
       errorMessage: "The profession must be a string",
     },
-    "*.conversion_date": {
+    conversion_date: {
       custom: {
         options: (value) => validateString(value),
       },
       optional: true,
     },
-    "*.baptism_date": {
+    baptism_date: {
       custom: {
         options: (value) => validateString(value),
       },
       optional: true,
     },
-    "*.street": {
+    street: {
       isString: true,
       custom: {
         options: (value) => validateString(value),
       },
-      optional: true,
       errorMessage: "The address must be a string",
     },
-    "*.number": {
+    number: {
       isAlphanumeric: true,
       custom: {
         options: (value) => validateString(value),
       },
-      optional: true,
       errorMessage: "The number contains invalid characters",
     },
-    "*.neighborhood": {
+    neighborhood: {
       isString: true,
       custom: {
         options: (value) => validateString(value),
       },
-      optional: true,
       errorMessage: "The neighborhood must be a string",
     },
-    "*.zip_code": {
+    zip_code: {
       isNumeric: true,
+      isLength: { options: 8 },
       custom: {
         options: (value) => validateString(value),
       },
-      isLength: { options: 8 },
-      optional: true,
       errorMessage: "CEP must contain only numbers",
     },
-
-    "*.complement": {
+    complement: {
       isString: true,
-      optional: true,
       errorMessage: "The complement must be a string",
+      optional: true,
     },
-    "*.city": {
+    city: {
       isString: true,
       custom: {
         options: (value) => validateString(value),
       },
-      optional: true,
       errorMessage: "The city must be a string",
     },
-    "*.state": {
+    state: {
       isString: true,
       custom: {
         options: (value) => validateString(value),
       },
-      optional: true,
       errorMessage: "The state must be a string",
+    },
+    church_name: {
+      isString: true,
+      custom: {
+        options: (value) => validateString(value),
+      },
+      errorMessage: "The church_name must be a string",
     },
   });
 };
 
-module.exports = memberUpdateValidationRules;
+module.exports = memberCreationValidation;

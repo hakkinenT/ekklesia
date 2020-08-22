@@ -9,7 +9,7 @@
 const { checkSchema } = require("express-validator");
 const validateString = require("../validateString");
 
-const userCreationValidationRules = () => {
+const userCreationValidation = () => {
   return checkSchema({
     username: {
       in: ["body"],
@@ -33,4 +33,4 @@ const userCreationValidationRules = () => {
   });
 };
 
-module.exports = userCreationValidationRules;
+module.exports = userCreationValidation;

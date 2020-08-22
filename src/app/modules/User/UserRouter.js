@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const UserController = require("./UserController");
 
-const userCreationValidationRules = require("../../../utils/validation/User/userCreationValidationRules");
-const userUpdateValidationRules = require("../../../utils/validation/User/userUpdateValidationRules");
+const userCreationValidation = require("../../../utils/validation/User/userCreationValidation");
+const userUpdateValidation = require("../../../utils/validation/User/userUpdateValidation");
 const validate = require("../../../utils/validation/validate");
 const authentication = require("../../middleware/authentication");
 
@@ -13,7 +13,7 @@ const userRouter = () => {
 
   routes.post(
     "/user",
-    userCreationValidationRules(),
+    userCreationValidation(),
     validate,
     UserController.store
   );
@@ -24,7 +24,7 @@ const userRouter = () => {
 
   routes.put(
     "/user/:id",
-    userUpdateValidationRules(),
+    userUpdateValidation(),
     validate,
     UserController.update
   );

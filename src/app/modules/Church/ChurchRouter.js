@@ -1,7 +1,7 @@
 const { Router } = require("express");
 
-const churchCreationValidationRules = require("../../../utils/validation/Church/churchCreationValidationRules");
-const churchUpdateValidationRules = require("../../../utils/validation/Church/churchUpdateValidationRules");
+const churchCreationValidation = require("../../../utils/validation/Church/churchCreationValidation");
+const churchUpdateValidation = require("../../../utils/validation/Church/churchUpdateValidation");
 const cnpjParameterValidation = require("../../../utils/validation/Church/cnpjParameterValidation");
 
 const validate = require("../../../utils/validation/validate");
@@ -13,7 +13,7 @@ const routes = Router();
 const churchRouter = () => {
   routes.post(
     "/church",
-    churchCreationValidationRules(),
+    churchCreationValidation(),
     validate,
     ChurchController.store
   );
@@ -27,7 +27,7 @@ const churchRouter = () => {
 
   routes.put(
     "/church/:cnpj",
-    churchUpdateValidationRules(),
+    churchUpdateValidation(),
     validate,
     ChurchController.update
   );

@@ -3,32 +3,27 @@
  *
  * File with the validations rules of the fields
  *
- * This file contains only the validation rules for creating a member.
+ * This file contains only the validation rules for creating a church.
  */
 
 const { checkSchema } = require("express-validator");
+const validateCNPJ = require("./validateCNPJ");
 const validateString = require("../validateString");
 
-const memberCreationValidationRules = () => {
+const churchCreationValidation = () => {
   return checkSchema({
+    cnpj: {
+      custom: {
+        options: (value) => validateCNPJ(value),
+      },
+      errorMessage: "CNPJ is invalid",
+    },
     name: {
       isString: true,
       custom: {
         options: (value) => validateString(value),
       },
       errorMessage: "The name must be a string",
-    },
-    genre: {
-      isString: true,
-      custom: {
-        options: (value) => validateString(value),
-      },
-      errorMessage: "The genre must be a string",
-    },
-    date_of_birth: {
-      custom: {
-        options: (value) => validateString(value),
-      },
     },
     email: {
       isEmail: true,
@@ -37,32 +32,10 @@ const memberCreationValidationRules = () => {
       },
       errorMessage: "The email has an invalid format",
     },
-    whatsapp: {
-      isString: true,
+    creation_date: {
       custom: {
         options: (value) => validateString(value),
       },
-      isLength: { options: { min: 10, max: 11 } },
-      errorMessage: "The whatsapp must be a string",
-    },
-    profession: {
-      isString: true,
-      custom: {
-        options: (value) => validateString(value),
-      },
-      errorMessage: "The profession must be a string",
-    },
-    conversion_date: {
-      custom: {
-        options: (value) => validateString(value),
-      },
-      optional: true,
-    },
-    baptism_date: {
-      custom: {
-        options: (value) => validateString(value),
-      },
-      optional: true,
     },
     street: {
       isString: true,
@@ -112,7 +85,24 @@ const memberCreationValidationRules = () => {
       },
       errorMessage: "The state must be a string",
     },
+    username: {
+      isString: true,
+      custom: {
+        options: (value) => validateString(value),
+      },
+      isLength: { options: { min: 3, max: 30 } },
+      errorMessage:
+        "Username must be a string with a minimum length of 3 and a maximum length of 30",
+    },
+    password: {
+      custom: {
+        options: (value) => validateString(value),
+      },
+      isLength: { options: { min: 8, max: 16 } },
+      errorMessage:
+        "The password must be a string with a minimum length of 8 and a maximum length of 16",
+    },
   });
 };
 
-module.exports = memberCreationValidationRules;
+module.exports = churchCreationValidation;

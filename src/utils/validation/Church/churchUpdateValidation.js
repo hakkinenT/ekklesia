@@ -10,7 +10,7 @@ const { checkSchema } = require("express-validator");
 const validateCNPJ = require("./validateCNPJ");
 const validateString = require("../validateString");
 
-const churchUpdateValidationRules = () => {
+const churchUpdateValidation = () => {
   return checkSchema({
     cnpj: {
       in: ["params", "body"],
@@ -100,4 +100,4 @@ const churchUpdateValidationRules = () => {
   });
 };
 
-module.exports = churchUpdateValidationRules;
+module.exports = churchUpdateValidation;
