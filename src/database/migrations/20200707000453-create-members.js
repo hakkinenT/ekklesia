@@ -5,12 +5,16 @@ module.exports = {
     return queryInterface.createTable("Members", {
       id: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
       name: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      cpf: {
+        type: Sequelize.STRING,
+        primaryKey: true,
         allowNull: false,
       },
       genre: {

@@ -3,6 +3,7 @@ const sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   const Member = sequelize.define("Member", {
     name: DataTypes.STRING,
+    cpf: DataTypes.STRING,
     genre: DataTypes.ENUM("Masculino", "Feminino"),
     date_of_birth: DataTypes.DATEONLY,
     email: {
@@ -48,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     Member.hasMany(models.Role, { as: "Role" });
     Member.belongsToMany(models.Group, {
       through: "Members_Groups",
-      foreignKey: "member_id",
+      foreignKey: "member_cpf",
       as: "Group",
     });
   };
