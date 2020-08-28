@@ -7,7 +7,7 @@ const paginate = require("../../../utils/paginate");
 class MemberController {
   async show(req, res) {
     try {
-      const { id } = req.params;
+      const { cpf } = req.params;
 
       const cnpj = await checkChurch(req);
 
@@ -23,7 +23,7 @@ class MemberController {
 
       const member = await Member.findOne({
         where: {
-          id,
+          cpf,
           church_cnpj: cnpj,
         },
         include: ["Address"],
@@ -73,6 +73,7 @@ class MemberController {
     try {
       const {
         name,
+        cpf,
         genre,
         date_of_birth,
         email,
@@ -110,6 +111,7 @@ class MemberController {
         return await Member.create(
           {
             name,
+            cpf,
             genre,
             date_of_birth,
             email,
@@ -134,7 +136,7 @@ class MemberController {
     try {
       const { member, address } = req.body;
 
-      const { id } = req.params;
+      const { cpf } = req.params;
 
       const cnpj = await checkChurch(req);
 
@@ -150,7 +152,7 @@ class MemberController {
 
       const foundMember = await Member.findOne({
         where: {
-          id,
+          cpf,
           church_cnpj: cnpj,
         },
       });
@@ -188,7 +190,7 @@ class MemberController {
 
   async destroy(req, res) {
     try {
-      const { id } = req.params;
+      const { cpf } = req.params;
 
       const cnpj = await checkChurch(req);
 
@@ -204,7 +206,7 @@ class MemberController {
 
       const member = await Member.findOne({
         where: {
-          id,
+          cpf,
           church_cnpj: cnpj,
         },
       });
