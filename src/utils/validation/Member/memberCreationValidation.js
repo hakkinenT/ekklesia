@@ -8,6 +8,7 @@
 
 const { checkSchema } = require("express-validator");
 const validateString = require("../validateString");
+const validateCPF = require("./validate_CPF_CNPJ");
 
 const memberCreationValidation = () => {
   return checkSchema({
@@ -17,6 +18,12 @@ const memberCreationValidation = () => {
         options: (value) => validateString(value),
       },
       errorMessage: "The name must be a string",
+    },
+    cpf: {
+      custom: {
+        options: (value) => validateCPF(value),
+      },
+      errorMessage: "CPF is invalid",
     },
     genre: {
       isString: true,
