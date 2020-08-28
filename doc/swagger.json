@@ -212,6 +212,9 @@
           },
           "400": {
             "description": "Bad Request. It can happen if the CNPJ is invalid or if the church is already registered or if any other invalid request happens."
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
           }
         }
       }
@@ -247,6 +250,9 @@
           },
           "404": {
             "description": "Not Found. The church was not found"
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
           }
         }
       },
@@ -269,10 +275,11 @@
           },
           {
             "in": "body",
-            "name": "json",
-            "description": "The JSON format sent in the body to update a church must be:",
-            "required": true,
+            "name": "church",
+            "description": "The church object sent in the body to update a church's data can take the following format",
+            "required": false,
             "schema": {
+              "name": "address",
               "properties": {
                 "name": {
                   "type": "string",
@@ -295,7 +302,18 @@
                   "format": "date",
                   "description": "The date of creation of the church",
                   "example": "1986-08-11"
-                },
+                }
+              }
+            }
+          },
+          {
+            "in": "body",
+            "name": "address",
+            "description": "The address object sent in the body to update a church's address data can take the following format",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
                 "street": {
                   "type": "string",
                   "description": "The place where the church is located. Example: street, square, avenue...",
@@ -346,6 +364,9 @@
           },
           "404": {
             "description": "Not Found. The church was not found"
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
           }
         }
       },
@@ -379,6 +400,9 @@
           },
           "404": {
             "description": "Not Found. The church was not found"
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
           }
         }
       }
@@ -639,10 +663,11 @@
         "parameters": [
           {
             "in": "body",
-            "name": "json",
-            "description": "The JSON format sent in the body to update a member must be",
-            "required": true,
+            "name": "member",
+            "description": "The member object sent in the body to update a member's data can take the following format",
+            "required": false,
             "schema": {
+              "type": "object",
               "properties": {
                 "name": {
                   "type": "string",
@@ -689,9 +714,26 @@
                   "description": "The member's baptism date",
                   "example": "1999-12-11"
                 },
+                "church_name": {
+                  "type": "string",
+                  "description": "The name of the church the member belongs to",
+                  "example": "Igreja Batista do Brasil"
+                }
+              },
+              "required": ["church_name"]
+            }
+          },
+          {
+            "in": "body",
+            "name": "address",
+            "description": "The address object sent in the body to update a member's address data can take the following format",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
                 "street": {
                   "type": "string",
-                  "description": "The place where the member lives. Example: street, square, avenue...",
+                  "description": "The place where the church is located. Example: street, square, avenue...",
                   "example": "Rua Laranjeiras"
                 },
                 "number": {
@@ -700,29 +742,38 @@
                 },
                 "neighborhood": {
                   "type": "string",
-                  "description": "The area where the member lives",
+                  "description": "The area where the church is located",
                   "example": "Centro"
                 },
                 "zip_code": {
                   "type": "string",
-                  "description": "The zip code of the area where the member lives",
+                  "description": "The zip code of the area where the church is located.",
                   "example": "49130000"
                 },
                 "complement": {
                   "type": "string",
-                  "description": "Information that complements the member's address",
+                  "description": "Information that complements the church's location",
                   "example": "Ao lado da rodoviária"
                 },
                 "city": {
                   "type": "string",
-                  "description": "The city where the member lives",
+                  "description": "The city where the church is located",
                   "example": "Riachuelo"
                 },
                 "state": {
                   "type": "string",
-                  "description": "The state where the member lives",
+                  "description": "The state where the church is located",
                   "example": "Sergipe"
-                },
+                }
+              }
+            }
+          },
+          {
+            "in": "body",
+            "description": "It is necessary to send in the body the name of the church that the member belongs to",
+            "required": true,
+            "schema": {
+              "properties": {
                 "church_name": {
                   "type": "string",
                   "description": "The name of the church the member belongs to",

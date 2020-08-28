@@ -3,8 +3,9 @@ const { Router } = require("express");
 const churchCreationValidation = require("../../../utils/validation/Church/churchCreationValidation");
 const churchUpdateValidation = require("../../../utils/validation/Church/churchUpdateValidation");
 const cnpjParameterValidation = require("../../../utils/validation/Church/cnpjParameterValidation");
-
 const validate = require("../../../utils/validation/validate");
+
+const authentication = require("../../middleware/authentication");
 
 const ChurchController = require("./ChurchController");
 
@@ -17,6 +18,8 @@ const churchRouter = () => {
     validate,
     ChurchController.store
   );
+
+  routes.use(authentication);
 
   routes.get(
     "/church/:cnpj",

@@ -35,7 +35,6 @@ describe("Church model", () => {
         ...user,
       });
 
-    //console.log(response);
     expect(response.status).toBe(200);
     done();
   });
@@ -148,6 +147,7 @@ describe("Church model", () => {
 
     const user = await factory.create("User", {
       username: "julia23",
+      permission: "super",
     });
     const church = await factory.create("Church", {
       cnpj: "39477955000170",
@@ -155,9 +155,14 @@ describe("Church model", () => {
       user_id: user.id,
     });
 
-    const response = await request(app).get(`/church/${church.get().cnpj}`);
+    const token = user.generateToken();
+
+    const response = await request(app)
+      .get(`/church/${church.get().cnpj}`)
+      .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(200);
+
     done();
   });
 
@@ -166,16 +171,23 @@ describe("Church model", () => {
 
     const user = await factory.create("User", {
       username: "paulo_silva",
+      permission: "super",
     });
 
-    const church = await factory.create("Church", {
+    await factory.create("Church", {
       cnpj: "33173763000193",
       address_id: address.id,
       user_id: user.id,
     });
 
-    const response = await request(app).get("/church/3947795500023");
+    const token = user.generateToken();
+
+    const response = await request(app)
+      .get("/church/3947795500023")
+      .set("Authorization", `Bearer ${token}`);
+
     expect(response.status).toBe(400);
+
     done();
   });
 
@@ -184,6 +196,7 @@ describe("Church model", () => {
 
     const user = await factory.create("User", {
       username: "carlaoliver",
+      permission: "super",
     });
 
     const church = await factory.create("Church", {
@@ -192,13 +205,25 @@ describe("Church model", () => {
       user_id: user.id,
     });
 
-    const response = await request(app).get(`/church/${church.get().cnpj}`);
+    const token = user.generateToken();
+
+    const response = await request(app)
+      .get(`/church/${church.get().cnpj}`)
+      .set("Authorization", `Bearer ${token}`);
 
     expect(response.body.Address.address).toBe(address.get().address);
+
     done();
   });
 
   it("should update a church's information", async (done) => {
+    const user_admin = await factory.create("User", {
+      username: "exemplo32",
+      permission: "admin",
+    });
+
+    const token = user_admin.generateToken();
+
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
@@ -211,18 +236,26 @@ describe("Church model", () => {
       user_id: user.id,
     });
 
+    const address2 = await factory.create("Address");
+
+    await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address2.id,
+      user_id: user_admin.id,
+    });
+
+    church.name = "Igreja Batista do Centenário";
+    church.save();
+
+    address.address = "Avenida Marechal Rondon";
+    address.save();
+
     const response = await request(app)
       .put(`/church/${church.get().cnpj}`)
+      .set("Authorization", `Bearer ${token}`)
       .send({
-        name: "Igreja Batista do Centenário",
-        cnpj: church.cnpj,
-        creation_date: church.creation_date,
-        email: "igreja@hotmail.com",
-        street: address.street,
-        zip_code: "49130000",
-        complement: address.complement,
-        city: "Riachuelo",
-        state: address.state,
+        church: church.get(),
+        address: address.get(),
       });
 
     expect(response.status).toBe(200);
@@ -230,6 +263,13 @@ describe("Church model", () => {
   });
 
   it("shouldn't update a church if the fields are empty strings", async (done) => {
+    const user_admin = await factory.create("User", {
+      username: "exemplo32",
+      permission: "admin",
+    });
+
+    const token = user_admin.generateToken();
+
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
@@ -242,18 +282,26 @@ describe("Church model", () => {
       user_id: user.id,
     });
 
+    const address2 = await factory.create("Address");
+
+    await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address2.id,
+      user_id: user_admin.id,
+    });
+
+    church.name = "";
+    church.save();
+
+    address.address = "     ";
+    address.save();
+
     const response = await request(app)
       .put(`/church/${church.get().cnpj}`)
+      .set("Authorization", `Bearer ${token}`)
       .send({
-        name: "",
-        cnpj: church.cnpj,
-        creation_date: church.creation_date,
-        email: "igreja@hotmail.com",
-        street: address.street,
-        zip_code: "49130000",
-        complement: address.complement,
-        city: "     ",
-        state: address.state,
+        church: church.get(),
+        address: address.get(),
       });
 
     expect(response.status).toBe(400);
@@ -261,6 +309,13 @@ describe("Church model", () => {
   });
 
   it("shouldn't update a church that was not found", async (done) => {
+    const user_admin = await factory.create("User", {
+      username: "exemplo32",
+      permission: "admin",
+    });
+
+    const token = user_admin.generateToken();
+
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
@@ -273,18 +328,21 @@ describe("Church model", () => {
       user_id: user.id,
     });
 
-    const response = await request(app).put("/church/98126310000151").send({
-      name: "Igreja Batista do Centenário",
-      cnpj: church.cnpj,
-      creation_date: church.creation_date,
-      street: "Rua Laranjeiras",
-      number: "12345",
-      neighborhood: "Centro",
-      zip_code: "49130000",
-      complement: address.complement,
-      city: "Riachuelo",
-      state: "Sergipe",
+    const address2 = await factory.create("Address");
+
+    await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address2.id,
+      user_id: user_admin.id,
     });
+
+    const response = await request(app)
+      .put("/church/98126310000151")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        church: church.get(),
+        address: address.get(),
+      });
 
     expect(response.status).toBe(404);
 
@@ -292,6 +350,13 @@ describe("Church model", () => {
   });
 
   it("shouldn't update a church if the church's CNPJ is invalid", async (done) => {
+    const user_admin = await factory.create("User", {
+      username: "exemplo32",
+      permission: "admin",
+    });
+
+    const token = user_admin.generateToken();
+
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
@@ -304,24 +369,34 @@ describe("Church model", () => {
       user_id: user.id,
     });
 
-    const response = await request(app).put("/church/305016460001").send({
-      name: "Igreja Batista do Centenário",
-      cnpj: church.cnpj,
-      creation_date: church.creation_date,
-      street: address.street,
-      number: "1234",
-      neighborhood: "Centro",
-      zip_code: "49130000",
-      complement: address.complement,
-      city: "Riachuelo",
-      state: address.state,
+    const address2 = await factory.create("Address");
+
+    await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address2.id,
+      user_id: user_admin.id,
     });
+
+    const response = await request(app)
+      .put("/church/305016460001")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        church: church.get(),
+        address: address.get(),
+      });
 
     expect(response.status).toBe(400);
     done();
   });
 
   it("should delete a church", async (done) => {
+    const user_admin = await factory.create("User", {
+      username: "exemplo32",
+      permission: "admin",
+    });
+
+    const token = user_admin.generateToken();
+
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
@@ -334,13 +409,30 @@ describe("Church model", () => {
       user_id: user.id,
     });
 
-    const response = await request(app).delete(`/church/${church.get().cnpj}`);
+    const address2 = await factory.create("Address");
+
+    await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address2.id,
+      user_id: user_admin.id,
+    });
+
+    const response = await request(app)
+      .delete(`/church/${church.get().cnpj}`)
+      .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(200);
     done();
   });
 
   it("shouldn't delete a church if the CNPJ is invalid", async (done) => {
+    const user_admin = await factory.create("User", {
+      username: "exemplo32",
+      permission: "admin",
+    });
+
+    const token = user_admin.generateToken();
+
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
@@ -353,7 +445,17 @@ describe("Church model", () => {
       user_id: user.id,
     });
 
-    const response = await request(app).delete("/church/394065000100");
+    const address2 = await factory.create("Address");
+
+    await factory.create("Member", {
+      church_cnpj: church.cnpj,
+      address_id: address2.id,
+      user_id: user_admin.id,
+    });
+
+    const response = await request(app)
+      .delete("/church/394065000100")
+      .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(400);
     done();

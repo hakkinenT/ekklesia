@@ -26,6 +26,7 @@ class MemberController {
           id,
           church_cnpj: cnpj,
         },
+        include: ["Address"],
       });
 
       if (!member) {

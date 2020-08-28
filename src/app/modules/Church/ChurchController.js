@@ -1,10 +1,17 @@
-const { Church, Address, User } = require("../../models");
+const { Church, Address, User, Member } = require("../../models");
 const models = require("../../models/index");
+const checkUserPermission = require("../../../utils/validation/checkUserPermission");
 
 class ChurchController {
   async show(req, res) {
     try {
       const { cnpj } = req.params;
+
+      const userHasPermission = await checkUserPermission(req, cnpj);
+
+      if (!userHasPermission) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
 
       const church = await Church.findOne({
         where: { cnpj },
@@ -17,7 +24,7 @@ class ChurchController {
 
       return res.status(200).json(church);
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
@@ -49,106 +56,94 @@ class ChurchController {
           .json({ message: "This church is already registered" });
       }
 
-      const createdChurch = await models.sequelize.transaction(
-        async (transaction) => {
-          const createdAddress = await Address.create(
-            {
-              street,
-              number,
-              neighborhood,
-              zip_code,
-              complement,
-              city,
-              state,
-            },
-            { transaction }
-          );
+      const church = await models.sequelize.transaction(async (transaction) => {
+        const address = await Address.create(
+          {
+            street,
+            number,
+            neighborhood,
+            zip_code,
+            complement,
+            city,
+            state,
+          },
+          { transaction }
+        );
 
-          const user = await User.create(
-            {
-              username,
-              password,
-              permission: "super",
-            },
-            { transaction }
-          );
+        const user = await User.create(
+          {
+            username,
+            password,
+            permission: "super",
+          },
+          { transaction }
+        );
 
-          const church = await Church.create(
-            {
-              name,
-              cnpj,
-              email,
-              creation_date,
-              address_id: createdAddress.id,
-              user_id: user.id,
-            },
-            { transaction }
-          );
+        const createChurch = await Church.create(
+          {
+            name,
+            cnpj,
+            email,
+            creation_date,
+            address_id: address.id,
+            user_id: user.id,
+          },
+          { transaction }
+        );
 
-          return church;
-        }
-      );
+        return createChurch;
+      });
 
-      return res.status(200).json(createdChurch);
+      return res.status(200).json(church);
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
   async update(req, res) {
     try {
-      const {
-        name,
-        cnpj,
-        email,
-        creation_date,
-        street,
-        number,
-        neighborhood,
-        zip_code,
-        complement,
-        city,
-        state,
-      } = req.body;
+      const { church, address } = req.body;
 
-      const church = await Church.findOne({
-        where: { cnpj: req.params.cnpj },
+      const { cnpj } = req.params;
+
+      const foundChurch = await Church.findOne({
+        where: { cnpj },
       });
 
-      if (!church) {
+      if (!foundChurch) {
         return res.status(404).json({ message: "The church was not found" });
       }
 
+      const userHasPermission = await checkUserPermission(req, cnpj);
+
+      if (!userHasPermission) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
+
+      const { address_id } = foundChurch;
+
       const updatedChurch = await models.sequelize.transaction(
         async (transaction) => {
-          const churchUpdate = await church.update(
-            { name, cnpj, email, creation_date },
-            { transaction }
-          );
+          let updateChurch = null;
 
-          await Address.update(
-            {
-              street,
-              number,
-              neighborhood,
-              zip_code,
-              complement,
-              city,
-              state,
-            },
-            {
-              where: { id: church.address_id },
+          if (address) {
+            await Address.update(address, {
+              where: { id: address_id },
               transaction,
-            }
-          );
+            });
+          }
 
-          return churchUpdate;
+          if (church) {
+            updateChurch = await foundChurch.update(church, { transaction });
+          }
+
+          return updateChurch;
         }
       );
 
       return res.status(200).json(updatedChurch);
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
@@ -162,12 +157,20 @@ class ChurchController {
         return res.status(404).json({ message: "The church was not found" });
       }
 
+      const userHasPermission = await checkUserPermission(req, cnpj);
+
+      if (!userHasPermission) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
+
       await models.sequelize.transaction(async (transaction) => {
         await church.destroy({ transaction });
+
         await Address.destroy({
           where: { id: church.address_id },
           transaction,
         });
+
         await User.destroy({
           where: { id: church.user_id },
           transaction,
@@ -178,7 +181,7 @@ class ChurchController {
         .status(200)
         .json({ message: "The church was successfully deleted!" });
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 }

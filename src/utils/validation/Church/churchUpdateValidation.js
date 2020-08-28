@@ -13,13 +13,13 @@ const validateString = require("../validateString");
 const churchUpdateValidation = () => {
   return checkSchema({
     cnpj: {
-      in: ["params", "body"],
+      in: ["params"],
       custom: {
         options: (value) => validateCNPJ(value),
       },
       errorMessage: "CNPJ is invalid",
     },
-    name: {
+    "church.name": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -27,7 +27,15 @@ const churchUpdateValidation = () => {
       optional: true,
       errorMessage: "The name must be a string",
     },
-    email: {
+    "church.cnpj": {
+      in: ["body"],
+      custom: {
+        options: (value) => validateCNPJ(value),
+      },
+      optional: true,
+      errorMessage: "CNPJ is invalid",
+    },
+    "church.email": {
       isEmail: true,
       custom: {
         options: (value) => validateString(value),
@@ -35,13 +43,13 @@ const churchUpdateValidation = () => {
       optional: true,
       errorMessage: "The email has an invalid format",
     },
-    creation_date: {
+    "church.creation_date": {
       custom: {
         options: (value) => validateString(value),
       },
       optional: true,
     },
-    street: {
+    "address.street": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -49,7 +57,7 @@ const churchUpdateValidation = () => {
       optional: true,
       errorMessage: "The address must be a string",
     },
-    number: {
+    "address.number": {
       isAlphanumeric: true,
       custom: {
         options: (value) => validateString(value),
@@ -57,7 +65,7 @@ const churchUpdateValidation = () => {
       optional: true,
       errorMessage: "The number contains invalid characters",
     },
-    neighborhood: {
+    "address.neighborhood": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -65,7 +73,7 @@ const churchUpdateValidation = () => {
       optional: true,
       errorMessage: "The neighborhood must be a string",
     },
-    zip_code: {
+    "address.zip_code": {
       isNumeric: true,
       custom: {
         options: (value) => validateString(value),
@@ -75,12 +83,12 @@ const churchUpdateValidation = () => {
       errorMessage: "CEP must contain only numbers",
     },
 
-    complement: {
+    "address.complement": {
       isString: true,
       optional: true,
       errorMessage: "The complement must be a string",
     },
-    city: {
+    "address.city": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -89,7 +97,7 @@ const churchUpdateValidation = () => {
       errorMessage: "The city must be a string",
     },
 
-    state: {
+    "address.state": {
       isString: true,
       custom: {
         options: (value) => validateString(value),

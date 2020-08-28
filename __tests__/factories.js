@@ -6,7 +6,7 @@ factory.define("Church", Church, {
   name: faker.company.companyName,
   cnpj: "10803785000194",
   email: faker.internet.email,
-  creation_date: faker.date.past,
+  creation_date: "1986-08-09",
 });
 
 factory.define("Address", Address, {
