@@ -28,21 +28,21 @@ const memberRouter = () => {
   );
 
   routes.get(
-    "/member/:id",
+    "/member/:cpf",
     churchNameValidation(),
     validate,
     MemberController.show
   );
 
   routes.put(
-    "/member/:id",
+    "/member/:cpf",
     memberUpdateValidation(),
     validate,
     MemberController.update
   );
 
   routes.delete(
-    "/member/:id",
+    "/member/:cpf",
     churchNameValidation(),
     validate,
     MemberController.destroy

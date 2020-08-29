@@ -2,6 +2,7 @@ const request = require("supertest");
 
 const app = require("../../../src/app");
 const factory = require("../../factories");
+const { cpf } = require("cpf-cnpj-validator");
 
 describe("Church model", () => {
   it("should register a church", async (done) => {
@@ -239,6 +240,7 @@ describe("Church model", () => {
     const address2 = await factory.create("Address");
 
     await factory.create("Member", {
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address2.id,
       user_id: user_admin.id,
@@ -285,6 +287,7 @@ describe("Church model", () => {
     const address2 = await factory.create("Address");
 
     await factory.create("Member", {
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address2.id,
       user_id: user_admin.id,
@@ -331,6 +334,7 @@ describe("Church model", () => {
     const address2 = await factory.create("Address");
 
     await factory.create("Member", {
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address2.id,
       user_id: user_admin.id,
@@ -372,6 +376,7 @@ describe("Church model", () => {
     const address2 = await factory.create("Address");
 
     await factory.create("Member", {
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address2.id,
       user_id: user_admin.id,
@@ -412,6 +417,7 @@ describe("Church model", () => {
     const address2 = await factory.create("Address");
 
     await factory.create("Member", {
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address2.id,
       user_id: user_admin.id,
@@ -448,6 +454,7 @@ describe("Church model", () => {
     const address2 = await factory.create("Address");
 
     await factory.create("Member", {
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address2.id,
       user_id: user_admin.id,

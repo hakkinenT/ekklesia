@@ -33,6 +33,7 @@ describe("Member model", () => {
 
     const member = {
       name: "Augusto da Silva",
+      cpf: "86191821026",
       genre: "Masculino",
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
@@ -91,6 +92,7 @@ describe("Member model", () => {
 
     const member = {
       name: "Augusto da Silva",
+      cpf: "47110312003",
       genre: "Masculino",
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
@@ -144,6 +146,7 @@ describe("Member model", () => {
 
     const member = {
       name: "Augusto da Silva",
+      cpf: "09876789098", //cpf invalido
       genre: "         ",
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
@@ -196,6 +199,7 @@ describe("Member model", () => {
 
     const member = {
       name: "Augusto da Silva",
+      cpf: "18064553075",
       genre: "Masculino",
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
@@ -238,12 +242,14 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     await factory.create("Member", {
+      cpf: "79639154083",
       church_cnpj: church.cnpj,
       address_id: address1.id,
     });
 
     const address2 = await factory.create("Address");
     await factory.create("Member", {
+      cpf: "33693974047",
       church_cnpj: church.cnpj,
       address_id: address2.id,
     });
@@ -285,12 +291,14 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     await factory.create("Member", {
+      cpf: "66504964050",
       church_cnpj: church.cnpj,
       address_id: address1.id,
     });
 
     const address2 = await factory.create("Address");
     await factory.create("Member", {
+      cpf: "55628623016",
       church_cnpj: church.cnpj,
       address_id: address2.id,
     });
@@ -307,7 +315,7 @@ describe("Member model", () => {
     done();
   });
 
-  it("should get a member by ID", async (done) => {
+  it("should get a member by CPF", async (done) => {
     const address_church = await factory.create("Address");
 
     const user_church = await factory.create("User", {
@@ -326,16 +334,21 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     const member = await factory.create("Member", {
+      cpf: "67082000073",
       church_cnpj: church.cnpj,
       address_id: address1.id,
     });
 
+    console.log(member.get().cpf);
+
     const response = await request(app)
-      .get(`/member/${member.get().id}`)
+      .get(`/member/${member.get().cpf}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         church_name: church.name,
       });
+
+    //console.log(response);
 
     expect(response.status).toBe(200);
     done();
@@ -366,12 +379,13 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     const member = await factory.create("Member", {
+      cpf: "04803499080",
       church_cnpj: church.cnpj,
       address_id: address1.id,
     });
 
     const response = await request(app)
-      .get(`/member/${member.get().id}`)
+      .get(`/member/${member.get().cpf}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         church_name: church.name,
@@ -404,6 +418,7 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     const member1 = await factory.create("Member", {
+      cpf: "02923344006",
       church_cnpj: church.cnpj,
       address_id: address1.id,
       user_id: user.id,
@@ -413,12 +428,13 @@ describe("Member model", () => {
 
     const address2 = await factory.create("Address");
     const member = await factory.create("Member", {
+      cpf: "98093424032",
       church_cnpj: church.cnpj,
       address_id: address2.id,
     });
 
     const response = await request(app)
-      .delete(`/member/${member.get().id}`)
+      .delete(`/member/${member.get().cpf}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         church_name: church.name,
@@ -452,6 +468,7 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     const member1 = await factory.create("Member", {
+      cpf: "83436620084",
       church_cnpj: church.cnpj,
       address_id: address1.id,
       user_id: user.id,
@@ -461,12 +478,13 @@ describe("Member model", () => {
 
     const address2 = await factory.create("Address");
     const member = await factory.create("Member", {
+      cpf: "50313486077",
       church_cnpj: church.cnpj,
       address_id: address2.id,
     });
 
     const response = await request(app)
-      .delete(`/member/${member.get().id}`)
+      .delete(`/member/${member.get().cpf}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         church_name: church.name,
@@ -500,6 +518,7 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     await factory.create("Member", {
+      cpf: "88811290007",
       church_cnpj: church.cnpj,
       address_id: address1.id,
       user_id: user.id,
@@ -509,6 +528,7 @@ describe("Member model", () => {
 
     const address = await factory.create("Address");
     const member = await factory.create("Member", {
+      cpf: "09200279031",
       church_cnpj: church.cnpj,
       address_id: address.id,
     });
@@ -521,7 +541,7 @@ describe("Member model", () => {
     address.save();
 
     const response = await request(app)
-      .put(`/member/${member.get().id}`)
+      .put(`/member/${member.get().cpf}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         member: member.get(),
@@ -557,6 +577,7 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     const member1 = await factory.create("Member", {
+      cpf: "55934704052",
       church_cnpj: church.cnpj,
       address_id: address1.id,
       user_id: user.id,
@@ -566,12 +587,13 @@ describe("Member model", () => {
 
     const address2 = await factory.create("Address");
     const member = await factory.create("Member", {
+      cpf: "80066525039",
       church_cnpj: church.cnpj,
       address_id: address2.id,
     });
 
     const response = await request(app)
-      .put(`/member/${member.get().id}`)
+      .put(`/member/${member.get().cpf}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         member: member.get(),
@@ -607,6 +629,7 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     const member1 = await factory.create("Member", {
+      cpf: "24890508007",
       church_cnpj: church.cnpj,
       address_id: address1.id,
       user_id: user.id,
@@ -616,6 +639,7 @@ describe("Member model", () => {
 
     const address2 = await factory.create("Address");
     const member = await factory.create("Member", {
+      cpf: "13143540001",
       church_cnpj: church.cnpj,
       address_id: address2.id,
     });
@@ -624,7 +648,7 @@ describe("Member model", () => {
     await member.save();
 
     const response = await request(app)
-      .put(`/member/${member.get().id}`)
+      .put(`/member/${member.get().cpf}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         member: member.get(),

@@ -7,7 +7,7 @@
  */
 
 const { checkSchema } = require("express-validator");
-const validateCNPJ = require("./validate_CPF_CNPJ");
+const { validateCNPJ } = require("../validate_CPF_CNPJ");
 const validateString = require("../validateString");
 
 const churchCreationValidation = () => {

@@ -9,12 +9,12 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      member_id: {
-        type: Sequelize.INTEGER,
+      member_cpf: {
+        type: Sequelize.STRING,
         allowNull: false,
         references: {
           model: "Members",
-          key: "id",
+          key: "cpf",
         },
       },
       group_id: {

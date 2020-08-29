@@ -8,7 +8,7 @@
 
 const { checkSchema } = require("express-validator");
 const validateString = require("../validateString");
-const validateCPF = require("./validate_CPF_CNPJ");
+const { validateCPF } = require("../validate_CPF_CNPJ");
 
 const memberCreationValidation = () => {
   return checkSchema({

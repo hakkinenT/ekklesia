@@ -16,6 +16,8 @@ const validateCPF = (CPF) => {
   if (!cpfIsValid) {
     throw new Error("CPF is invalid");
   }
+
+  return cpfIsValid;
 };
 
 module.exports = { validateCNPJ, validateCPF };

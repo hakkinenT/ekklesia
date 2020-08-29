@@ -3,6 +3,7 @@ const request = require("supertest");
 const app = require("../../../src/app");
 
 const factory = require("../../factories");
+const { cpf } = require("cpf-cnpj-validator");
 
 describe("Login", () => {
   it("should authenticate a church with valid credentials", async (done) => {
@@ -118,6 +119,7 @@ describe("Login", () => {
     const address_member = await factory.create("Address");
 
     const member = await factory.create("Member", {
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address_member.id,
       user_id: user.id,
@@ -152,6 +154,7 @@ describe("Login", () => {
     });
     const address_member = await factory.create("Address");
     const member = await factory.create("Member", {
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address_member.id,
       user_id: user.id,
@@ -186,6 +189,7 @@ describe("Login", () => {
     });
     const address_member = await factory.create("Address");
     const member = await factory.create("Member", {
+      cpf: cpf.generate(),
       email: "email_member@email.com",
       church_cnpj: church.cnpj,
       address_id: address_member.id,
@@ -221,6 +225,7 @@ describe("Login", () => {
     });
     const address_member = await factory.create("Address");
     const member = await factory.create("Member", {
+      cpf: "82618251083",
       email: "email@member.com",
       church_cnpj: church.cnpj,
       address_id: address_member.id,

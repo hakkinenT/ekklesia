@@ -26,6 +26,7 @@ factory.define("User", User, {
 
 factory.define("Member", Member, {
   name: faker.name.firstName,
+  cpf: "86191821026",
   genre: "Masculino",
   date_of_birth: "1990-10-02",
   email: faker.internet.email,

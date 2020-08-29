@@ -8,7 +8,7 @@
  */
 
 const { checkSchema } = require("express-validator");
-const validateCNPJ = require("./validateCNPJ");
+const { validateCNPJ } = require("../validate_CPF_CNPJ");
 
 const cnpjParameterValidation = () => {
   return checkSchema({

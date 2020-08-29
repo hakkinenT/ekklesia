@@ -8,11 +8,11 @@
 
 const { checkSchema } = require("express-validator");
 const validateString = require("../validateString");
-const validateCPF = require("./validate_CPF_CNPJ");
+const { validateCPF } = require("../validate_CPF_CNPJ");
 
 const memberUpdateValidation = () => {
   return checkSchema({
-    "*.name": {
+    "member.name": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -20,13 +20,13 @@ const memberUpdateValidation = () => {
       optional: true,
       errorMessage: "The name must be a string",
     },
-    "*.cpf": {
+    "member.cpf": {
       custom: {
         options: (value) => validateCPF(value),
       },
       errorMessage: "CPF is invalid",
     },
-    "*.genre": {
+    "member.genre": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -34,13 +34,13 @@ const memberUpdateValidation = () => {
       optional: true,
       errorMessage: "The genre must be a string",
     },
-    "*.date_of_birth": {
+    "member.date_of_birth": {
       custom: {
         options: (value) => validateString(value),
       },
       optional: true,
     },
-    "*.email": {
+    "member.email": {
       isEmail: true,
       custom: {
         options: (value) => validateString(value),
@@ -48,7 +48,7 @@ const memberUpdateValidation = () => {
       optional: true,
       errorMessage: "The email has an invalid format",
     },
-    "*.whatsapp": {
+    "member.whatsapp": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -57,7 +57,7 @@ const memberUpdateValidation = () => {
       isLength: { options: { min: 10, max: 11 } },
       errorMessage: "The whatsapp must be a string",
     },
-    "*.profession": {
+    "member.profession": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -65,19 +65,19 @@ const memberUpdateValidation = () => {
       optional: true,
       errorMessage: "The profession must be a string",
     },
-    "*.conversion_date": {
+    "member.conversion_date": {
       custom: {
         options: (value) => validateString(value),
       },
       optional: true,
     },
-    "*.baptism_date": {
+    "member.baptism_date": {
       custom: {
         options: (value) => validateString(value),
       },
       optional: true,
     },
-    "*.street": {
+    "address.street": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -85,7 +85,7 @@ const memberUpdateValidation = () => {
       optional: true,
       errorMessage: "The address must be a string",
     },
-    "*.number": {
+    "address.number": {
       isAlphanumeric: true,
       custom: {
         options: (value) => validateString(value),
@@ -93,7 +93,7 @@ const memberUpdateValidation = () => {
       optional: true,
       errorMessage: "The number contains invalid characters",
     },
-    "*.neighborhood": {
+    "address.neighborhood": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -101,7 +101,7 @@ const memberUpdateValidation = () => {
       optional: true,
       errorMessage: "The neighborhood must be a string",
     },
-    "*.zip_code": {
+    "address.zip_code": {
       isNumeric: true,
       custom: {
         options: (value) => validateString(value),
@@ -111,12 +111,12 @@ const memberUpdateValidation = () => {
       errorMessage: "CEP must contain only numbers",
     },
 
-    "*.complement": {
+    "address.complement": {
       isString: true,
       optional: true,
       errorMessage: "The complement must be a string",
     },
-    "*.city": {
+    "address.city": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -124,7 +124,7 @@ const memberUpdateValidation = () => {
       optional: true,
       errorMessage: "The city must be a string",
     },
-    "*.state": {
+    "address.state": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
