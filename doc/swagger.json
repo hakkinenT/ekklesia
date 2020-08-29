@@ -235,7 +235,7 @@
             "name": "cnpj",
             "description": "The CNPJ of the church to be searched",
             "required": true,
-            "type": "integer"
+            "type": "string"
           }
         ],
         "responses": {
@@ -271,7 +271,7 @@
             "name": "cnpj",
             "description": "The CNPJ of the church to be updated",
             "required": true,
-            "type": "integer"
+            "type": "string"
           },
           {
             "in": "body",
@@ -385,7 +385,7 @@
             "name": "cnpj",
             "description": "The CNPJ of the church to be deleted",
             "required": true,
-            "type": "integer"
+            "type": "string"
           }
         ],
         "responses": {
@@ -430,6 +430,11 @@
                   "type": "string",
                   "description": "The member's name",
                   "example": "José Luis da Silva"
+                },
+                "cpf": {
+                  "type": "string",
+                  "description": "The member's CPF",
+                  "example": "88811290007"
                 },
                 "genre": {
                   "type": "string",
@@ -507,12 +512,13 @@
                 },
                 "church_name": {
                   "type": "string",
-                  "description": "The name of the church the member belongs to",
+                  "description": "It is necessary to send in the body the name of the church that the member belongs to",
                   "example": "Igreja Batista do Brasil"
                 }
               },
               "required": [
                 "name",
+                "cpf",
                 "genre",
                 "date_of_birth",
                 "email",
@@ -570,7 +576,7 @@
           {
             "in": "body",
             "name": "json",
-            "description": "The JSON format sent in the body to get all member must be",
+            "description": "It is necessary to send in the body the name of the church that the member belongs to",
             "required": true,
             "schema": {
               "properties": {
@@ -600,7 +606,7 @@
         }
       }
     },
-    "/member/id": {
+    "/member/cpf": {
       "get": {
         "tags": ["Member"],
         "summary": "Search for a member by ID",
@@ -613,15 +619,15 @@
         "parameters": [
           {
             "in": "path",
-            "name": "ID",
-            "description": "The ID of the member to be searched",
+            "name": "cpf",
+            "description": "The member's CPF",
             "required": true,
-            "type": "integer"
+            "type": "string"
           },
           {
             "in": "body",
             "name": "json",
-            "description": "The JSON format sent in the body to get a member must be",
+            "description": "It is necessary to send in the body the name of the church that the member belongs to",
             "required": true,
             "schema": {
               "properties": {
@@ -662,6 +668,13 @@
         ],
         "parameters": [
           {
+            "in": "path",
+            "name": "cpf",
+            "description": "The member's CPF",
+            "required": true,
+            "type": "string"
+          },
+          {
             "in": "body",
             "name": "member",
             "description": "The member object sent in the body to update a member's data can take the following format",
@@ -673,6 +686,11 @@
                   "type": "string",
                   "description": "The member's name",
                   "example": "José Luis da Silva"
+                },
+                "cpf": {
+                  "type": "string",
+                  "description": "The member's CPF",
+                  "example": "88811290007"
                 },
                 "genre": {
                   "type": "string",
@@ -814,15 +832,15 @@
         "parameters": [
           {
             "in": "path",
-            "name": "ID",
-            "description": "The ID of the member to be deleted",
+            "name": "cpf",
+            "description": "The member's CPF",
             "required": true,
-            "type": "integer"
+            "type": "string"
           },
           {
             "in": "body",
             "name": "json",
-            "description": "The JSON format sent in the body to delete a member must be",
+            "description": "It is necessary to send in the body the name of the church that the member belongs to",
             "required": true,
             "schema": {
               "properties": {
@@ -1216,6 +1234,7 @@
       "type": "object",
       "required": [
         "name",
+        "cpf",
         "genre",
         "date_of_birth",
         "email",
@@ -1238,6 +1257,11 @@
           "type": "string",
           "description": "The member's name",
           "example": "José Luis da Silva"
+        },
+        "cpf": {
+          "type": "string",
+          "description": "The member's CPF",
+          "example": "88811290007"
         },
         "genre": {
           "type": "string",
