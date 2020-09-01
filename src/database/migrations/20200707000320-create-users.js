@@ -18,8 +18,8 @@ module.exports = {
         allowNull: false,
       },
       permission: {
-        type: Sequelize.ENUM("super", "admin", "comum"),
-        defaultValue: "comum",
+        type: Sequelize.ENUM("super", "admin"),
+        defaultValue: "admin",
         allowNull: false,
       },
       createdAt: {

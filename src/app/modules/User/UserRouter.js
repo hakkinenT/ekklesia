@@ -20,7 +20,7 @@ const userRouter = () => {
 
   routes.get("/user/:id", UserController.show);
 
-  routes.get("/user", UserController.index);
+  routes.get("/users", UserController.index);
 
   routes.put(
     "/user/:id",

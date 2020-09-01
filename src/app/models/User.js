@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       username: DataTypes.STRING,
       password: DataTypes.STRING,
-      permission: DataTypes.ENUM("super", "admin", "comum"),
+      permission: DataTypes.ENUM("super", "admin"),
     },
     {
       hooks: {

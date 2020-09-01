@@ -8,7 +8,6 @@ class MemberController {
   async show(req, res) {
     try {
       const { cpf } = req.params;
-      console.log(cpf);
 
       const cnpj = await checkChurch(req);
 
