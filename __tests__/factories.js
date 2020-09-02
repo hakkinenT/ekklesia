@@ -20,7 +20,6 @@ factory.define("Address", Address, {
 });
 
 factory.define("User", User, {
-  username: faker.internet.userName(),
   password: "Th@l1234",
 });
 

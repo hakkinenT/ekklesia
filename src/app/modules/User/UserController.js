@@ -1,7 +1,7 @@
 const { User, Member } = require("../../models");
-const { Op } = require("sequelize");
 const checkUserPermission = require("../../../utils/validation/checkUserPermission");
 const checkChurch = require("../../../utils/validation/checkChurch");
+const createUsername = require("../../../utils/createUsername");
 const paginate = require("../../../utils/paginate");
 
 class UserController {
@@ -69,7 +69,7 @@ class UserController {
 
   async store(req, res) {
     try {
-      const { username, password, permission, cpf } = req.body;
+      const { password, permission, cpf } = req.body;
 
       const cnpj = await checkChurch(req);
 
@@ -97,6 +97,7 @@ class UserController {
           .json({ message: "That member already has a registered user" });
       }
 
+      const username = createUsername(member, "member");
       const user = await User.create({ username, password, permission });
 
       member.update({ userId: user.id });
