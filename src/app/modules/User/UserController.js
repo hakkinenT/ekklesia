@@ -32,7 +32,7 @@ class UserController {
 
       return res.status(200).json(user);
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
@@ -63,7 +63,7 @@ class UserController {
 
       return res.status(200).json(rows);
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
@@ -103,7 +103,7 @@ class UserController {
 
       return res.status(200).send(user);
     } catch (err) {
-      return res.status(400).send({ error: err.message });
+      return res.status(500).send({ error: err.message });
     }
   }
 
@@ -135,7 +135,7 @@ class UserController {
 
       return res.status(200).send(updatedUser);
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
@@ -167,7 +167,7 @@ class UserController {
         .status(200)
         .json({ message: "The user was successfully deleted!" });
     } catch (err) {
-      return res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 }
