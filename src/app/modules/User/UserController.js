@@ -1,4 +1,4 @@
-const { User } = require("../../models");
+const { User, Member } = require("../../models");
 const { Op } = require("sequelize");
 const checkUserPermission = require("../../../utils/validation/checkUserPermission");
 const checkChurch = require("../../../utils/validation/checkChurch");
@@ -7,19 +7,18 @@ const paginate = require("../../../utils/paginate");
 class UserController {
   async show(req, res) {
     try {
-      const userId = req.userId;
-      const userPermission = req.userPermission;
-
       const { id } = req.params;
 
-      const permissionIsCommon = userPermission === "comum";
+      const cnpj = await checkChurch(req);
 
-      if (permissionIsCommon) {
-        const idsAreEquals = userId == id;
+      if (!cnpj) {
+        return res.status(404).json({ message: "This church doesn't exists" });
+      }
 
-        if (!idsAreEquals) {
-          return res.status(401).json({ message: "Access denied" });
-        }
+      const userHasPermission = await checkUserPermission(req, cnpj);
+
+      if (!userHasPermission) {
+        return res.status(401).json({ message: "Access denied!" });
       }
 
       const user = await User.findOne({
@@ -41,17 +40,22 @@ class UserController {
     try {
       const { page = 1 } = req.query;
 
-      const userPermission = req.userPermission;
+      const cnpj = await checkChurch(req);
 
-      const permissionIsInvalid = userPermission === "comum";
+      if (!cnpj) {
+        return res.status(404).json({ message: "This church doesn't exists" });
+      }
 
-      if (permissionIsInvalid) {
-        return res.status(401).json({ message: "Access denied" });
+      const userHasPermission = await checkUserPermission(req, cnpj);
+
+      if (!userHasPermission) {
+        return res.status(401).json({ message: "Access denied!" });
       }
 
       const { count, rows } = await User.findAndCountAll({
-        where: { permission: { [Op.or]: ["admin", "comum"] } },
+        where: { permission: "admin" },
         attributes: ["id", "username", "permission"],
+        includes: ["Member"],
         ...paginate(page),
       });
 
@@ -65,7 +69,7 @@ class UserController {
 
   async store(req, res) {
     try {
-      const { username, password, permission } = req.body;
+      const { username, password, permission, cpf } = req.body;
 
       const cnpj = await checkChurch(req);
 
@@ -79,16 +83,23 @@ class UserController {
         return res.status(401).json({ message: "Access denied!" });
       }
 
-      const [user, userCreated] = await User.findOrCreate({
-        where: { username },
-        defaults: { password, permission },
-      });
+      const member = await Member.findOne({ where: { cpf } });
 
-      if (!userCreated) {
-        return res
-          .status(400)
-          .json({ message: "This username already exists" });
+      if (!member) {
+        return res.status(404).json({ message: "This member doesn't exists" });
       }
+
+      const memberHasUser = member.userId;
+
+      if (memberHasUser) {
+        return res
+          .status(403)
+          .json({ message: "That member already has a registered user" });
+      }
+
+      const user = await User.create({ username, password, permission });
+
+      member.update({ userId: user.id });
 
       return res.status(200).send(user);
     } catch (err) {

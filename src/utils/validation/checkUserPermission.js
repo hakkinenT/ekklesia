@@ -4,12 +4,6 @@ const checkUserPermission = async (req, cnpj) => {
   const { userId, userPermission } = req;
   let cnpjIsEqual = null;
 
-  const permissionIsInvalid = userPermission === "comum";
-
-  if (permissionIsInvalid) {
-    return false;
-  }
-
   const permissionIsSuper = userPermission === "super";
 
   if (permissionIsSuper) {
