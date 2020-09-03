@@ -30,7 +30,6 @@ describe("User module", () => {
     });
 
     const user = {
-      username: "tholhaol",
       password: "Th@l1802",
       permission: "admin",
     };
@@ -68,7 +67,6 @@ describe("User module", () => {
     });
 
     const user = {
-      username: "renataLima",
       password: "Tb@12e90",
       permission: "admin",
     };
@@ -105,7 +103,6 @@ describe("User module", () => {
     });
 
     const user = {
-      username: "roberto_doria",
       password: "Tb@23j90",
       permission: "admin",
     };
