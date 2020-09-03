@@ -91,7 +91,6 @@ class MemberController {
       } = req.body;
 
       const cnpj = await checkChurch(req);
-      console.log("entrei aqui");
 
       if (!cnpj) {
         return res.status(404).json({ message: "This church doesn't exists" });

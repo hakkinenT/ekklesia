@@ -97,10 +97,10 @@ class UserController {
           .json({ message: "That member already has a registered user" });
       }
 
-      const username = createUsername(member, "member");
+      let username = createUsername(member);
       const user = await User.create({ username, password, permission });
 
-      member.update({ userId: user.id });
+      member.update({ user_id: user.id });
 
       return res.status(200).send(user);
     } catch (err) {

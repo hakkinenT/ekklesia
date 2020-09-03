@@ -14,6 +14,7 @@ describe("Member model", () => {
     });
 
     const church = await factory.create("Church", {
+      name: "Igreja Batista da Lagoinha",
       cnpj: "32803833000187",
       address_id: address_church.id,
       user_id: user_church.id,
@@ -44,75 +45,14 @@ describe("Member model", () => {
     };
 
     const response = await request(app)
-      .post("/member")
+      .post(`/member?church_name=${church.get().name}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         ...member,
         ...address,
-        church_name: church.name,
       });
 
     expect(response.status).toBe(200);
-
-    done();
-  });
-
-  it("shouldn't register a member if the user who is registering does not have permission", async (done) => {
-    const user = await factory.create("User", {
-      username: "comum1",
-      password: "12345678",
-      permission: "comum",
-    });
-
-    const token = user.generateToken();
-
-    const address_church = await factory.create("Address");
-
-    const user_church = await factory.create("User", {
-      username: "church1",
-      password: "12345678",
-      permission: "super",
-    });
-
-    const church = await factory.create("Church", {
-      cnpj: "14739536000138",
-      address_id: address_church.id,
-      user_id: user_church.id,
-    });
-
-    const address = {
-      street: "Rua Guarani",
-      number: "1234",
-      neighborhood: "centro",
-      zip_code: "49130000",
-      complement: "do lado da prefeitura",
-      city: "riachuelo",
-      state: "sergipe",
-    };
-
-    const member = {
-      name: "Augusto da Silva",
-      cpf: "47110312003",
-      genre: "Masculino",
-      date_of_birth: "1990-10-02",
-      email: "augustosilva@hotmail.com",
-      whatsapp: "79999999999",
-      profession: "professor",
-      conversion_date: "1996-01-08",
-      baptism_date: "1997-01-20",
-    };
-
-    const response = await request(app)
-      .post("/member")
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        ...member,
-        ...address,
-
-        church_name: church.name,
-      });
-
-    expect(response.status).toBe(401);
 
     done();
   });
@@ -157,12 +97,11 @@ describe("Member model", () => {
     };
 
     const response = await request(app)
-      .post("/member")
+      .post(`/member?church_name=${church.get().name}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         ...member,
         ...address,
-        church_name: church.name,
       });
 
     expect(response.status).toBe(400);
@@ -210,12 +149,11 @@ describe("Member model", () => {
     };
 
     const response = await request(app)
-      .post("/member")
+      .post(`/member?church_name=Igreja Assembleia dos anjos`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         ...member,
         ...address,
-        church_name: "Igreja Universal do Reino de Deus",
       });
 
     expect(response.status).toBe(404);
@@ -255,62 +193,10 @@ describe("Member model", () => {
     });
 
     const response = await request(app)
-      .get("/members")
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        church_name: church.name,
-      });
+      .get(`/members?church_name=${church.get().name}`)
+      .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-
-    done();
-  });
-
-  it("shouldn't list all registered members if the user requesting the list does not have permission", async (done) => {
-    const user = await factory.create("User", {
-      username: "comum1",
-      password: "12345678",
-      permission: "comum",
-    });
-
-    const token = user.generateToken();
-
-    const address_church = await factory.create("Address");
-
-    const user_church = await factory.create("User", {
-      username: "church1",
-      password: "12345678",
-      permission: "super",
-    });
-
-    const church = await factory.create("Church", {
-      cnpj: "28492550000194",
-      address_id: address_church.id,
-      user_id: user_church.id,
-    });
-
-    const address1 = await factory.create("Address");
-    await factory.create("Member", {
-      cpf: "66504964050",
-      church_cnpj: church.cnpj,
-      address_id: address1.id,
-    });
-
-    const address2 = await factory.create("Address");
-    await factory.create("Member", {
-      cpf: "55628623016",
-      church_cnpj: church.cnpj,
-      address_id: address2.id,
-    });
-
-    const response = await request(app)
-      .get("/members")
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        church_name: church.name,
-      });
-
-    expect(response.status).toBe(401);
 
     done();
   });
@@ -342,7 +228,7 @@ describe("Member model", () => {
     console.log(member.get().cpf);
 
     const response = await request(app)
-      .get(`/member/${member.get().cpf}`)
+      .get(`/member/${member.get().cpf}?church_name=${church.get().name}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         church_name: church.name,
@@ -351,47 +237,6 @@ describe("Member model", () => {
     //console.log(response);
 
     expect(response.status).toBe(200);
-    done();
-  });
-
-  it("should get a member if the user requesting the information does not have permission", async (done) => {
-    const user = await factory.create("User", {
-      username: "comum1",
-      password: "12345678",
-      permission: "comum",
-    });
-
-    const token = user.generateToken();
-
-    const address_church = await factory.create("Address");
-
-    const user_church = await factory.create("User", {
-      username: "church1",
-      password: "12345678",
-      permission: "super",
-    });
-
-    const church = await factory.create("Church", {
-      cnpj: "57670712000135",
-      address_id: address_church.id,
-      user_id: user_church.id,
-    });
-
-    const address1 = await factory.create("Address");
-    const member = await factory.create("Member", {
-      cpf: "04803499080",
-      church_cnpj: church.cnpj,
-      address_id: address1.id,
-    });
-
-    const response = await request(app)
-      .get(`/member/${member.get().cpf}`)
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        church_name: church.name,
-      });
-
-    expect(response.status).toBe(401);
     done();
   });
 
@@ -434,63 +279,10 @@ describe("Member model", () => {
     });
 
     const response = await request(app)
-      .delete(`/member/${member.get().cpf}`)
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        church_name: church.name,
-      });
+      .delete(`/member/${member.get().cpf}?church_name=${church.get().name}`)
+      .set("Authorization", `Bearer ${token}`);
     //console.log(response);
     expect(response.status).toBe(200);
-
-    done();
-  });
-
-  it("should delete a member if the user requesting the exclusion does not have permission", async (done) => {
-    const address_church = await factory.create("Address");
-
-    const user_church = await factory.create("User", {
-      username: "church1",
-      password: "12345678",
-      permission: "super",
-    });
-
-    const church = await factory.create("Church", {
-      cnpj: "59999390000106",
-      address_id: address_church.id,
-      user_id: user_church.id,
-    });
-
-    const user = await factory.create("User", {
-      username: "admin1",
-      password: "12345678",
-      permission: "comum",
-    });
-
-    const address1 = await factory.create("Address");
-    const member1 = await factory.create("Member", {
-      cpf: "83436620084",
-      church_cnpj: church.cnpj,
-      address_id: address1.id,
-      user_id: user.id,
-    });
-
-    const token = user.generateToken();
-
-    const address2 = await factory.create("Address");
-    const member = await factory.create("Member", {
-      cpf: "50313486077",
-      church_cnpj: church.cnpj,
-      address_id: address2.id,
-    });
-
-    const response = await request(app)
-      .delete(`/member/${member.get().cpf}`)
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        church_name: church.name,
-      });
-
-    expect(response.status).toBe(401);
 
     done();
   });
@@ -541,67 +333,14 @@ describe("Member model", () => {
     address.save();
 
     const response = await request(app)
-      .put(`/member/${member.get().cpf}`)
+      .put(`/member/${member.get().cpf}?church_name=${church.get().name}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         member: member.get(),
         address: address.get(),
-        church_name: church.name,
       });
 
     expect(response.status).toBe(200);
-
-    done();
-  });
-
-  it("shouldn't update a member's information if the user requesting the update does not have permission", async (done) => {
-    const address_church = await factory.create("Address");
-
-    const user_church = await factory.create("User", {
-      username: "church1",
-      password: "12345678",
-      permission: "super",
-    });
-
-    const church = await factory.create("Church", {
-      cnpj: "98145194000118",
-      address_id: address_church.id,
-      user_id: user_church.id,
-    });
-
-    const user = await factory.create("User", {
-      username: "admin1",
-      password: "12345678",
-      permission: "comum",
-    });
-
-    const address1 = await factory.create("Address");
-    const member1 = await factory.create("Member", {
-      cpf: "55934704052",
-      church_cnpj: church.cnpj,
-      address_id: address1.id,
-      user_id: user.id,
-    });
-
-    const token = user.generateToken();
-
-    const address2 = await factory.create("Address");
-    const member = await factory.create("Member", {
-      cpf: "80066525039",
-      church_cnpj: church.cnpj,
-      address_id: address2.id,
-    });
-
-    const response = await request(app)
-      .put(`/member/${member.get().cpf}`)
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        member: member.get(),
-        address: address2.get(),
-        church_name: church.name,
-      });
-
-    expect(response.status).toBe(401);
 
     done();
   });
@@ -648,12 +387,11 @@ describe("Member model", () => {
     await member.save();
 
     const response = await request(app)
-      .put(`/member/${member.get().cpf}`)
+      .put(`/member/${member.get().cpf}?church_name=${church.get().name}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
         member: member.get(),
         address: address2.get(),
-        church_name: church.name,
       });
 
     expect(response.status).toBe(400);

@@ -12,6 +12,14 @@ const { validateCPF } = require("../validate_CPF_CNPJ");
 
 const memberUpdateValidation = () => {
   return checkSchema({
+    church_name: {
+      in: ["query"],
+      isString: true,
+      custom: {
+        options: (value) => validateString(value),
+      },
+      errorMessage: "The church_name must be a string",
+    },
     "member.name": {
       isString: true,
       custom: {
@@ -131,13 +139,6 @@ const memberUpdateValidation = () => {
       },
       optional: true,
       errorMessage: "The state must be a string",
-    },
-    church_name: {
-      isString: true,
-      custom: {
-        options: (value) => validateString(value),
-      },
-      errorMessage: "The church_name must be a string",
     },
   });
 };

@@ -1,5 +1,5 @@
-const createUsername = (object, type) => {
-  const { name } = object;
+const createUsername = (object, type = "member") => {
+  let { name } = object;
   let username;
 
   name = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");

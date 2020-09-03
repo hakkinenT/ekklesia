@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 describe("User password encryption", () => {
   it("should encrypt user password", async (done) => {
     const user = await factory.create("User", {
+      username: "igreja",
       permission: "super",
     });
 

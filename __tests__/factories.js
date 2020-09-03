@@ -21,6 +21,7 @@ factory.define("Address", Address, {
 
 factory.define("User", User, {
   password: "Th@l1234",
+  permission: "admin",
 });
 
 factory.define("Member", Member, {
