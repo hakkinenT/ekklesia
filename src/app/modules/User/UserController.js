@@ -69,6 +69,10 @@ class UserController {
 
   async store(req, res) {
     try {
+      /**
+       * O campo permission ainda é passado no campo da requisição mesmo ele tendo como default
+       * o valor admin. Isso, porque futuramente, será adicionado um novo tipo de permissão.
+       */
       const { password, permission, cpf } = req.body;
 
       const cnpj = await checkChurch(req);
@@ -102,7 +106,7 @@ class UserController {
 
       member.update({ user_id: user.id });
 
-      return res.status(200).send(user);
+      return res.status(201).send(user);
     } catch (err) {
       return res.status(500).send({ error: err.message });
     }

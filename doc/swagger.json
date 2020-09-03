@@ -863,13 +863,6 @@
             "required": true,
             "schema": {
               "properties": {
-                "username": {
-                  "type": "string",
-                  "minLength": "3",
-                  "maxLength": "30",
-                  "description": "The username of the church.",
-                  "example": "joao_carlos"
-                },
                 "password": {
                   "type": "string",
                   "minLength": "8",
@@ -880,18 +873,17 @@
                 },
                 "permission": {
                   "type": "string",
-                  "enum": ["admin", "comum"],
-                  "description": "The permission of the user. The default value is comum.",
+                  "description": "The permission of the user. The default value is admin.",
                   "example": "admin"
                 }
               },
-              "required": ["username", "password"]
+              "required": ["password"]
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success. A JSON object containing user information will be returned."
+          "201": {
+            "description": "User created successfully. A JSON object containing user information will be returned."
           },
           "400": {
             "description": "Bad Request. It can happen if some invalid request happens."
@@ -922,6 +914,15 @@
           }
         ],
         "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The number of page. Each page will return 10 items from the array",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
           {
             "in": "query",
             "name": "church_name",
@@ -1030,7 +1031,20 @@
             "description": "The JSON format sent in the body to update a user must be:",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/User"
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "minLength": "3",
+                  "maxLength": "30",
+                  "description": "The username of the church.",
+                  "example": "joao_carlos"
+                },
+                "permission": {
+                  "type": "string",
+                  "description": "The permission of the user. The default value is admin.",
+                  "example": "admin"
+                }
+              }
             }
           }
         ],
@@ -1206,8 +1220,8 @@
         },
         "permission": {
           "type": "string",
-          "description": "The permission of the user. The default value is comum",
-          "enum": ["super", "admin", "comum"],
+          "description": "The permission of the user. The default value is admin",
+          "enum": ["super", "admin"],
           "example": "super"
         }
       }

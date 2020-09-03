@@ -39,7 +39,7 @@ describe("User module", () => {
       .set("Authorization", `Bearer ${token}`)
       .send({ ...user, cpf: member.cpf });
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
 
     done();
   });
