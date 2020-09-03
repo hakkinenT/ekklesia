@@ -359,7 +359,7 @@ describe("User module", () => {
     done();
   });
 
-  it("should update the permission of a user", async (done) => {
+  it("should update a user", async (done) => {
     const userChurch = await factory.create("User", {
       username: "ibab",
       password: "Ibab$391",
@@ -389,12 +389,13 @@ describe("User module", () => {
       user_id: user.id,
     });
 
+    user.name = "mulher_maravilha";
+    user.save();
+
     const response = await request(app)
       .put(`/user/${user.get().id}?church_name=${church.get().name}`)
       .set("Authorization", `Bearer ${token}`)
-      .send({
-        username: "augusto_admin",
-      });
+      .send({ user: user.get() });
 
     console.log(response);
 
@@ -433,19 +434,20 @@ describe("User module", () => {
       user_id: user.id,
     });
 
+    user.name = "mulher_maravilha";
+    user.save();
+
     const response = await request(app)
       .put(`/user/300?church_name=${church.get().name}`)
       .set("Authorization", `Bearer ${token}`)
-      .send({
-        permission: "admin",
-      });
+      .send({ user: user.get() });
 
     expect(response.status).toBe(404);
 
     done();
   });
 
-  it("shouldn't update a user's permission if the permission is an empty string", async (done) => {
+  it("shouldn't update a user's if some information is an empty string", async (done) => {
     const userChurch = await factory.create("User", {
       username: "ibab",
       password: "Ibab$391",
@@ -475,12 +477,15 @@ describe("User module", () => {
       user_id: user.id,
     });
 
+    const user2 = {
+      username: " ",
+      permission: "admin",
+    };
+
     const response = await request(app)
       .put(`/user/${user.get().id}?church_name=${church.get().name}`)
       .set("Authorization", `Bearer ${token}`)
-      .send({
-        permission: "    ",
-      });
+      .send({ user: user2 });
 
     expect(response.status).toBe(400);
 

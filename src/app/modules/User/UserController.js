@@ -110,9 +110,11 @@ class UserController {
 
   async update(req, res) {
     try {
+      let updatedUser = null;
+
       const { id } = req.params;
 
-      const { username, permission } = req.body;
+      const { user } = req.body;
 
       const cnpj = await checkChurch(req);
 
@@ -126,13 +128,19 @@ class UserController {
         return res.status(401).json({ message: "Access denied!" });
       }
 
-      const user = await User.findOne({ where: { id } });
+      const foundUser = await User.findOne({ where: { id } });
 
-      if (!user) {
+      if (!foundUser) {
         return res.status(404).json({ message: "The user doesn't exists" });
       }
 
-      const updatedUser = await user.update({ username, permission });
+      if (!user) {
+        return res.status(400).json({
+          message: "It is necessary to inform some user data to update",
+        });
+      }
+
+      updatedUser = await foundUser.update(user);
 
       return res.status(200).send(updatedUser);
     } catch (err) {

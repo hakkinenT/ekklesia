@@ -11,6 +11,14 @@ const validateString = require("../validateString");
 
 const userCreationValidation = () => {
   return checkSchema({
+    church_name: {
+      in: ["query"],
+      isString: true,
+      custom: {
+        options: (value) => validateString(value),
+      },
+      errorMessage: "The church_name must be a string",
+    },
     username: {
       in: ["body"],
       isString: true,

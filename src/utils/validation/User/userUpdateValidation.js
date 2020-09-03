@@ -11,7 +11,15 @@ const validateString = require("../validateString");
 
 const userUpdateValidation = () => {
   return checkSchema({
-    username: {
+    church_name: {
+      in: ["query"],
+      isString: true,
+      custom: {
+        options: (value) => validateString(value),
+      },
+      errorMessage: "The church_name must be a string",
+    },
+    "user.username": {
       isString: true,
       custom: {
         options: (value) => validateString(value),
@@ -21,7 +29,7 @@ const userUpdateValidation = () => {
         "Username must be a string with a minimum length of 3 and a maximum length of 30",
       optional: true,
     },
-    permission: {
+    "user.permission": {
       in: ["body"],
       isString: true,
       custom: {
