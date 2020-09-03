@@ -420,6 +420,15 @@
         ],
         "parameters": [
           {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "in": "body",
             "name": "json",
             "description": "The JSON format sent in the body to register a member must be",
@@ -509,11 +518,6 @@
                   "type": "string",
                   "description": "The state where the member lives",
                   "example": "Sergipe"
-                },
-                "church_name": {
-                  "type": "string",
-                  "description": "It is necessary to send in the body the name of the church that the member belongs to",
-                  "example": "Igreja Batista do Brasil"
                 }
               },
               "required": [
@@ -528,8 +532,7 @@
                 "neighborhood",
                 "zip_code",
                 "city",
-                "state",
-                "church_name"
+                "state"
               ]
             }
           }
@@ -574,19 +577,12 @@
             }
           },
           {
-            "in": "body",
-            "name": "json",
-            "description": "It is necessary to send in the body the name of the church that the member belongs to",
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
             "required": true,
             "schema": {
-              "properties": {
-                "church_name": {
-                  "type": "string",
-                  "description": "The name of the church the member belongs to",
-                  "example": "Igreja Batista do Brasil"
-                }
-              },
-              "required": ["church_name"]
+              "type": "string"
             }
           }
         ],
@@ -625,19 +621,12 @@
             "type": "string"
           },
           {
-            "in": "body",
-            "name": "json",
-            "description": "It is necessary to send in the body the name of the church that the member belongs to",
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
             "required": true,
             "schema": {
-              "properties": {
-                "church_name": {
-                  "type": "string",
-                  "description": "The name of the church the member belongs to",
-                  "example": "Igreja Batista do Brasil"
-                }
-              },
-              "required": ["church_name"]
+              "type": "string"
             }
           }
         ],
@@ -673,6 +662,15 @@
             "description": "The member's CPF",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "in": "body",
@@ -731,14 +729,8 @@
                   "format": "date",
                   "description": "The member's baptism date",
                   "example": "1999-12-11"
-                },
-                "church_name": {
-                  "type": "string",
-                  "description": "The name of the church the member belongs to",
-                  "example": "Igreja Batista do Brasil"
                 }
-              },
-              "required": ["church_name"]
+              }
             }
           },
           {
@@ -785,21 +777,6 @@
                 }
               }
             }
-          },
-          {
-            "in": "body",
-            "description": "It is necessary to send in the body the name of the church that the member belongs to",
-            "required": true,
-            "schema": {
-              "properties": {
-                "church_name": {
-                  "type": "string",
-                  "description": "The name of the church the member belongs to",
-                  "example": "Igreja Batista do Brasil"
-                }
-              },
-              "required": ["church_name"]
-            }
           }
         ],
         "responses": {
@@ -838,19 +815,12 @@
             "type": "string"
           },
           {
-            "in": "body",
-            "name": "json",
-            "description": "It is necessary to send in the body the name of the church that the member belongs to",
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
             "required": true,
             "schema": {
-              "properties": {
-                "church_name": {
-                  "type": "string",
-                  "description": "The name of the church the member belongs to",
-                  "example": "Igreja Batista do Brasil"
-                }
-              },
-              "required": ["church_name"]
+              "type": "string"
             }
           }
         ],
@@ -870,13 +840,22 @@
         }
       }
     },
-    "user": {
+    "/user": {
       "post": {
         "tags": ["User"],
         "summary": "Register a user",
         "consumes": ["application/json"],
         "produces": ["application/json"],
         "parameters": [
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "in": "body",
             "name": "json",
@@ -915,13 +894,24 @@
             "description": "Success. A JSON object containing user information will be returned."
           },
           "400": {
-            "description": "Bad Request. It can happen if the username already exists or if any other invalid request happens."
+            "description": "Bad Request. It can happen if some invalid request happens."
           },
           "401": {
             "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          },
+          "403": {
+            "description": "Forbidden. It can happen if the member already has a user"
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist or if the member that will have a user does not exist"
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
           }
         }
-      },
+      }
+    },
+    "/users": {
       "get": {
         "tags": ["User"],
         "summary": "Search for all users who have admin or comum permisson",
@@ -929,6 +919,17 @@
         "security": [
           {
             "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -940,11 +941,17 @@
           },
           "401": {
             "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist"
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
           }
         }
       }
     },
-    "user/id": {
+    "/user/id": {
       "get": {
         "tags": ["User"],
         "summary": "Search for a user by ID",
@@ -961,6 +968,15 @@
             "description": "The ID of the user to be searched",
             "required": true,
             "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -974,7 +990,10 @@
             "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
           },
           "404": {
-            "description": "Not Found. It can happen if the user doesn't exist"
+            "description": "Not Found. It can happen if the user doesn't exist or if the church the member belongs to doesn't exist"
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
           }
         }
       },
@@ -997,20 +1016,21 @@
             "type": "integer"
           },
           {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "in": "body",
             "name": "json",
             "description": "The JSON format sent in the body to update a user must be:",
             "required": true,
             "schema": {
-              "properties": {
-                "permission": {
-                  "type": "string",
-                  "enum": ["super", "admin", "comum"],
-                  "description": "The permission of the user. The default value is comum",
-                  "example": "admin"
-                }
-              },
-              "required": ["permission"]
+              "$ref": "#/definitions/User"
             }
           }
         ],
@@ -1025,7 +1045,10 @@
             "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
           },
           "404": {
-            "description": "Not Found. It can happen if the user doesn't exist"
+            "description": "Not Found. It can happen if the user doesn't exist or if the church the member belongs to doesn't exist"
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
           }
         }
       },
@@ -1045,6 +1068,15 @@
             "description": "The ID of the user to be deleted",
             "required": true,
             "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1058,7 +1090,10 @@
             "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
           },
           "404": {
-            "description": "Not Found. It can happen if the user doesn't exist"
+            "description": "Not Found. It can happen if the user doesn't exist or if the church the member belongs to doesn't exist"
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
           }
         }
       }

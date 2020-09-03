@@ -225,16 +225,9 @@ describe("Member model", () => {
       address_id: address1.id,
     });
 
-    console.log(member.get().cpf);
-
     const response = await request(app)
       .get(`/member/${member.get().cpf}?church_name=${church.get().name}`)
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        church_name: church.name,
-      });
-
-    //console.log(response);
+      .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(200);
     done();
