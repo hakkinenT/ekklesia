@@ -126,7 +126,7 @@ class MemberController {
         );
       });
 
-      return res.status(200).json(member);
+      return res.status(201).json(member);
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }

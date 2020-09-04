@@ -94,7 +94,7 @@ class ChurchController {
         return createChurch;
       });
 
-      return res.status(200).json(church);
+      return res.status(201).json(church);
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }

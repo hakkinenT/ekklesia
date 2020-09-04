@@ -207,8 +207,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success. A JSON object containing church information will be returned."
+          "201": {
+            "description": "Church created successfully. A JSON object containing church information will be returned."
           },
           "400": {
             "description": "Bad Request. It can happen if the CNPJ is invalid or if the church is already registered or if any other invalid request happens."
@@ -538,8 +538,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success. A JSON object containing member information will be returned."
+          "201": {
+            "description": "Member created successfully. A JSON object containing member information will be returned."
           },
           "400": {
             "description": "Bad Request. It can happen if any field is invalid or if any other invalid request happens."
