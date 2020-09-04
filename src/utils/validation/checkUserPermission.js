@@ -6,6 +6,13 @@ const checkUserPermission = async (req, cnpj, module = "member") => {
 
   const permissionIsSuper = userPermission === "super";
 
+  const havePermissionForModuleChurch =
+    module === "church" && permissionIsSuper;
+
+  if (!havePermissionForModuleChurch) {
+    return false;
+  }
+
   if (permissionIsSuper) {
     const user = await User.findOne({
       where: { id: userId },
@@ -13,13 +20,6 @@ const checkUserPermission = async (req, cnpj, module = "member") => {
     });
 
     cnpjIsEqual = user.Church.cnpj == cnpj;
-  }
-
-  const havePermissionForModuleChurch =
-    module === "church" && permissionIsSuper;
-
-  if (!havePermissionForModuleChurch) {
-    return false;
   }
 
   const permissionIsAdmin = userPermission === "admin";
