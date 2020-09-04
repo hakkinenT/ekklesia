@@ -58,6 +58,7 @@ class MemberController {
       const { count, rows } = await Member.findAndCountAll({
         where: { church_cnpj: cnpj },
         order: [["name", "ASC"]],
+        include: ["Address"],
         ...paginate(page),
       });
 
