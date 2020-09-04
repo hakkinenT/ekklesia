@@ -1,9 +1,9 @@
 const { Router } = require("express");
 const UserController = require("./UserController");
 
-const userCreationValidation = require("../../../utils/validation/User/userCreationValidation");
-const userUpdateValidation = require("../../../utils/validation/User/userUpdateValidation");
-const validate = require("../../../utils/validation/validate");
+const userCreationValidation = require("../../../validation/User/userCreationValidation");
+const userUpdateValidation = require("../../../validation/User/userUpdateValidation");
+const validate = require("../../../validation/validate");
 const authentication = require("../../middleware/authentication");
 
 const routes = Router();

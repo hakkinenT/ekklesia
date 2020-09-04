@@ -1,7 +1,7 @@
 const { Member, Address, User } = require("../../../app/models");
 const models = require("../../models/index");
-const checkUserPermission = require("../../../utils/validation/checkUserPermission");
-const checkChurch = require("../../../utils/validation/checkChurch");
+const checkUserPermission = require("../../../validation/checkUserPermission");
+const checkChurch = require("../../../validation/checkChurch");
 const paginate = require("../../../utils/paginate");
 
 class MemberController {

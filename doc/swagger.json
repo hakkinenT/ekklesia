@@ -1032,10 +1032,11 @@
           },
           {
             "in": "body",
-            "name": "json",
+            "name": "user",
             "description": "The JSON format sent in the body to update a user must be:",
             "required": true,
             "schema": {
+              "type": "object",
               "properties": {
                 "username": {
                   "type": "string",

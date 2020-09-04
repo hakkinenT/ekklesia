@@ -1,6 +1,6 @@
 const { Church, Address, User, Member } = require("../../models");
 const models = require("../../models/index");
-const checkUserPermission = require("../../../utils/validation/checkUserPermission");
+const checkUserPermission = require("../../../validation/checkUserPermission");
 
 class ChurchController {
   async show(req, res) {

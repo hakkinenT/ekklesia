@@ -1,10 +1,10 @@
 const { Router } = require("express");
 
 const MemberController = require("./MemberController");
-const memberCreationValidation = require("../../../utils/validation/Member/memberCreationValidation");
-const memberUpdateValidation = require("../../../utils/validation/Member/memberUpdateValidation");
-const churchNameValidation = require("../../../utils/validation/churchNameValidation");
-const validate = require("../../../utils/validation/validate");
+const memberCreationValidation = require("../../../validation/Member/memberCreationValidation");
+const memberUpdateValidation = require("../../../validation/Member/memberUpdateValidation");
+const churchNameValidation = require("../../../validation/churchNameValidation");
+const validate = require("../../../validation/validate");
 
 const authentication = require("../../middleware/authentication");
 
