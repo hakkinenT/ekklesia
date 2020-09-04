@@ -102,6 +102,14 @@ class UserController {
           .json({ message: "That member already has a registered user" });
       }
 
+      const memberHasEmail = member.email;
+
+      if (!memberHasEmail) {
+        return res
+          .status(403)
+          .json({ message: "The member must have an email" });
+      }
+
       let username = createUsername(member);
       const user = await User.create({ username, password, permission });
 

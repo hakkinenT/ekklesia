@@ -897,7 +897,7 @@
             "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
           },
           "403": {
-            "description": "Forbidden. It can happen if the member already has a user"
+            "description": "Forbidden. It can happen if the member already has a user or if the member doesn't have an email"
           },
           "404": {
             "description": "Not Found. It can happen if the church the member belongs to doesn't exist or if the member that will have a user does not exist"
