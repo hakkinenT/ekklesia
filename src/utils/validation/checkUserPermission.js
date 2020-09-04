@@ -1,6 +1,6 @@
 const { User } = require("../../app/models");
 
-const checkUserPermission = async (req, cnpj) => {
+const checkUserPermission = async (req, cnpj, module = "member") => {
   const { userId, userPermission } = req;
   let cnpjIsEqual = null;
 
@@ -13,6 +13,13 @@ const checkUserPermission = async (req, cnpj) => {
     });
 
     cnpjIsEqual = user.Church.cnpj == cnpj;
+  }
+
+  const havePermissionForModuleChurch =
+    module === "church" && permissionIsSuper;
+
+  if (!havePermissionForModuleChurch) {
+    return false;
   }
 
   const permissionIsAdmin = userPermission === "admin";

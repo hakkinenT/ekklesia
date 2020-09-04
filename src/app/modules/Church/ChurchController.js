@@ -7,7 +7,7 @@ class ChurchController {
     try {
       const { cnpj } = req.params;
 
-      const userHasPermission = await checkUserPermission(req, cnpj);
+      const userHasPermission = await checkUserPermission(req, cnpj, "church");
 
       if (!userHasPermission) {
         return res.status(401).json({ message: "Access denied!" });
@@ -114,7 +114,7 @@ class ChurchController {
         return res.status(404).json({ message: "The church was not found" });
       }
 
-      const userHasPermission = await checkUserPermission(req, cnpj);
+      const userHasPermission = await checkUserPermission(req, cnpj, "church");
 
       if (!userHasPermission) {
         return res.status(401).json({ message: "Access denied!" });
@@ -157,7 +157,7 @@ class ChurchController {
         return res.status(404).json({ message: "The church was not found" });
       }
 
-      const userHasPermission = await checkUserPermission(req, cnpj);
+      const userHasPermission = await checkUserPermission(req, cnpj, "church");
 
       if (!userHasPermission) {
         return res.status(401).json({ message: "Access denied!" });
