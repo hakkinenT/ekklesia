@@ -875,6 +875,11 @@
                   "type": "string",
                   "description": "The permission of the user. The default value is admin.",
                   "example": "admin"
+                },
+                "cpf": {
+                  "type": "string",
+                  "description": "The member's CPF",
+                  "example": "88811290007"
                 }
               },
               "required": ["password"]

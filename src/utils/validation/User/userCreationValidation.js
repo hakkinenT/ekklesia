@@ -19,16 +19,6 @@ const userCreationValidation = () => {
       },
       errorMessage: "The church_name must be a string",
     },
-    username: {
-      in: ["body"],
-      isString: true,
-      custom: {
-        options: (value) => validateString(value),
-      },
-      isLength: { options: { min: 3, max: 30 } },
-      errorMessage:
-        "Username must be a string with a minimum length of 3 and a maximum length of 30",
-    },
     password: {
       in: ["body"],
       custom: {
@@ -37,6 +27,18 @@ const userCreationValidation = () => {
       isLength: { options: { min: 8, max: 16 } },
       errorMessage:
         "The password must be a string with a minimum length of 8 and a maximum length of 16",
+    },
+    permission: {
+      in: ["body"],
+      isString: true,
+      custom: {
+        options: (value) => validateString(value),
+      },
+      isIn: {
+        options: [["admin"]],
+        errorMessage: "The permission type must be admin or comum",
+      },
+      errorMessage: "Permission cannot be an empty string",
     },
   });
 };

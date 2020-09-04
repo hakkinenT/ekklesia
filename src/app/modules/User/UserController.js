@@ -24,6 +24,7 @@ class UserController {
       const user = await User.findOne({
         where: { id },
         attributes: ["id", "username", "permission"],
+        include: [{ as: "Member", model: Member }],
       });
 
       if (!user) {
@@ -55,7 +56,7 @@ class UserController {
       const { count, rows } = await User.findAndCountAll({
         where: { permission: "admin" },
         attributes: ["id", "username", "permission"],
-        includes: ["Member"],
+        include: [{ as: "Member", model: Member }],
         ...paginate(page),
       });
 
