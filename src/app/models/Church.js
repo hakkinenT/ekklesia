@@ -24,16 +24,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "church_cnpj",
       sourceKey: "cnpj",
     });
-    Church.belongsToMany(models.Group, {
-      through: "Churches_Groups",
-      foreignKey: "church_cnpj",
-      as: "Group",
-    });
-    Church.belongsToMany(models.Role, {
-      through: "Churches_Roles",
-      foreignKey: "church_cnpj",
-      as: "Role",
-    });
   };
   return Church;
 };

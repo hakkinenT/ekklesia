@@ -46,12 +46,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "user_id",
       targetKey: "id",
     });
-    Member.hasMany(models.Role, { as: "Role" });
-    Member.belongsToMany(models.Group, {
-      through: "Members_Groups",
-      foreignKey: "member_cpf",
-      as: "Group",
-    });
   };
   return Member;
 };
