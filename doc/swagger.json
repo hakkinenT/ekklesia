@@ -173,13 +173,6 @@
                   "description": "The state where the church is located",
                   "example": "Sergipe"
                 },
-                "username": {
-                  "type": "string",
-                  "minLength": "3",
-                  "maxLength": "30",
-                  "description": "The username of the church.",
-                  "example": "iBaBrazil"
-                },
                 "password": {
                   "type": "string",
                   "format": "password",
@@ -200,7 +193,6 @@
                 "zip_code",
                 "city",
                 "state",
-                "username",
                 "password"
               ]
             }

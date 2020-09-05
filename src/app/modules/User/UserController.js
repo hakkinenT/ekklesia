@@ -109,8 +109,8 @@ class UserController {
           .status(403)
           .json({ message: "The member must have an email" });
       }
-
-      let username = createUsername(member);
+      const { name } = member;
+      let username = createUsername(name);
       const user = await User.create({ username, password, permission });
 
       member.update({ user_id: user.id });

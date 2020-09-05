@@ -1,6 +1,7 @@
 const { Church, Address, User, Member } = require("../../models");
 const models = require("../../models/index");
 const checkUserPermission = require("../../../validation/checkUserPermission");
+const createUsername = require("../../../utils/createUsername");
 
 class ChurchController {
   async show(req, res) {
@@ -42,7 +43,6 @@ class ChurchController {
         complement,
         city,
         state,
-        username,
         password,
       } = req.body;
 
@@ -69,6 +69,8 @@ class ChurchController {
           },
           { transaction }
         );
+
+        let username = createUsername(name, "church");
 
         const user = await User.create(
           {

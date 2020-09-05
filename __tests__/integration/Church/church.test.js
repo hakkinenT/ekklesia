@@ -2,7 +2,7 @@ const request = require("supertest");
 
 const app = require("../../../src/app");
 const factory = require("../../factories");
-const { cpf } = require("cpf-cnpj-validator");
+const { cnpj } = require("cpf-cnpj-validator");
 
 describe("Church model", () => {
   it("should register a church", async (done) => {
@@ -24,7 +24,6 @@ describe("Church model", () => {
     };
 
     const user = {
-      username: "tholhakk",
       password: "Thol567@",
     };
 
@@ -36,7 +35,7 @@ describe("Church model", () => {
         ...user,
       });
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
     done();
   });
 
@@ -59,7 +58,6 @@ describe("Church model", () => {
     };
 
     const user = {
-      username: "superman1",
       password: "12345678",
     };
 
@@ -93,7 +91,6 @@ describe("Church model", () => {
     };
 
     const user = {
-      username: "superman2",
       password: "Tab@5678",
     };
 
@@ -127,7 +124,6 @@ describe("Church model", () => {
     };
 
     const user = {
-      username: "superman3",
       password: "Tab@5678",
     };
 
@@ -147,11 +143,11 @@ describe("Church model", () => {
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
-      username: "julia23",
+      username: "church0",
       permission: "super",
     });
     const church = await factory.create("Church", {
-      cnpj: "39477955000170",
+      cnpj: cnpj.generate(),
       address_id: address.id,
       user_id: user.id,
     });
@@ -162,6 +158,10 @@ describe("Church model", () => {
       .get(`/church/${church.get().cnpj}`)
       .set("Authorization", `Bearer ${token}`);
 
+    await address.destroy();
+    await user.destroy();
+    await church.destroy();
+
     expect(response.status).toBe(200);
 
     done();
@@ -171,11 +171,11 @@ describe("Church model", () => {
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
-      username: "paulo_silva",
+      username: "church1",
       permission: "super",
     });
 
-    await factory.create("Church", {
+    const church = await factory.create("Church", {
       cnpj: "33173763000193",
       address_id: address.id,
       user_id: user.id,
@@ -187,6 +187,10 @@ describe("Church model", () => {
       .get("/church/3947795500023")
       .set("Authorization", `Bearer ${token}`);
 
+    await address.destroy();
+    await user.destroy();
+    await church.destroy();
+
     expect(response.status).toBe(400);
 
     done();
@@ -196,12 +200,12 @@ describe("Church model", () => {
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
-      username: "carlaoliver",
+      username: "church2",
       permission: "super",
     });
 
     const church = await factory.create("Church", {
-      cnpj: "59415581000175",
+      cnpj: cnpj.generate(),
       address_id: address.id,
       user_id: user.id,
     });
@@ -212,38 +216,29 @@ describe("Church model", () => {
       .get(`/church/${church.get().cnpj}`)
       .set("Authorization", `Bearer ${token}`);
 
+    await address.destroy();
+    await user.destroy();
+    await church.destroy();
+
     expect(response.body.Address.address).toBe(address.get().address);
 
     done();
   });
 
   it("should update a church's information", async (done) => {
-    const user_admin = await factory.create("User", {
-      username: "exemplo32",
-      permission: "admin",
-    });
-
-    const token = user_admin.generateToken();
-
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
-      username: "marcos32",
+      username: "church3",
+      permission: "super",
     });
+
+    const token = user.generateToken();
 
     const church = await factory.create("Church", {
-      cnpj: "09997950000107",
+      cnpj: cnpj.generate(),
       address_id: address.id,
       user_id: user.id,
-    });
-
-    const address2 = await factory.create("Address");
-
-    await factory.create("Member", {
-      cpf: cpf.generate(),
-      church_cnpj: church.cnpj,
-      address_id: address2.id,
-      user_id: user_admin.id,
     });
 
     church.name = "Igreja Batista do Centenário";
@@ -260,37 +255,28 @@ describe("Church model", () => {
         address: address.get(),
       });
 
+    await address.destroy();
+    await user.destroy();
+    await church.destroy();
+
     expect(response.status).toBe(200);
+
     done();
   });
 
   it("shouldn't update a church if the fields are empty strings", async (done) => {
-    const user_admin = await factory.create("User", {
-      username: "exemplo32",
-      permission: "admin",
-    });
-
-    const token = user_admin.generateToken();
-
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
-      username: "miguelsantos",
+      username: "church4",
+      permission: "super",
     });
+    const token = user.generateToken();
 
     const church = await factory.create("Church", {
-      cnpj: "40754683000197",
+      cnpj: cnpj.generate(),
       address_id: address.id,
       user_id: user.id,
-    });
-
-    const address2 = await factory.create("Address");
-
-    await factory.create("Member", {
-      cpf: cpf.generate(),
-      church_cnpj: church.cnpj,
-      address_id: address2.id,
-      user_id: user_admin.id,
     });
 
     church.name = "";
@@ -307,37 +293,29 @@ describe("Church model", () => {
         address: address.get(),
       });
 
+    await address.destroy();
+    await user.destroy();
+    await church.destroy();
+
     expect(response.status).toBe(400);
+
     done();
   });
 
   it("shouldn't update a church that was not found", async (done) => {
-    const user_admin = await factory.create("User", {
-      username: "exemplo32",
-      permission: "admin",
-    });
-
-    const token = user_admin.generateToken();
-
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
-      username: "julianapereira",
+      username: "church5",
+      permission: "super",
     });
+
+    const token = user.generateToken();
 
     const church = await factory.create("Church", {
-      cnpj: "02505670000195",
+      cnpj: cnpj.generate(),
       address_id: address.id,
       user_id: user.id,
-    });
-
-    const address2 = await factory.create("Address");
-
-    await factory.create("Member", {
-      cpf: cpf.generate(),
-      church_cnpj: church.cnpj,
-      address_id: address2.id,
-      user_id: user_admin.id,
     });
 
     const response = await request(app)
@@ -348,38 +326,29 @@ describe("Church model", () => {
         address: address.get(),
       });
 
+    await address.destroy();
+    await user.destroy();
+    await church.destroy();
+
     expect(response.status).toBe(404);
 
     done();
   });
 
   it("shouldn't update a church if the church's CNPJ is invalid", async (done) => {
-    const user_admin = await factory.create("User", {
-      username: "exemplo32",
-      permission: "admin",
-    });
-
-    const token = user_admin.generateToken();
-
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
-      username: "antonio_carlos",
+      username: "church6",
+      permission: "super",
     });
+
+    const token = user.generateToken();
 
     const church = await factory.create("Church", {
-      cnpj: "30501646000113",
+      cnpj: cnpj.generate(),
       address_id: address.id,
       user_id: user.id,
-    });
-
-    const address2 = await factory.create("Address");
-
-    await factory.create("Member", {
-      cpf: cpf.generate(),
-      church_cnpj: church.cnpj,
-      address_id: address2.id,
-      user_id: user_admin.id,
     });
 
     const response = await request(app)
@@ -390,79 +359,65 @@ describe("Church model", () => {
         address: address.get(),
       });
 
+    await address.destroy();
+    await user.destroy();
+    await church.destroy();
+
     expect(response.status).toBe(400);
     done();
   });
 
   it("should delete a church", async (done) => {
-    const user_admin = await factory.create("User", {
-      username: "exemplo32",
-      permission: "admin",
-    });
-
-    const token = user_admin.generateToken();
-
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
-      username: "candida_emilia",
+      username: "church7",
+      permission: "super",
     });
+
+    const token = user.generateToken();
 
     const church = await factory.create("Church", {
-      cnpj: "52652407000105",
+      cnpj: cnpj.generate(),
       address_id: address.id,
       user_id: user.id,
-    });
-
-    const address2 = await factory.create("Address");
-
-    await factory.create("Member", {
-      cpf: cpf.generate(),
-      church_cnpj: church.cnpj,
-      address_id: address2.id,
-      user_id: user_admin.id,
     });
 
     const response = await request(app)
       .delete(`/church/${church.get().cnpj}`)
       .set("Authorization", `Bearer ${token}`);
 
+    await address.destroy();
+    await user.destroy();
+    await church.destroy();
+
     expect(response.status).toBe(200);
     done();
   });
 
   it("shouldn't delete a church if the CNPJ is invalid", async (done) => {
-    const user_admin = await factory.create("User", {
-      username: "exemplo32",
-      permission: "admin",
-    });
-
-    const token = user_admin.generateToken();
-
     const address = await factory.create("Address");
 
     const user = await factory.create("User", {
-      username: "sandylea",
+      username: "church0",
+      permission: "super",
     });
+
+    const token = user.generateToken();
 
     const church = await factory.create("Church", {
-      cnpj: "39401165000100",
+      cnpj: cnpj.generate(),
       address_id: address.id,
       user_id: user.id,
-    });
-
-    const address2 = await factory.create("Address");
-
-    await factory.create("Member", {
-      cpf: cpf.generate(),
-      church_cnpj: church.cnpj,
-      address_id: address2.id,
-      user_id: user_admin.id,
     });
 
     const response = await request(app)
       .delete("/church/394065000100")
       .set("Authorization", `Bearer ${token}`);
+
+    await address.destroy();
+    await user.destroy();
+    await church.destroy();
 
     expect(response.status).toBe(400);
     done();

@@ -1,15 +1,15 @@
-const createUsername = (object, type = "member") => {
-  let { name } = object;
+const createUsername = (name, type = "member") => {
+  let nameReceveid = name;
   let username;
 
-  name = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  nameReceveid = nameReceveid.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
   if (type === "member") {
-    const splitName = name.toLowerCase().split(" ");
+    const splitName = nameReceveid.toLowerCase().split(" ");
     const fim = splitName.length - 1;
     username = splitName[0] + "_" + splitName[fim];
   } else {
-    let churchName = name.toLowerCase().replace(/d(a|e|o|s)/gi, "");
+    let churchName = nameReceveid.toLowerCase().replace(/d(a|e|o|s)/gi, "");
     username = churchName.replace(/\s+/g, "_");
   }
 

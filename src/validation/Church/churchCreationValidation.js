@@ -85,15 +85,6 @@ const churchCreationValidation = () => {
       },
       errorMessage: "The state must be a string",
     },
-    username: {
-      isString: true,
-      custom: {
-        options: (value) => validateString(value),
-      },
-      isLength: { options: { min: 3, max: 30 } },
-      errorMessage:
-        "Username must be a string with a minimum length of 3 and a maximum length of 30",
-    },
     password: {
       custom: {
         options: (value) => validateString(value),

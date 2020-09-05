@@ -81,9 +81,10 @@ describe("Login", () => {
       password: "12345679",
       permission: "super",
     });
+
     const address_church = await factory.create("Address");
     const church = await factory.create("Church", {
-      email: "email@email.com",
+      email: "email_church@email.com",
       cnpj: "48765249000114",
       address_id: address_church.id,
       user_id: user.id,
@@ -94,6 +95,7 @@ describe("Login", () => {
       password: "12345679",
     });
 
+    console.log(response);
     expect(response.body).toHaveProperty("token");
 
     done();

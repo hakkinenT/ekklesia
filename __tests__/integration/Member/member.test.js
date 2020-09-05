@@ -2,6 +2,7 @@ const request = require("supertest");
 
 const app = require("../../../src/app");
 const factory = require("../../factories");
+const { cpf, cnpj } = require("cpf-cnpj-validator");
 
 describe("Member model", () => {
   it("should register a member", async (done) => {
@@ -15,7 +16,7 @@ describe("Member model", () => {
 
     const church = await factory.create("Church", {
       name: "Igreja Batista da Lagoinha",
-      cnpj: "32803833000187",
+      cnpj: cnpj.generate(),
       address_id: address_church.id,
       user_id: user_church.id,
     });
@@ -34,7 +35,7 @@ describe("Member model", () => {
 
     const member = {
       name: "Augusto da Silva",
-      cpf: "86191821026",
+      cpf: cpf.generate(),
       genre: "Masculino",
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
@@ -52,7 +53,11 @@ describe("Member model", () => {
         ...address,
       });
 
-    expect(response.status).toBe(200);
+    await address_church.destroy();
+    await user_church.destroy();
+    await church.destroy();
+
+    expect(response.status).toBe(201);
 
     done();
   });
@@ -67,7 +72,7 @@ describe("Member model", () => {
     });
 
     const church = await factory.create("Church", {
-      cnpj: "92530915000127",
+      cnpj: cnpj.generate(),
       address_id: address_church.id,
       user_id: user_church.id,
     });
@@ -104,6 +109,10 @@ describe("Member model", () => {
         ...address,
       });
 
+    await address_church.destroy();
+    await user_church.destroy();
+    await church.destroy();
+
     expect(response.status).toBe(400);
 
     done();
@@ -119,7 +128,7 @@ describe("Member model", () => {
     });
 
     const church = await factory.create("Church", {
-      cnpj: "52854119000125",
+      cnpj: cnpj.generate(),
       address_id: address_church.id,
       user_id: user_church.id,
     });
@@ -138,7 +147,7 @@ describe("Member model", () => {
 
     const member = {
       name: "Augusto da Silva",
-      cpf: "18064553075",
+      cpf: cpf.generate(),
       genre: "Masculino",
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
@@ -156,6 +165,10 @@ describe("Member model", () => {
         ...address,
       });
 
+    await address_church.destroy();
+    await user_church.destroy();
+    await church.destroy();
+
     expect(response.status).toBe(404);
 
     done();
@@ -171,7 +184,7 @@ describe("Member model", () => {
     });
 
     const church = await factory.create("Church", {
-      cnpj: "52777535000177",
+      cnpj: cnpj.generate(),
       address_id: address_church.id,
       user_id: user_church.id,
     });
@@ -179,14 +192,14 @@ describe("Member model", () => {
     const token = user_church.generateToken();
 
     const address1 = await factory.create("Address");
-    await factory.create("Member", {
-      cpf: "79639154083",
+    const member = await factory.create("Member", {
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address1.id,
     });
 
     const address2 = await factory.create("Address");
-    await factory.create("Member", {
+    const member1 = await factory.create("Member", {
       cpf: "33693974047",
       church_cnpj: church.cnpj,
       address_id: address2.id,
@@ -195,6 +208,12 @@ describe("Member model", () => {
     const response = await request(app)
       .get(`/members?church_name=${church.get().name}`)
       .set("Authorization", `Bearer ${token}`);
+
+    await address_church.destroy();
+    await user_church.destroy();
+    await church.destroy();
+    await member.destroy();
+    await member1.destroy();
 
     expect(response.status).toBe(200);
 
@@ -211,7 +230,7 @@ describe("Member model", () => {
     });
 
     const church = await factory.create("Church", {
-      cnpj: "33834893000120",
+      cnpj: cnpj.generate(),
       address_id: address_church.id,
       user_id: user_church.id,
     });
@@ -220,7 +239,7 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     const member = await factory.create("Member", {
-      cpf: "67082000073",
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address1.id,
     });
@@ -228,6 +247,11 @@ describe("Member model", () => {
     const response = await request(app)
       .get(`/member/${member.get().cpf}?church_name=${church.get().name}`)
       .set("Authorization", `Bearer ${token}`);
+
+    await address_church.destroy();
+    await user_church.destroy();
+    await church.destroy();
+    await member.destroy();
 
     expect(response.status).toBe(200);
     done();
@@ -243,7 +267,7 @@ describe("Member model", () => {
     });
 
     const church = await factory.create("Church", {
-      cnpj: "20824440000170",
+      cnpj: cnpj.generate(),
       address_id: address_church.id,
       user_id: user_church.id,
     });
@@ -256,7 +280,7 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     const member1 = await factory.create("Member", {
-      cpf: "02923344006",
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address1.id,
       user_id: user.id,
@@ -266,7 +290,7 @@ describe("Member model", () => {
 
     const address2 = await factory.create("Address");
     const member = await factory.create("Member", {
-      cpf: "98093424032",
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address2.id,
     });
@@ -274,7 +298,14 @@ describe("Member model", () => {
     const response = await request(app)
       .delete(`/member/${member.get().cpf}?church_name=${church.get().name}`)
       .set("Authorization", `Bearer ${token}`);
-    //console.log(response);
+
+    await address_church.destroy();
+    await user_church.destroy();
+    await church.destroy();
+    await address1.destroy();
+    await member.destroy();
+    await member1.destroy();
+
     expect(response.status).toBe(200);
 
     done();
@@ -290,7 +321,7 @@ describe("Member model", () => {
     });
 
     const church = await factory.create("Church", {
-      cnpj: "41581591000115",
+      cnpj: cnpj.generate(),
       address_id: address_church.id,
       user_id: user_church.id,
     });
@@ -302,8 +333,8 @@ describe("Member model", () => {
     });
 
     const address1 = await factory.create("Address");
-    await factory.create("Member", {
-      cpf: "88811290007",
+    const member1 = await factory.create("Member", {
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address1.id,
       user_id: user.id,
@@ -313,7 +344,7 @@ describe("Member model", () => {
 
     const address = await factory.create("Address");
     const member = await factory.create("Member", {
-      cpf: "09200279031",
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address.id,
     });
@@ -333,6 +364,13 @@ describe("Member model", () => {
         address: address.get(),
       });
 
+    await address_church.destroy();
+    await user_church.destroy();
+    await church.destroy();
+    await address1.destroy();
+    await member.destroy();
+    await member1.destroy();
+
     expect(response.status).toBe(200);
 
     done();
@@ -348,7 +386,7 @@ describe("Member model", () => {
     });
 
     const church = await factory.create("Church", {
-      cnpj: "85293599000151",
+      cnpj: cnpj.generate(),
       address_id: address_church.id,
       user_id: user_church.id,
     });
@@ -361,7 +399,7 @@ describe("Member model", () => {
 
     const address1 = await factory.create("Address");
     const member1 = await factory.create("Member", {
-      cpf: "24890508007",
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address1.id,
       user_id: user.id,
@@ -371,7 +409,7 @@ describe("Member model", () => {
 
     const address2 = await factory.create("Address");
     const member = await factory.create("Member", {
-      cpf: "13143540001",
+      cpf: cpf.generate(),
       church_cnpj: church.cnpj,
       address_id: address2.id,
     });
@@ -386,6 +424,13 @@ describe("Member model", () => {
         member: member.get(),
         address: address2.get(),
       });
+
+    await address_church.destroy();
+    await user_church.destroy();
+    await church.destroy();
+    await address1.destroy();
+    await member.destroy();
+    await member1.destroy();
 
     expect(response.status).toBe(400);
 
