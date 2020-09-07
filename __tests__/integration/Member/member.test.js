@@ -37,6 +37,7 @@ describe("Member model", () => {
       name: "Augusto da Silva",
       cpf: cpf.generate(),
       genre: "Masculino",
+      age: 27,
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
       whatsapp: "79999999999",
@@ -93,6 +94,7 @@ describe("Member model", () => {
       name: "Augusto da Silva",
       cpf: "09876789098", //cpf invalido
       genre: "         ",
+      age: 27,
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
       whatsapp: "79999999999",
@@ -149,6 +151,7 @@ describe("Member model", () => {
       name: "Augusto da Silva",
       cpf: cpf.generate(),
       genre: "Masculino",
+      age: 27,
       date_of_birth: "1990-10-02",
       email: "augustosilva@hotmail.com",
       whatsapp: "79999999999",

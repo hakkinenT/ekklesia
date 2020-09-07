@@ -42,6 +42,20 @@ const memberUpdateValidation = () => {
       optional: true,
       errorMessage: "The genre must be a string",
     },
+    "member.age": {
+      isInt: true,
+      custom: {
+        options: (value) => {
+          if (value >= 7) {
+            return value;
+          }
+
+          throw new Error("The age is less than 7");
+        },
+      },
+      optional: true,
+      errorMessage: "The age must be greater than or equal to 7",
+    },
     "member.date_of_birth": {
       custom: {
         options: (value) => validateString(value),
