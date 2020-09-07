@@ -22,6 +22,10 @@ module.exports = {
         type: Sequelize.ENUM("Masculino", "Feminino"),
         allowNull: false,
       },
+      age: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       date_of_birth: {
         type: Sequelize.DATEONLY,
         allowNull: false,
