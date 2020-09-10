@@ -68,32 +68,8 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
-                  "type": "integer",
-                  "format": "int32",
-                  "description": "The user id",
-                  "example": 1
-                },
-                "username": {
-                  "type": "string",
-                  "minLength": 3,
-                  "maxLength": 30,
-                  "description": "The username of the church.",
-                  "example": "igreja_batista_brasil"
-                },
-                "password": {
-                  "type": "string",
-                  "format": "password",
-                  "minLength": 8,
-                  "maxLength": 16,
-                  "description": "The password of the church. ",
-                  "example": "$2a$10$XrmCrBfRFCovYN/d.ubXq.Fth3T7c9hBLVPZm4ttEznLz1koyx24a"
-                },
-                "permission": {
-                  "type": "string",
-                  "description": "The permission of the user. The default value is admin",
-                  "enum": ["super", "admin"],
-                  "example": "super"
+                "user": {
+                  "$ref": "#/definitions/User"
                 },
                 "token": {
                   "type": "string",
@@ -1566,7 +1542,7 @@
           "minLength": 3,
           "maxLength": 30,
           "description": "The username of the user.",
-          "example": "jose_santos"
+          "example": "username_do_usuário"
         },
         "password": {
           "type": "string",
@@ -1580,7 +1556,7 @@
           "type": "string",
           "description": "The permission of the user. The default value is admin",
           "enum": ["super", "admin"],
-          "example": "admin"
+          "example": "permissão_do_usuário"
         },
         "createdAt": {
           "type": "string",
@@ -1754,7 +1730,7 @@
     "Bearer": {
       "type": "apiKey",
       "name": "Authorization",
-      "description": "Enter JWT Bearer token",
+      "description": "Enter a JWT Bearer token in the following format: \n **_Bearer token_** ",
       "in": "header"
     }
   },
