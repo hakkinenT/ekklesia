@@ -4,6 +4,7 @@ const MemberController = require("./MemberController");
 const memberCreationValidation = require("../../../validation/Member/memberCreationValidation");
 const memberUpdateValidation = require("../../../validation/Member/memberUpdateValidation");
 const churchNameValidation = require("../../../validation/churchNameValidation");
+const cpfAndChurchNameValidation = require("../../../validation/Member/cpfAndChurchNameValidation");
 const validate = require("../../../validation/validate");
 
 const authentication = require("../../middleware/authentication");
@@ -29,7 +30,7 @@ const memberRouter = () => {
 
   routes.get(
     "/member/:cpf",
-    churchNameValidation(),
+    cpfAndChurchNameValidation(),
     validate,
     MemberController.show
   );
@@ -43,7 +44,7 @@ const memberRouter = () => {
 
   routes.delete(
     "/member/:cpf",
-    churchNameValidation(),
+    cpfAndChurchNameValidation(),
     validate,
     MemberController.destroy
   );
