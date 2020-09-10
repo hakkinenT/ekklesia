@@ -1,9 +1,7 @@
 {
   "swagger": "2.0",
-  "swaggerDefinition": {
-    "host": "localhost:3333",
-    "basePath": "/"
-  },
+  "host": "localhost:3333",
+  "basePath": "/",
   "info": {
     "version": "1.0.0",
     "title": "Ekklesia API",
@@ -54,8 +52,8 @@
                 "password": {
                   "type": "string",
                   "format": "password",
-                  "minLength": "8",
-                  "maxLength": "16",
+                  "minLength": 8,
+                  "maxLength": 16,
                   "description": "The member or church password. ",
                   "example": "iB@B2020"
                 }
@@ -78,16 +76,16 @@
                 },
                 "username": {
                   "type": "string",
-                  "minLength": "3",
-                  "maxLength": "30",
+                  "minLength": 3,
+                  "maxLength": 30,
                   "description": "The username of the church.",
                   "example": "igreja_batista_brasil"
                 },
                 "password": {
                   "type": "string",
                   "format": "password",
-                  "minLength": "8",
-                  "maxLength": "16",
+                  "minLength": 8,
+                  "maxLength": 16,
                   "description": "The password of the church. ",
                   "example": "$2a$10$XrmCrBfRFCovYN/d.ubXq.Fth3T7c9hBLVPZm4ttEznLz1koyx24a"
                 },
@@ -230,8 +228,8 @@
                 "password": {
                   "type": "string",
                   "format": "password",
-                  "minLength": "8",
-                  "maxLength": "16",
+                  "minLength": 8,
+                  "maxLength": 16,
                   "description": "The password of the church. ",
                   "example": "iB@B2020"
                 }
@@ -517,9 +515,7 @@
             "name": "church_name",
             "description": "The name of the church the member belongs to",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "in": "body",
@@ -640,7 +636,7 @@
           "201": {
             "description": "Member created successfully. A JSON object containing member information will be returned.",
             "schema": {
-              "$ref": "#definitions/Member"
+              "$ref": "#/definitions/Member"
             }
           },
           "400": {
@@ -685,18 +681,14 @@
             "name": "page",
             "description": "The number of page. Each page will return 10 items from the array",
             "required": true,
-            "schema": {
-              "type": "integer"
-            }
+            "type": "integer"
           },
           {
             "in": "query",
             "name": "church_name",
             "description": "The name of the church the member belongs to",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -836,11 +828,6 @@
         "tags": ["Member"],
         "summary": "Search for a member by CPF",
         "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "path",
@@ -854,9 +841,7 @@
             "name": "church_name",
             "description": "The name of the church the member belongs to",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -1005,9 +990,7 @@
             "name": "church_name",
             "description": "The name of the church the member belongs to",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "in": "body",
@@ -1017,7 +1000,7 @@
             "schema": {
               "properties": {
                 "member": {
-                  "$ref": "#definitions/Member"
+                  "$ref": "#/definitions/Member"
                 },
                 "address": {
                   "$ref": "#/definitions/Address"
@@ -1030,7 +1013,7 @@
           "200": {
             "description": "Success. A JSON object containing member information will be returned.",
             "schema": {
-              "$ref": "#definitions/Member"
+              "$ref": "#/definitions/Member"
             }
           },
           "400": {
@@ -1080,9 +1063,7 @@
             "name": "church_name",
             "description": "The name of the church the member belongs to",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -1137,9 +1118,7 @@
             "name": "church_name",
             "description": "The name of the church the member belongs to",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "in": "body",
@@ -1150,8 +1129,8 @@
               "properties": {
                 "password": {
                   "type": "string",
-                  "minLength": "8",
-                  "maxLength": "16",
+                  "minLength": 8,
+                  "maxLength": 16,
                   "format": "password",
                   "description": "The password of the church. ",
                   "example": "i56@JL#0"
@@ -1231,18 +1210,14 @@
             "name": "page",
             "description": "The number of page. Each page will return 10 items from the array",
             "required": true,
-            "schema": {
-              "type": "integer"
-            }
+            "type": "integer"
           },
           {
             "in": "query",
             "name": "church_name",
             "description": "The name of the church the member belongs to",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -1260,8 +1235,8 @@
                   },
                   "username": {
                     "type": "string",
-                    "minLength": "3",
-                    "maxLength": "30",
+                    "minLength": 3,
+                    "maxLength": 30,
                     "description": "The username of the user.",
                     "example": "jose_silva"
                   },
@@ -1325,9 +1300,7 @@
             "name": "church_name",
             "description": "The name of the church the member belongs to",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -1343,8 +1316,8 @@
                 },
                 "username": {
                   "type": "string",
-                  "minLength": "3",
-                  "maxLength": "30",
+                  "minLength": 3,
+                  "maxLength": 30,
                   "description": "The username of the user.",
                   "example": "jose_silva"
                 },
@@ -1406,9 +1379,7 @@
             "name": "church_name",
             "description": "The name of the church the member belongs to",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "in": "body",
@@ -1476,9 +1447,7 @@
             "name": "church_name",
             "description": "The name of the church the member belongs to",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -1594,16 +1563,16 @@
         },
         "username": {
           "type": "string",
-          "minLength": "3",
-          "maxLength": "30",
+          "minLength": 3,
+          "maxLength": 30,
           "description": "The username of the user.",
           "example": "jose_santos"
         },
         "password": {
           "type": "string",
           "format": "password",
-          "minLength": "8",
-          "maxLength": "16",
+          "minLength": 8,
+          "maxLength": 16,
           "description": "The encrypted password of the user. ",
           "example": "$2a$10$XrmCrBfRFCovYN/d.ubXq.Fth3T7c9hBLVPZm4ttEznLz1koyx24a"
         },
@@ -1788,7 +1757,9 @@
       "in": "header"
     }
   },
-  "security": {
-    "Bearer": []
-  }
+  "security": [
+    {
+      "Bearer": []
+    }
+  ]
 }
