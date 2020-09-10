@@ -1680,8 +1680,9 @@
         },
         "age": {
           "type": "integer",
+          "format": "int32",
           "description": "The age of the member",
-          "example": "27"
+          "example": 27
         },
         "date_of_birth": {
           "type": "string",
