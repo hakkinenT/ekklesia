@@ -1,11 +1,14 @@
 {
   "swagger": "2.0",
+  "swaggerDefinition": {
+    "host": "localhost:3333",
+    "basePath": "/"
+  },
   "info": {
     "version": "1.0.0",
     "title": "Ekklesia API",
     "description": "Software gerenciador de Igrejas"
   },
-  "host": "http://localhost:3333",
   "tags": [
     {
       "name": "Login",
@@ -22,14 +25,6 @@
     {
       "name": "User",
       "description": "All about the User module"
-    },
-    {
-      "name": "Group",
-      "description": "All about the Group module"
-    },
-    {
-      "name": "Role",
-      "description": "All about the Role module"
     }
   ],
   "schemes": ["http", "https"],
@@ -40,11 +35,12 @@
         "summary": "Log in",
         "consumes": ["application/json"],
         "produces": ["application/json"],
+        "security": [],
         "parameters": [
           {
             "in": "body",
             "name": "login",
-            "description": "The JSON format sent in the body to log in",
+            "description": "You need the following fields in JSON to log in",
             "required": true,
             "schema": {
               "type": "object",
@@ -53,7 +49,7 @@
                   "type": "string",
                   "format": "email",
                   "description": "Member or church email",
-                  "example": "jose_silva@hotmail.com"
+                  "example": "ibabrasil@hotmail.com"
                 },
                 "password": {
                   "type": "string",
@@ -61,21 +57,75 @@
                   "minLength": "8",
                   "maxLength": "16",
                   "description": "The member or church password. ",
-                  "example": "js$45iG0"
+                  "example": "iB@B2020"
                 }
-              }
+              },
+              "required": ["email", "password"]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Success. An object containing user information and the generated token will be returned."
+            "description": "Success. An object containing user information and the generated token will be returned.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "The user id",
+                  "example": 1
+                },
+                "username": {
+                  "type": "string",
+                  "minLength": "3",
+                  "maxLength": "30",
+                  "description": "The username of the church.",
+                  "example": "igreja_batista_brasil"
+                },
+                "password": {
+                  "type": "string",
+                  "format": "password",
+                  "minLength": "8",
+                  "maxLength": "16",
+                  "description": "The password of the church. ",
+                  "example": "$2a$10$XrmCrBfRFCovYN/d.ubXq.Fth3T7c9hBLVPZm4ttEznLz1koyx24a"
+                },
+                "permission": {
+                  "type": "string",
+                  "description": "The permission of the user. The default value is admin",
+                  "enum": ["super", "admin"],
+                  "example": "super"
+                },
+                "token": {
+                  "type": "string",
+                  "description": "Token generate after successfully login",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the password is invalid",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Password is invalid"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. It can happen if the user doesn't exist"
+            "description": "Not Found. It can happen if the user doesn't exist",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User doesn't exists"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -87,15 +137,18 @@
         "summary": "Logout",
         "consumes": ["application/json"],
         "produces": ["application/json"],
-        "description": "Log out of the application. It is only necessary to pass the token in the header authorization",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "description": "It is only necessary to pass the token in the header authorization to log out of the application",
         "responses": {
           "200": {
-            "description": "Success. Successfully logged out."
+            "description": "Success. Successfully logged out.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Successfully logged out"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -109,11 +162,12 @@
         "summary": "Register a church",
         "consumes": ["application/json"],
         "produces": ["application/json"],
+        "security": [],
         "parameters": [
           {
             "in": "body",
             "name": "json",
-            "description": "The JSON format sent in the body to register a church must be",
+            "description": "You need the following fields in JSON to register a church",
             "required": true,
             "schema": {
               "properties": {
@@ -125,7 +179,7 @@
                 "cnpj": {
                   "type": "string",
                   "description": "The CNPJ of the church",
-                  "example": "35878844000114"
+                  "example": "14089839000152"
                 },
                 "email": {
                   "type": "string",
@@ -142,11 +196,11 @@
                 "street": {
                   "type": "string",
                   "description": "The place where the church is located. Example: street, square, avenue...",
-                  "example": "Rua Laranjeiras"
+                  "example": "Rua Guarani"
                 },
                 "number": {
                   "type": "string",
-                  "example": "1234"
+                  "example": "1100"
                 },
                 "neighborhood": {
                   "type": "string",
@@ -161,7 +215,7 @@
                 "complement": {
                   "type": "string",
                   "description": "Information that complements the church's location",
-                  "example": "Ao lado da rodoviária"
+                  "example": "Ao lado da prefeitura"
                 },
                 "city": {
                   "type": "string",
@@ -200,10 +254,21 @@
         ],
         "responses": {
           "201": {
-            "description": "Church created successfully. A JSON object containing church information will be returned."
+            "description": "Church created successfully. A JSON object containing church information will be returned.",
+            "schema": {
+              "$ref": "#/definitions/Church"
+            }
           },
           "400": {
-            "description": "Bad Request. It can happen if the CNPJ is invalid or if the church is already registered or if any other invalid request happens."
+            "description": "Bad Request. It can happen if the CNPJ is invalid or if the church is already registered or if any other invalid request happens.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church is already registered"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -211,16 +276,11 @@
         }
       }
     },
-    "/church/cnpj": {
+    "/church/{cnpj}": {
       "get": {
         "tags": ["Church"],
         "summary": "Search a church by CNPJ",
         "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "path",
@@ -232,47 +292,15 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. A JSON object containing church information including its address will be returned."
-          },
-          "400": {
-            "description": "Bad Request. It can happen if the CNPJ is invalid or if any other invalid request happens."
-          },
-          "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
-          },
-          "404": {
-            "description": "Not Found. The church was not found"
-          },
-          "500": {
-            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
-          }
-        }
-      },
-      "put": {
-        "tags": ["Church"],
-        "summary": "Updates a church and its address",
-        "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "cnpj",
-            "description": "The CNPJ of the church to be updated",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "church",
-            "description": "The church object sent in the body to update a church's data can take the following format",
-            "required": false,
+            "description": "Success. A JSON object containing church information including its address will be returned.",
             "schema": {
-              "name": "address",
               "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "The church id",
+                  "example": 1
+                },
                 "name": {
                   "type": "string",
                   "description": "The name of the church",
@@ -294,51 +322,91 @@
                   "format": "date",
                   "description": "The date of creation of the church",
                   "example": "1986-08-11"
+                },
+                "address_id": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "The address id",
+                  "example": 1
+                },
+                "user_id": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "The user id",
+                  "example": 1
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The registration date of the church",
+                  "example": "2020-08-11"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The update date of the church",
+                  "example": "2020-08-11"
+                },
+                "Address": {
+                  "$ref": "#/definitions/Address"
                 }
               }
             }
           },
+          "400": {
+            "description": "Bad Request. It can happen if the CNPJ is invalid or if any other invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. The church was not found",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "The church was not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Church"],
+        "summary": "Updates a church and its address",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cnpj",
+            "description": "The CNPJ of the church to be updated",
+            "required": true,
+            "type": "integer"
+          },
           {
             "in": "body",
-            "name": "address",
-            "description": "The address object sent in the body to update a church's address data can take the following format",
+            "name": "json",
+            "description": "You need the following JSON format to update a church",
             "required": false,
             "schema": {
-              "type": "object",
               "properties": {
-                "street": {
-                  "type": "string",
-                  "description": "The place where the church is located. Example: street, square, avenue...",
-                  "example": "Rua Laranjeiras"
+                "church": {
+                  "$ref": "#/definitions/Church"
                 },
-                "number": {
-                  "type": "string",
-                  "example": "1234"
-                },
-                "neighborhood": {
-                  "type": "string",
-                  "description": "The area where the church is located",
-                  "example": "Centro"
-                },
-                "zip_code": {
-                  "type": "string",
-                  "description": "The zip code of the area where the church is located.",
-                  "example": "49130000"
-                },
-                "complement": {
-                  "type": "string",
-                  "description": "Information that complements the church's location",
-                  "example": "Ao lado da rodoviária"
-                },
-                "city": {
-                  "type": "string",
-                  "description": "The city where the church is located",
-                  "example": "Riachuelo"
-                },
-                "state": {
-                  "type": "string",
-                  "description": "The state where the church is located",
-                  "example": "Sergipe"
+                "address": {
+                  "$ref": "#/definitions/Address"
                 }
               }
             }
@@ -346,16 +414,35 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. A JSON object containing updated church information will be returned"
+            "description": "Success. A JSON object containing updated church information will be returned",
+            "schema": {
+              "$ref": "#/definitions/Church"
+            }
           },
           "400": {
             "description": "Bad Request. It can happen if the CNPJ is invalid or if any other invalid request happens."
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. The church was not found"
+            "description": "Not Found. The church was not found",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "The church was not found"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -366,32 +453,51 @@
         "tags": ["Church"],
         "summary": "Delete a church and its address",
         "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "path",
             "name": "cnpj",
             "description": "The CNPJ of the church to be deleted",
             "required": true,
-            "type": "string"
+            "type": "integer"
           }
         ],
         "responses": {
           "200": {
-            "description": "Success. The church was successfully deleted"
+            "description": "Success. The church was successfully deleted",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "The church was successfully deleted!"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request. It can happen if the CNPJ is invalid or if any other invalid request happens."
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. The church was not found"
+            "description": "Not Found. It can happen if the church wasn't found",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "The church was not found"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -405,11 +511,6 @@
         "summary": "Register a member",
         "consumes": ["application/json"],
         "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "query",
@@ -423,7 +524,7 @@
           {
             "in": "body",
             "name": "json",
-            "description": "The JSON format sent in the body to register a member must be",
+            "description": "You need the following fields in JSON to register a member",
             "required": true,
             "schema": {
               "properties": {
@@ -442,6 +543,11 @@
                   "description": "The gender of the member",
                   "enum": ["Masculino", "Feminino"],
                   "example": "Masculino"
+                },
+                "age": {
+                  "type": "integer",
+                  "description": "The age of the member",
+                  "example": "27"
                 },
                 "date_of_birth": {
                   "type": "string",
@@ -480,11 +586,11 @@
                 "street": {
                   "type": "string",
                   "description": "The place where the member lives. Example: street, square, avenue...",
-                  "example": "Rua Laranjeiras"
+                  "example": "Rua Tárcio Garcez"
                 },
                 "number": {
                   "type": "string",
-                  "example": "1234"
+                  "example": "1209"
                 },
                 "neighborhood": {
                   "type": "string",
@@ -499,7 +605,7 @@
                 "complement": {
                   "type": "string",
                   "description": "Information that complements the member's address",
-                  "example": "Ao lado da rodoviária"
+                  "example": "Ao lado da igreja católica"
                 },
                 "city": {
                   "type": "string",
@@ -516,6 +622,7 @@
                 "name",
                 "cpf",
                 "genre",
+                "age",
                 "date_of_birth",
                 "email",
                 "profession",
@@ -531,16 +638,35 @@
         ],
         "responses": {
           "201": {
-            "description": "Member created successfully. A JSON object containing member information will be returned."
+            "description": "Member created successfully. A JSON object containing member information will be returned.",
+            "schema": {
+              "$ref": "#definitions/Member"
+            }
           },
           "400": {
             "description": "Bad Request. It can happen if any field is invalid or if any other invalid request happens."
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. It can happen if the church the member belongs to doesn't exist"
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -553,11 +679,6 @@
         "tags": ["Member"],
         "summary": "Search for all members",
         "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "query",
@@ -580,13 +701,129 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. A JSON containing an array of all members will be returned."
+            "description": "Success. A JSON containing an array of all members will be returned.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The member id",
+                    "example": 1
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The member's name",
+                    "example": "José Luis da Silva"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "description": "The member's CPF",
+                    "example": "88811290007"
+                  },
+                  "genre": {
+                    "type": "string",
+                    "description": "The gender of the member",
+                    "enum": ["Masculino", "Feminino"],
+                    "example": "Masculino"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "description": "The age of the member",
+                    "example": "27"
+                  },
+                  "date_of_birth": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The member's birth date",
+                    "example": "1986-08-11"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Member email",
+                    "example": "jose_silva@hotmail.com"
+                  },
+                  "whatsapp": {
+                    "type": "string",
+                    "description": "The member's whatsapp",
+                    "example": "79999999999"
+                  },
+                  "profession": {
+                    "type": "string",
+                    "description": "The member's profession",
+                    "example": "Médico"
+                  },
+                  "conversion_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The member's conversion date",
+                    "example": "1998-09-21"
+                  },
+                  "baptism_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The member's baptism date",
+                    "example": "1999-12-11"
+                  },
+                  "church_cnpj": {
+                    "type": "string",
+                    "description": "The CNPJ of the church that member belongs to",
+                    "example": "35878844000114"
+                  },
+                  "address_id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The address id",
+                    "example": 1
+                  },
+                  "user_id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The user id",
+                    "example": 1
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The registration date of the member",
+                    "example": "2020-09-03T23:50:59.676Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The update date of the member",
+                    "example": "2020-09-03T23:50:59.676Z"
+                  },
+                  "Address": {
+                    "$ref": "#/definitions/Address"
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. It can happen if the church the member belongs to doesn't exist"
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -594,10 +831,10 @@
         }
       }
     },
-    "/member/cpf": {
+    "/member/{cpf}": {
       "get": {
         "tags": ["Member"],
-        "summary": "Search for a member by ID",
+        "summary": "Search for a member by CPF",
         "produces": ["application/json"],
         "security": [
           {
@@ -624,54 +861,15 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. A JSON object containing member information will be returned."
-          },
-          "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
-          },
-          "404": {
-            "description": "Not Found. It can happen if the member and the church he belongs to don't exist."
-          },
-          "500": {
-            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
-          }
-        }
-      },
-      "put": {
-        "tags": ["Member"],
-        "summary": "Updates a member and its address",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "cpf",
-            "description": "The member's CPF",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "church_name",
-            "description": "The name of the church the member belongs to",
-            "required": true,
+            "description": "Success. A JSON object containing member information will be returned.",
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "body",
-            "name": "member",
-            "description": "The member object sent in the body to update a member's data can take the following format",
-            "required": false,
-            "schema": {
-              "type": "object",
               "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "The church id",
+                  "example": 1
+                },
                 "name": {
                   "type": "string",
                   "description": "The member's name",
@@ -687,6 +885,11 @@
                   "description": "The gender of the member",
                   "enum": ["Masculino", "Feminino"],
                   "example": "Masculino"
+                },
+                "age": {
+                  "type": "integer",
+                  "description": "The age of the member",
+                  "example": "27"
                 },
                 "date_of_birth": {
                   "type": "string",
@@ -721,51 +924,103 @@
                   "format": "date",
                   "description": "The member's baptism date",
                   "example": "1999-12-11"
+                },
+                "church_cnpj": {
+                  "type": "string",
+                  "description": "The CNPJ of the church that member belongs to",
+                  "example": "35878844000114"
+                },
+                "address_id": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "The address id",
+                  "example": 1
+                },
+                "user_id": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "The user id",
+                  "example": 1
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The registration date of the member",
+                  "example": "2020-09-03T23:50:59.676Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "The update date of the member",
+                  "example": "2020-09-03T23:50:59.676Z"
+                },
+                "Address": {
+                  "$ref": "#/definitions/Address"
                 }
               }
             }
           },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. It can happen if the member and the church he belongs to don't exist.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Member"],
+        "summary": "Updates a member and its address",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cpf",
+            "description": "The member's CPF",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "in": "body",
-            "name": "address",
-            "description": "The address object sent in the body to update a member's address data can take the following format",
+            "name": "json",
+            "description": "You need the following JSON format to update a member",
             "required": false,
             "schema": {
-              "type": "object",
               "properties": {
-                "street": {
-                  "type": "string",
-                  "description": "The place where the church is located. Example: street, square, avenue...",
-                  "example": "Rua Laranjeiras"
+                "member": {
+                  "$ref": "#definitions/Member"
                 },
-                "number": {
-                  "type": "string",
-                  "example": "1234"
-                },
-                "neighborhood": {
-                  "type": "string",
-                  "description": "The area where the church is located",
-                  "example": "Centro"
-                },
-                "zip_code": {
-                  "type": "string",
-                  "description": "The zip code of the area where the church is located.",
-                  "example": "49130000"
-                },
-                "complement": {
-                  "type": "string",
-                  "description": "Information that complements the church's location",
-                  "example": "Ao lado da rodoviária"
-                },
-                "city": {
-                  "type": "string",
-                  "description": "The city where the church is located",
-                  "example": "Riachuelo"
-                },
-                "state": {
-                  "type": "string",
-                  "description": "The state where the church is located",
-                  "example": "Sergipe"
+                "address": {
+                  "$ref": "#/definitions/Address"
                 }
               }
             }
@@ -773,16 +1028,35 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. A JSON object containing member information will be returned.."
+            "description": "Success. A JSON object containing member information will be returned.",
+            "schema": {
+              "$ref": "#definitions/Member"
+            }
           },
           "400": {
             "description": "Bad Request. It can happen if any field is invalid or if any other invalid request happens."
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. It can happen if the member and the church he belongs to don't exist."
+            "description": "Not Found. It can happen if the member and the church he belongs to don't exist.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -793,11 +1067,6 @@
         "tags": ["Member"],
         "summary": "Deletes a member, his address and his user information if it exists",
         "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "path",
@@ -818,13 +1087,37 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. Will return a message stating that the member has been successfully deleted."
+            "description": "Success. Will return a message stating that the member has been successfully deleted.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "The member was successfully deleted!"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. It can happen if the member and the church he belongs to don't exist."
+            "description": "Not Found. It can happen if the member and the church he belongs to don't exist.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -851,7 +1144,7 @@
           {
             "in": "body",
             "name": "json",
-            "description": "The JSON format sent in the body to register a user must be:",
+            "description": "You need the following fields in JSON to register a user",
             "required": true,
             "schema": {
               "properties": {
@@ -880,19 +1173,46 @@
         ],
         "responses": {
           "201": {
-            "description": "User created successfully. A JSON object containing user information will be returned."
+            "description": "User created successfully. A JSON object containing user information will be returned.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           },
           "400": {
             "description": "Bad Request. It can happen if some invalid request happens."
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden. It can happen if the member already has a user or if the member doesn't have an email"
+            "description": "Forbidden. It can happen if the member already has a user or if the member doesn't have an email",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "That member already has a registered user"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. It can happen if the church the member belongs to doesn't exist or if the member that will have a user does not exist"
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist or if the member that will have a user does not exist",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -903,13 +1223,8 @@
     "/users": {
       "get": {
         "tags": ["User"],
-        "summary": "Search for all users who have admin or comum permisson",
+        "summary": "Search for all users who have admin permisson",
         "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "query",
@@ -932,16 +1247,59 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. A JSON containing an array of all users will be returned."
+            "description": "Success. A JSON containing an array of all users will be returned.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The user id",
+                    "example": 1
+                  },
+                  "username": {
+                    "type": "string",
+                    "minLength": "3",
+                    "maxLength": "30",
+                    "description": "The username of the user.",
+                    "example": "jose_silva"
+                  },
+                  "permission": {
+                    "type": "string",
+                    "description": "The permission of the user. The default value is admin",
+                    "enum": ["super", "admin"],
+                    "example": "admin"
+                  },
+                  "Member": {
+                    "$ref": "#/definitions/Member"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request. It can happen if an invalid request happens."
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "example": "Access denied!"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. It can happen if the church the member belongs to doesn't exist"
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist",
+            "schema": {
+              "properties": {
+                "message": {
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -949,20 +1307,15 @@
         }
       }
     },
-    "/user/id": {
+    "/user/{id}": {
       "get": {
         "tags": ["User"],
         "summary": "Search for a user by ID",
         "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "path",
-            "name": "ID",
+            "name": "id",
             "description": "The ID of the user to be searched",
             "required": true,
             "type": "integer"
@@ -979,16 +1332,56 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. A JSON object containing user information will be returned."
+            "description": "Success. A JSON object containing user information will be returned.",
+            "schema": {
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "The user id",
+                  "example": 1
+                },
+                "username": {
+                  "type": "string",
+                  "minLength": "3",
+                  "maxLength": "30",
+                  "description": "The username of the user.",
+                  "example": "jose_silva"
+                },
+                "permission": {
+                  "type": "string",
+                  "description": "The permission of the user. The default value is admin",
+                  "enum": ["super", "admin"],
+                  "example": "admin"
+                },
+                "Member": {
+                  "$ref": "#/definitions/Member"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request. It can happen if an invalid request happens."
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "example": "Access denied!"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. It can happen if the user doesn't exist or if the church the member belongs to doesn't exist"
+            "description": "Not Found. It can happen if the user doesn't exist or if the church the member belongs to doesn't exist",
+            "schema": {
+              "properties": {
+                "message": {
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -1000,15 +1393,10 @@
         "summary": "Updates a user",
         "consumes": ["application/json"],
         "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "path",
-            "name": "ID",
+            "name": "id",
             "description": "The ID of the user to be updated",
             "required": true,
             "type": "integer"
@@ -1024,23 +1412,13 @@
           },
           {
             "in": "body",
-            "name": "user",
-            "description": "The JSON format sent in the body to update a user must be:",
+            "name": "json",
+            "description": "You need the following JSON format to update a user",
             "required": true,
             "schema": {
-              "type": "object",
               "properties": {
-                "username": {
-                  "type": "string",
-                  "minLength": "3",
-                  "maxLength": "30",
-                  "description": "The username of the church.",
-                  "example": "joao_carlos"
-                },
-                "permission": {
-                  "type": "string",
-                  "description": "The permission of the user. The default value is admin.",
-                  "example": "admin"
+                "user": {
+                  "$ref": "#/definitions/User"
                 }
               }
             }
@@ -1048,16 +1426,33 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. A JSON object containing updated user information will be returned."
+            "description": "Success. A JSON object containing updated user information will be returned.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           },
           "400": {
             "description": "Bad Request. It can happen if an invalid request happens."
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "example": "Access denied!"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. It can happen if the user doesn't exist or if the church the member belongs to doesn't exist"
+            "description": "Not Found. It can happen if the user doesn't exist or if the church the member belongs to doesn't exist",
+            "schema": {
+              "properties": {
+                "message": {
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
@@ -1068,15 +1463,10 @@
         "tags": ["User"],
         "summary": "Delete a user",
         "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "path",
-            "name": "ID",
+            "name": "id",
             "description": "The ID of the user to be deleted",
             "required": true,
             "type": "integer"
@@ -1093,61 +1483,51 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. The user was successfully deleted!."
+            "description": "Success. Will return a message stating that the user has been successfully deleted.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "The user was successfully deleted!"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request. It can happen if an invalid request happens."
           },
           "401": {
-            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation."
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. It can happen if the user doesn't exist or if the church the member belongs to doesn't exist"
+            "description": "Not Found. It can happen if the user doesn't exist or if the church the member belongs to doesn't exist",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
           }
         }
       }
-    },
-    "/group": {
-      "post": {
-        "tags": ["Group"],
-        "summary": "Cadastra os grupos",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/role": {
-      "post": {
-        "tags": ["Role"],
-        "summary": "Cadastra os cargos",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
     }
   },
   "definitions": {
     "Address": {
       "type": "object",
-      "required": [
-        "street",
-        "number",
-        "neighborhood",
-        "zip_code",
-        "city",
-        "state"
-      ],
       "properties": {
         "id": {
           "type": "integer",
@@ -1188,12 +1568,23 @@
           "type": "string",
           "description": "The state where the church is located",
           "example": "Sergipe"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The registration date of the address",
+          "example": "2020-09-03T23:50:59.676Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The update date of the address",
+          "example": "2020-09-03T23:50:59.676Z"
         }
       }
     },
     "User": {
       "type": "object",
-      "required": ["username", "password", "permission"],
       "properties": {
         "id": {
           "type": "integer",
@@ -1205,35 +1596,39 @@
           "type": "string",
           "minLength": "3",
           "maxLength": "30",
-          "description": "The username of the church.",
-          "example": "iBaBrazil"
+          "description": "The username of the user.",
+          "example": "jose_santos"
         },
         "password": {
           "type": "string",
           "format": "password",
           "minLength": "8",
           "maxLength": "16",
-          "description": "The password of the church. ",
-          "example": "iB@B2020"
+          "description": "The encrypted password of the user. ",
+          "example": "$2a$10$XrmCrBfRFCovYN/d.ubXq.Fth3T7c9hBLVPZm4ttEznLz1koyx24a"
         },
         "permission": {
           "type": "string",
           "description": "The permission of the user. The default value is admin",
           "enum": ["super", "admin"],
-          "example": "super"
+          "example": "admin"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The registration date of the user",
+          "example": "2020-09-03T23:50:59.676Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The update date of the user",
+          "example": "2020-09-03T23:50:59.676Z"
         }
       }
     },
     "Church": {
       "type": "object",
-      "required": [
-        "cnpj",
-        "name",
-        "email",
-        "creation_date",
-        "address_id",
-        "user_id"
-      ],
       "properties": {
         "id": {
           "type": "integer",
@@ -1249,7 +1644,7 @@
         "cnpj": {
           "type": "string",
           "description": "The CNPJ of the church",
-          "example": "35878844000114"
+          "example": "14089839000152"
         },
         "email": {
           "type": "string",
@@ -1274,25 +1669,23 @@
           "format": "int32",
           "description": "The user id",
           "example": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The registration date of the church",
+          "example": "2020-09-03T23:50:59.676Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The update date of the church",
+          "example": "2020-09-03T23:50:59.676Z"
         }
       }
     },
     "Member": {
       "type": "object",
-      "required": [
-        "name",
-        "cpf",
-        "genre",
-        "date_of_birth",
-        "email",
-        "profession",
-        "street",
-        "number",
-        "neighborhood",
-        "zip_code",
-        "city",
-        "state"
-      ],
       "properties": {
         "id": {
           "type": "integer",
@@ -1316,6 +1709,11 @@
           "enum": ["Masculino", "Feminino"],
           "example": "Masculino"
         },
+        "age": {
+          "type": "integer",
+          "description": "The age of the member",
+          "example": "27"
+        },
         "date_of_birth": {
           "type": "string",
           "format": "date",
@@ -1326,7 +1724,7 @@
           "type": "string",
           "format": "email",
           "description": "Member email",
-          "example": "jose_silva@hotmail.com"
+          "example": "jose.silva@hotmail.com"
         },
         "whatsapp": {
           "type": "string",
@@ -1350,51 +1748,47 @@
           "description": "The member's baptism date",
           "example": "1999-12-11"
         },
-        "street": {
+        "church_cnpj": {
           "type": "string",
-          "description": "The place where the member lives. Example: street, square, avenue...",
-          "example": "Rua Laranjeiras"
+          "description": "The CNPJ of the church that member belongs to",
+          "example": "35878844000114"
         },
-        "number": {
-          "type": "string",
-          "example": "1234"
+        "address_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The address id",
+          "example": 1
         },
-        "neighborhood": {
-          "type": "string",
-          "description": "The area where the member lives",
-          "example": "Centro"
+        "user_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The user id",
+          "example": 1
         },
-        "zip_code": {
+        "createdAt": {
           "type": "string",
-          "description": "The zip code of the area where the member lives",
-          "example": "49130000"
+          "format": "date",
+          "description": "The registration date of the member",
+          "example": "2020-09-03T23:50:59.676Z"
         },
-        "complement": {
+        "updatedAt": {
           "type": "string",
-          "description": "Information that complements the member's address",
-          "example": "Ao lado da rodoviária"
-        },
-        "city": {
-          "type": "string",
-          "description": "The city where the member lives",
-          "example": "Riachuelo"
-        },
-        "state": {
-          "type": "string",
-          "description": "The state where the member lives",
-          "example": "Sergipe"
+          "format": "date",
+          "description": "The update date of the member",
+          "example": "2020-09-03T23:50:59.676Z"
         }
       }
     }
   },
-  "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "description": "Enter JWT Bearer token **_only_**",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      }
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "description": "Enter JWT Bearer token",
+      "in": "header"
     }
+  },
+  "security": {
+    "Bearer": []
   }
 }
