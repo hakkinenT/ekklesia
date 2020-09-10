@@ -3,6 +3,7 @@ const UserController = require("./UserController");
 
 const userCreationValidation = require("../../../validation/User/userCreationValidation");
 const userUpdateValidation = require("../../../validation/User/userUpdateValidation");
+const churchNameValidation = require("../../../validation/churchNameValidation");
 const validate = require("../../../validation/validate");
 const authentication = require("../../middleware/authentication");
 
@@ -18,9 +19,14 @@ const userRouter = () => {
     UserController.store
   );
 
-  routes.get("/user/:id", UserController.show);
+  routes.get(
+    "/user/:id",
+    churchNameValidation(),
+    validate,
+    UserController.show
+  );
 
-  routes.get("/users", UserController.index);
+  routes.get("/users", churchNameValidation(), validate, UserController.index);
 
   routes.put(
     "/user/:id",
@@ -29,7 +35,12 @@ const userRouter = () => {
     UserController.update
   );
 
-  routes.delete("/user/:id", UserController.destroy);
+  routes.delete(
+    "/user/:id",
+    churchNameValidation(),
+    validate,
+    UserController.destroy
+  );
 
   return routes;
 };
