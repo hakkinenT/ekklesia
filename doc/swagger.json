@@ -1774,14 +1774,14 @@
           {
             "in": "query",
             "name": "init",
-            "description": "The initial date",
+            "description": "The initial date. Example: 1999-02-01",
             "required": true,
             "type": "string"
           },
           {
             "in": "query",
             "name": "end",
-            "description": "The final date",
+            "description": "The final date. Example: 2020-02-01",
             "required": true,
             "type": "string"
           }
@@ -1854,14 +1854,14 @@
           {
             "in": "query",
             "name": "init",
-            "description": "The initial date",
+            "description": "The initial date. Example: 1999-02-01",
             "required": true,
             "type": "string"
           },
           {
             "in": "query",
             "name": "end",
-            "description": "The final date",
+            "description": "The final date. Example: 2020-02-01",
             "required": true,
             "type": "string"
           }
