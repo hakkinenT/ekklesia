@@ -23,6 +23,10 @@
     {
       "name": "User",
       "description": "All about the User module"
+    },
+    {
+      "name": "Search Filters",
+      "description": "All about all search filters"
     }
   ],
   "schemes": ["http", "https"],
@@ -1468,6 +1472,583 @@
           }
         }
       }
+    },
+    "/members/baptized": {
+      "get": {
+        "tags": ["Search Filters"],
+        "summary": "Search all members who are baptized",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The number of page. Each page will return 10 items from the array",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. will return an array containing all members who are baptized",
+            "schema": {
+              "properties": {
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Member"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      }
+    },
+    "/members/baptized/not": {
+      "get": {
+        "tags": ["Search Filters"],
+        "summary": "Search all members who are not baptized",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The number of page. Each page will return 10 items from the array",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. will return an array containing all members who are not baptized. Non-baptized members have the baptism_date field equal to null",
+            "schema": {
+              "properties": {
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/getMembersNotBaptized"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      }
+    },
+    "/members/living/street": {
+      "get": {
+        "tags": ["Search Filters"],
+        "summary": "Search all members who live at same street",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The number of page. Each page will return 10 items from the array",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "street",
+            "description": "The name of the street the members live on",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Will return an array containing all members who live at same street",
+            "schema": {
+              "properties": {
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/getMembersLivingInSamePlace"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist or if the street parameter of the query is empty",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      }
+    },
+    "/members/living/neighborhood": {
+      "get": {
+        "tags": ["Search Filters"],
+        "summary": "Search all members who live at same neighborhood",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The number of page. Each page will return 10 items from the array",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "neighborhood",
+            "description": "The name of the neighborhood the members live on",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Will return an array containing all members who live at same neighborhood",
+            "schema": {
+              "properties": {
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/getMembersLivingInSamePlace"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist or if the neigborhood parameter of the query is empty",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      }
+    },
+    "/members/baptisms": {
+      "get": {
+        "tags": ["Search Filters"],
+        "summary": "Search all baptisms occured at a determinate time interval",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The number of page. Each page will return 10 items from the array",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "init",
+            "description": "The initial date",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "description": "The final date",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Will return an array containing all the members that have been baptized in a period of time. The array will be ordered by the date of baptism",
+            "schema": {
+              "properties": {
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Member"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist or if the query's init and end parameters is empty",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      }
+    },
+    "/members/conversions": {
+      "get": {
+        "tags": ["Search Filters"],
+        "summary": "Search all conversions occured at a determinate time interval",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The number of page. Each page will return 10 items from the array",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "init",
+            "description": "The initial date",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "description": "The final date",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Will return an array containing all the members that have been converted in a period of time. The array will be ordered by the conversion date",
+            "schema": {
+              "properties": {
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Member"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist or if the query's init and end parameters is empty",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      }
+    },
+    "/members/user": {
+      "get": {
+        "tags": ["Search Filters"],
+        "summary": "Search all members who have a user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The number of page. Each page will return 10 items from the array",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Will return an array containing all the members that have a user",
+            "schema": {
+              "properties": {
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/getMembersWithUser"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      }
+    },
+    "/members/profession": {
+      "get": {
+        "tags": ["Search Filters"],
+        "summary": "Search all members who have a particular profession",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The number of page. Each page will return 10 items from the array",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "church_name",
+            "description": "The name of the church the member belongs to",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "profession",
+            "description": "The profession to be searched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Will return an array containing all the members that have a particular profession. The array will be ordered by the profession",
+            "schema": {
+              "properties": {
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Member"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. It can happen if an invalid request happens."
+          },
+          "401": {
+            "description": "Unauthorized. It can happen if the token has not been provided or if the token is invalid or if the user is not authorized to perform a particular operation.",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Access denied!"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. It can happen if the church the member belongs to doesn't exist or if the query profession parameter is empty",
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This church doesn't exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error. It can happen if there is an error on the server when processing the request"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1721,6 +2302,336 @@
           "type": "string",
           "format": "date",
           "description": "The update date of the member",
+          "example": "2020-09-03T23:50:59.676Z"
+        }
+      }
+    },
+    "getMembersNotBaptized": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The church id",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "description": "The member's name",
+          "example": "José Luis da Silva"
+        },
+        "cpf": {
+          "type": "string",
+          "description": "The member's CPF",
+          "example": "88811290007"
+        },
+        "genre": {
+          "type": "string",
+          "description": "The gender of the member",
+          "enum": ["Masculino", "Feminino"],
+          "example": "Masculino"
+        },
+        "age": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The age of the member",
+          "example": 27
+        },
+        "date_of_birth": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's birth date",
+          "example": "1986-08-11"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Member email",
+          "example": "jose.silva@hotmail.com"
+        },
+        "whatsapp": {
+          "type": "string",
+          "description": "The member's whatsapp",
+          "example": "79999999999"
+        },
+        "profession": {
+          "type": "string",
+          "description": "The member's profession",
+          "example": "Médico"
+        },
+        "conversion_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's conversion date",
+          "example": "1998-09-21"
+        },
+        "baptism_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's baptism date",
+          "example": null
+        },
+        "church_cnpj": {
+          "type": "string",
+          "description": "The CNPJ of the church that member belongs to",
+          "example": "35878844000114"
+        },
+        "address_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The address id",
+          "example": 1
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The user id",
+          "example": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The registration date of the member",
+          "example": "2020-09-03T23:50:59.676Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The update date of the member",
+          "example": "2020-09-03T23:50:59.676Z"
+        }
+      }
+    },
+    "getMembersLivingInSamePlace": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The church id",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "description": "The member's name",
+          "example": "José Luis da Silva"
+        },
+        "cpf": {
+          "type": "string",
+          "description": "The member's CPF",
+          "example": "88811290007"
+        },
+        "genre": {
+          "type": "string",
+          "description": "The gender of the member",
+          "enum": ["Masculino", "Feminino"],
+          "example": "Masculino"
+        },
+        "age": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The age of the member",
+          "example": 27
+        },
+        "date_of_birth": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's birth date",
+          "example": "1986-08-11"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Member email",
+          "example": "jose.silva@hotmail.com"
+        },
+        "whatsapp": {
+          "type": "string",
+          "description": "The member's whatsapp",
+          "example": "79999999999"
+        },
+        "profession": {
+          "type": "string",
+          "description": "The member's profession",
+          "example": "Médico"
+        },
+        "conversion_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's conversion date",
+          "example": "1998-09-21"
+        },
+        "baptism_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's baptism date",
+          "example": "1999-10-02"
+        },
+        "church_cnpj": {
+          "type": "string",
+          "description": "The CNPJ of the church that member belongs to",
+          "example": "35878844000114"
+        },
+        "address_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The address id",
+          "example": 1
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The user id",
+          "example": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The registration date of the member",
+          "example": "2020-09-03T23:50:59.676Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The update date of the member",
+          "example": "2020-09-03T23:50:59.676Z"
+        },
+        "Address": {
+          "$ref": "#/definitions/Address"
+        }
+      }
+    },
+    "getMembersWithUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The church id",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "description": "The member's name",
+          "example": "José Luis da Silva"
+        },
+        "cpf": {
+          "type": "string",
+          "description": "The member's CPF",
+          "example": "88811290007"
+        },
+        "genre": {
+          "type": "string",
+          "description": "The gender of the member",
+          "enum": ["Masculino", "Feminino"],
+          "example": "Masculino"
+        },
+        "age": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The age of the member",
+          "example": 27
+        },
+        "date_of_birth": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's birth date",
+          "example": "1986-08-11"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Member email",
+          "example": "jose.silva@hotmail.com"
+        },
+        "whatsapp": {
+          "type": "string",
+          "description": "The member's whatsapp",
+          "example": "79999999999"
+        },
+        "profession": {
+          "type": "string",
+          "description": "The member's profession",
+          "example": "Médico"
+        },
+        "conversion_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's conversion date",
+          "example": "1998-09-21"
+        },
+        "baptism_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's baptism date",
+          "example": "1999-10-02"
+        },
+        "church_cnpj": {
+          "type": "string",
+          "description": "The CNPJ of the church that member belongs to",
+          "example": "35878844000114"
+        },
+        "address_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The address id",
+          "example": 1
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The user id",
+          "example": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The registration date of the member",
+          "example": "2020-09-03T23:50:59.676Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The update date of the member",
+          "example": "2020-09-03T23:50:59.676Z"
+        },
+        "User": {
+          "$ref": "#/definitions/userWithoutPassword"
+        }
+      }
+    },
+    "userWithoutPassword": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The user id",
+          "example": 1
+        },
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 30,
+          "description": "The username of the user.",
+          "example": "username_do_usuario"
+        },
+        "permission": {
+          "type": "string",
+          "description": "The permission of the user. The default value is admin",
+          "enum": ["super", "admin"],
+          "example": "permissao_do_usuario"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The registration date of the user",
+          "example": "2020-09-03T23:50:59.676Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The update date of the user",
           "example": "2020-09-03T23:50:59.676Z"
         }
       }
