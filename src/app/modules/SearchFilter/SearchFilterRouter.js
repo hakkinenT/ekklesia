@@ -35,7 +35,12 @@ const searchFilterRouter = () => {
     SearchFilterController.getAllConversionsInATimeInterval
   );
 
-  routes.get("/members/user", SearchFilterController.getAllMemberWithUser);
+  routes.get("/members/user", SearchFilterController.getAllMembersWithUser);
+
+  routes.get(
+    "/members/profession",
+    SearchFilterController.getMembersByProfession
+  );
 
   return routes;
 };

@@ -215,7 +215,7 @@ class SearchFilterController {
     }
   }
 
-  async getAllMemberWithUser(req, res) {
+  async getAllMembersWithUser(req, res) {
     try {
       const { page = 1 } = req.query;
 
@@ -250,6 +250,40 @@ class SearchFilterController {
           },
         ],
         order: [["name", "ASC"]],
+
+        ...paginate(page),
+      });
+
+      res.header("X-Total-Count", count);
+
+      return res.status(200).json({ members });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
+  async getMembersByProfession(req, res) {
+    try {
+      const { page = 1, profession } = req.query;
+
+      const cnpj = await checkChurch(req);
+
+      if (!cnpj) {
+        return res.status(404).json({ message: "This church doesn't exists" });
+      }
+
+      const userHasPermission = await checkUserPermission(req, cnpj);
+
+      if (!userHasPermission) {
+        return res.status(401).json({ message: "Access denied!" });
+      }
+
+      const { count, rows: members } = await Member.findAndCountAll({
+        where: {
+          church_cnpj: cnpj,
+          profession,
+        },
+        order: [["profession", "ASC"]],
 
         ...paginate(page),
       });
