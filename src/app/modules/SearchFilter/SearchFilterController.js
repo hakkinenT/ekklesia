@@ -69,6 +69,10 @@ class SearchFilterController {
     try {
       const { page = 1, street } = req.query;
 
+      if (!street) {
+        return res.status(404).json({ message: "This street doesn't exists" });
+      }
+
       const cnpj = await checkChurch(req);
 
       if (!cnpj) {
@@ -107,6 +111,12 @@ class SearchFilterController {
   async getAllMembersLivingInSameNeighborhood(req, res) {
     try {
       const { page = 1, neighborhood } = req.query;
+
+      if (!neighborhood) {
+        return res
+          .status(404)
+          .json({ message: "This neighborhood doesn't exists" });
+      }
 
       const cnpj = await checkChurch(req);
 
@@ -147,6 +157,14 @@ class SearchFilterController {
     try {
       const { page = 1, init, end } = req.query;
 
+      const intervalIsEmpty = !init || !end;
+
+      if (intervalIsEmpty) {
+        return res
+          .status(404)
+          .json({ message: "This interval doesn't exists" });
+      }
+
       const cnpj = await checkChurch(req);
 
       if (!cnpj) {
@@ -182,6 +200,14 @@ class SearchFilterController {
   async getAllConversionsInATimeInterval(req, res) {
     try {
       const { page = 1, init, end } = req.query;
+
+      const intervalIsEmpty = !init || !end;
+
+      if (intervalIsEmpty) {
+        return res
+          .status(404)
+          .json({ message: "This interval doesn't exists" });
+      }
 
       const cnpj = await checkChurch(req);
 
@@ -265,6 +291,12 @@ class SearchFilterController {
   async getMembersByProfession(req, res) {
     try {
       const { page = 1, profession } = req.query;
+
+      if (!profession) {
+        return res
+          .status(404)
+          .json({ message: "This profession doesn't exists" });
+      }
 
       const cnpj = await checkChurch(req);
 
