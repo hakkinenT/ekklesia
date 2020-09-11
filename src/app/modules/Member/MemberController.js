@@ -55,7 +55,7 @@ class MemberController {
         return res.status(401).json({ message: "Access denied!" });
       }
 
-      const { count, rows } = await Member.findAndCountAll({
+      const { count, rows: members } = await Member.findAndCountAll({
         where: { church_cnpj: cnpj },
         order: [["name", "ASC"]],
         include: ["Address"],
@@ -64,7 +64,7 @@ class MemberController {
 
       res.header("X-Total-Count", count);
 
-      return res.status(200).json(rows);
+      return res.status(200).json({ members });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
