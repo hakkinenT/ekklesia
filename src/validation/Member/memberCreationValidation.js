@@ -64,6 +64,7 @@ const memberCreationValidation = () => {
         options: (value) => validateString(value),
       },
       errorMessage: "The email has an invalid format",
+      optional: true,
     },
     whatsapp: {
       isString: true,

@@ -12,6 +12,13 @@ const { validateCPF } = require("../validate_CPF_CNPJ");
 
 const memberUpdateValidation = () => {
   return checkSchema({
+    cpf: {
+      in: ["params"],
+      custom: {
+        options: (value) => validateCPF(value),
+      },
+      errorMessage: "CPF is invalid",
+    },
     church_name: {
       in: ["query"],
       isString: true,
@@ -33,6 +40,7 @@ const memberUpdateValidation = () => {
         options: (value) => validateCPF(value),
       },
       errorMessage: "CPF is invalid",
+      optional: true,
     },
     "member.genre": {
       isString: true,
