@@ -73,7 +73,7 @@
               "type": "object",
               "properties": {
                 "user": {
-                  "$ref": "#/definitions/User"
+                  "$ref": "#/definitions/userChurch"
                 },
                 "token": {
                   "type": "string",
@@ -287,7 +287,7 @@
                 "cnpj": {
                   "type": "string",
                   "description": "The CNPJ of the church",
-                  "example": "35878844000114"
+                  "example": "14089839000152"
                 },
                 "email": {
                   "type": "string",
@@ -675,101 +675,11 @@
           "200": {
             "description": "Success. A JSON containing an array of all members will be returned.",
             "schema": {
-              "type": "array",
-              "items": {
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "The member id",
-                    "example": 1
-                  },
-                  "name": {
-                    "type": "string",
-                    "description": "The member's name",
-                    "example": "José Luis da Silva"
-                  },
-                  "cpf": {
-                    "type": "string",
-                    "description": "The member's CPF",
-                    "example": "88811290007"
-                  },
-                  "genre": {
-                    "type": "string",
-                    "description": "The gender of the member",
-                    "enum": ["Masculino", "Feminino"],
-                    "example": "Masculino"
-                  },
-                  "age": {
-                    "type": "integer",
-                    "description": "The age of the member",
-                    "example": "27"
-                  },
-                  "date_of_birth": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "The member's birth date",
-                    "example": "1986-08-11"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "Member email",
-                    "example": "jose_silva@hotmail.com"
-                  },
-                  "whatsapp": {
-                    "type": "string",
-                    "description": "The member's whatsapp",
-                    "example": "79999999999"
-                  },
-                  "profession": {
-                    "type": "string",
-                    "description": "The member's profession",
-                    "example": "Médico"
-                  },
-                  "conversion_date": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "The member's conversion date",
-                    "example": "1998-09-21"
-                  },
-                  "baptism_date": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "The member's baptism date",
-                    "example": "1999-12-11"
-                  },
-                  "church_cnpj": {
-                    "type": "string",
-                    "description": "The CNPJ of the church that member belongs to",
-                    "example": "35878844000114"
-                  },
-                  "address_id": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "The address id",
-                    "example": 1
-                  },
-                  "user_id": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "The user id",
-                    "example": 1
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "The registration date of the member",
-                    "example": "2020-09-03T23:50:59.676Z"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "date",
-                    "description": "The update date of the member",
-                    "example": "2020-09-03T23:50:59.676Z"
-                  },
-                  "Address": {
-                    "$ref": "#/definitions/Address"
+              "properties": {
+                "members": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/getMembersLivingInSamePlace"
                   }
                 }
               }
@@ -893,19 +803,19 @@
                 "church_cnpj": {
                   "type": "string",
                   "description": "The CNPJ of the church that member belongs to",
-                  "example": "35878844000114"
+                  "example": "14089839000152"
                 },
                 "address_id": {
                   "type": "integer",
                   "format": "int32",
                   "description": "The address id",
-                  "example": 1
+                  "example": 2
                 },
                 "user_id": {
                   "type": "integer",
                   "format": "int32",
                   "description": "The user id",
-                  "example": 1
+                  "example": 2
                 },
                 "createdAt": {
                   "type": "string",
@@ -920,7 +830,7 @@
                   "example": "2020-09-03T23:50:59.676Z"
                 },
                 "Address": {
-                  "$ref": "#/definitions/Address"
+                  "$ref": "#/definitions/addressMember"
                 }
               }
             }
@@ -980,10 +890,10 @@
             "schema": {
               "properties": {
                 "member": {
-                  "$ref": "#/definitions/Member"
+                  "$ref": "#/definitions/updatedMember"
                 },
                 "address": {
-                  "$ref": "#/definitions/Address"
+                  "$ref": "#/definitions/addressMember"
                 }
               }
             }
@@ -1204,30 +1114,34 @@
           "200": {
             "description": "Success. A JSON containing an array of all users will be returned.",
             "schema": {
-              "type": "array",
-              "items": {
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "The user id",
-                    "example": 1
-                  },
-                  "username": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 30,
-                    "description": "The username of the user.",
-                    "example": "jose_silva"
-                  },
-                  "permission": {
-                    "type": "string",
-                    "description": "The permission of the user. The default value is admin",
-                    "enum": ["super", "admin"],
-                    "example": "admin"
-                  },
-                  "Member": {
-                    "$ref": "#/definitions/Member"
+              "properties": {
+                "users": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The user id",
+                        "example": 2
+                      },
+                      "username": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 30,
+                        "description": "The username of the user.",
+                        "example": "jose_silva"
+                      },
+                      "permission": {
+                        "type": "string",
+                        "description": "The permission of the user. The default value is admin",
+                        "enum": ["super", "admin"],
+                        "example": "admin"
+                      },
+                      "Member": {
+                        "$ref": "#/definitions/Member"
+                      }
+                    }
                   }
                 }
               }
@@ -1292,7 +1206,7 @@
                   "type": "integer",
                   "format": "int32",
                   "description": "The user id",
-                  "example": 1
+                  "example": 2
                 },
                 "username": {
                   "type": "string",
@@ -1496,7 +1410,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. will return an array containing all members who are baptized",
+            "description": "Success. A JSON containing an array with all members who are baptized will be returned",
             "schema": {
               "properties": {
                 "members": {
@@ -1562,7 +1476,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. will return an array containing all members who are not baptized. Non-baptized members have the baptism_date field equal to null",
+            "description": "Success. A JSON containing an array with all members who are not baptized will be returned. Non-baptized members have the baptism_date field equal to null",
             "schema": {
               "properties": {
                 "members": {
@@ -1635,7 +1549,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. Will return an array containing all members who live at same street",
+            "description": "Success. A JSON containing an array with all members who live at same street will be returned",
             "schema": {
               "properties": {
                 "members": {
@@ -1708,7 +1622,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. Will return an array containing all members who live at same neighborhood",
+            "description": "Success. A JSON containing an array with all members who live at same neighborhood will be returned",
             "schema": {
               "properties": {
                 "members": {
@@ -1788,7 +1702,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. Will return an array containing all the members that have been baptized in a period of time. The array will be ordered by the date of baptism",
+            "description": "Success. A JSON containing an array with all members that have been baptized in a period of time will be returned. The array will be ordered by the date of baptism",
             "schema": {
               "properties": {
                 "members": {
@@ -1868,7 +1782,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. Will return an array containing all the members that have been converted in a period of time. The array will be ordered by the conversion date",
+            "description": "Success. A JSON containing an array with all members that have been converted in a period of time will be returned. The array will be ordered by the conversion date",
             "schema": {
               "properties": {
                 "members": {
@@ -1934,7 +1848,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. Will return an array containing all the members that have a user",
+            "description": "Success. A JSON containing an array with all members that have a user will be returned",
             "schema": {
               "properties": {
                 "members": {
@@ -2007,7 +1921,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success. Will return an array containing all the members that have a particular profession. The array will be ordered by the profession",
+            "description": "Success. A JSON containing an array with all members that have a particular profession will be returned. The array will be ordered by the profession",
             "schema": {
               "properties": {
                 "members": {
@@ -2064,11 +1978,11 @@
         "street": {
           "type": "string",
           "description": "The place where the church is located. Example: street, square, avenue...",
-          "example": "Rua Laranjeiras"
+          "example": "Rua Guarani"
         },
         "number": {
           "type": "string",
-          "example": "1234"
+          "example": "1100"
         },
         "neighborhood": {
           "type": "string",
@@ -2083,7 +1997,7 @@
         "complement": {
           "type": "string",
           "description": "Information that complements the church's location",
-          "example": "Ao lado da rodoviária"
+          "example": "Ao lado da prefeitura"
         },
         "city": {
           "type": "string",
@@ -2116,14 +2030,14 @@
           "type": "integer",
           "format": "int32",
           "description": "The user id",
-          "example": 1
+          "example": 2
         },
         "username": {
           "type": "string",
           "minLength": 3,
           "maxLength": 30,
           "description": "The username of the user.",
-          "example": "username_do_usuário"
+          "example": "jose_silva"
         },
         "password": {
           "type": "string",
@@ -2137,7 +2051,7 @@
           "type": "string",
           "description": "The permission of the user. The default value is admin",
           "enum": ["super", "admin"],
-          "example": "permissão_do_usuário"
+          "example": "admin"
         },
         "createdAt": {
           "type": "string",
@@ -2278,19 +2192,19 @@
         "church_cnpj": {
           "type": "string",
           "description": "The CNPJ of the church that member belongs to",
-          "example": "35878844000114"
+          "example": "14089839000152"
         },
         "address_id": {
           "type": "integer",
           "format": "int32",
           "description": "The address id",
-          "example": 1
+          "example": 2
         },
         "user_id": {
           "type": "integer",
           "format": "int32",
           "description": "The user id",
-          "example": 1
+          "example": 2
         },
         "createdAt": {
           "type": "string",
@@ -2374,19 +2288,19 @@
         "church_cnpj": {
           "type": "string",
           "description": "The CNPJ of the church that member belongs to",
-          "example": "35878844000114"
+          "example": "14089839000152"
         },
         "address_id": {
           "type": "integer",
           "format": "int32",
           "description": "The address id",
-          "example": 1
+          "example": 2
         },
         "user_id": {
           "type": "integer",
           "format": "int32",
           "description": "The user id",
-          "example": 1
+          "example": 2
         },
         "createdAt": {
           "type": "string",
@@ -2470,19 +2384,19 @@
         "church_cnpj": {
           "type": "string",
           "description": "The CNPJ of the church that member belongs to",
-          "example": "35878844000114"
+          "example": "14089839000152"
         },
         "address_id": {
           "type": "integer",
           "format": "int32",
           "description": "The address id",
-          "example": 1
+          "example": 2
         },
         "user_id": {
           "type": "integer",
           "format": "int32",
           "description": "The user id",
-          "example": 1
+          "example": 2
         },
         "createdAt": {
           "type": "string",
@@ -2497,7 +2411,7 @@
           "example": "2020-09-03T23:50:59.676Z"
         },
         "Address": {
-          "$ref": "#/definitions/Address"
+          "$ref": "#/definitions/addressMember"
         }
       }
     },
@@ -2569,19 +2483,19 @@
         "church_cnpj": {
           "type": "string",
           "description": "The CNPJ of the church that member belongs to",
-          "example": "35878844000114"
+          "example": "14089839000152"
         },
         "address_id": {
           "type": "integer",
           "format": "int32",
           "description": "The address id",
-          "example": 1
+          "example": 2
         },
         "user_id": {
           "type": "integer",
           "format": "int32",
           "description": "The user id",
-          "example": 1
+          "example": 2
         },
         "createdAt": {
           "type": "string",
@@ -2607,7 +2521,7 @@
           "type": "integer",
           "format": "int32",
           "description": "The user id",
-          "example": 1
+          "example": 2
         },
         "username": {
           "type": "string",
@@ -2633,6 +2547,162 @@
           "format": "date",
           "description": "The update date of the user",
           "example": "2020-09-03T23:50:59.676Z"
+        }
+      }
+    },
+    "userChurch": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The user id",
+          "example": 1
+        },
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 30,
+          "description": "The username of the church.",
+          "example": "igreja_batista_brasil"
+        },
+        "password": {
+          "type": "string",
+          "format": "password",
+          "minLength": 8,
+          "maxLength": 16,
+          "description": "The encrypted password of the church. ",
+          "example": "$2a$10$XrmCrBfRFCovYN/d.ubXq.Fth3T7c9hBLVPZm4ttEznLz1koyx24a"
+        },
+        "permission": {
+          "type": "string",
+          "description": "The permission of the church.",
+          "enum": ["super", "admin"],
+          "example": "super"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The registration date of the user church",
+          "example": "2020-09-03T23:50:59.676Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "The update date of the user church",
+          "example": "2020-09-03T23:50:59.676Z"
+        }
+      }
+    },
+    "addressMember": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The address id",
+          "example": 2
+        },
+        "street": {
+          "type": "string",
+          "description": "The place where the member lives. Example: street, square, avenue...",
+          "example": "Rua Tárcio Garcez"
+        },
+        "number": {
+          "type": "string",
+          "example": "1209"
+        },
+        "neighborhood": {
+          "type": "string",
+          "description": "The area where the member lives",
+          "example": "Centro"
+        },
+        "zip_code": {
+          "type": "string",
+          "description": "The zip code of the area where the member lives",
+          "example": "49130000"
+        },
+        "complement": {
+          "type": "string",
+          "description": "Information that complements the member's address",
+          "example": "Ao lado da igreja católica"
+        },
+        "city": {
+          "type": "string",
+          "description": "The city where the member lives",
+          "example": "Riachuelo"
+        },
+        "state": {
+          "type": "string",
+          "description": "The state where the member lives",
+          "example": "Sergipe"
+        }
+      }
+    },
+    "updatedMember": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The church id",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "description": "The member's name",
+          "example": "José Luis da Silva"
+        },
+        "cpf": {
+          "type": "string",
+          "description": "The member's CPF",
+          "example": "88811290007"
+        },
+        "genre": {
+          "type": "string",
+          "description": "The gender of the member",
+          "enum": ["Masculino", "Feminino"],
+          "example": "Masculino"
+        },
+        "age": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The age of the member",
+          "example": 27
+        },
+        "date_of_birth": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's birth date",
+          "example": "1986-08-11"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Member email",
+          "example": "jose.silva@hotmail.com"
+        },
+        "whatsapp": {
+          "type": "string",
+          "description": "The member's whatsapp",
+          "example": "79999999999"
+        },
+        "profession": {
+          "type": "string",
+          "description": "The member's profession",
+          "example": "Médico"
+        },
+        "conversion_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's conversion date",
+          "example": "1998-09-21"
+        },
+        "baptism_date": {
+          "type": "string",
+          "format": "date",
+          "description": "The member's baptism date",
+          "example": "1999-10-02"
         }
       }
     }
