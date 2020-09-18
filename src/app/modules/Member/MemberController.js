@@ -104,12 +104,20 @@ class MemberController {
         return res.status(401).json({ message: "Access denied!" });
       }
 
-      const [address] = await Address.findOrCreate({
-        where: { street, number, zip_code },
-        defaults: { neighborhood, complement, city, state },
-      });
-
       const member = await models.sequelize.transaction(async (transaction) => {
+        const address = await Address.create(
+          {
+            street,
+            number,
+            neighborhood,
+            zip_code,
+            complement,
+            city,
+            state,
+          },
+          { transaction }
+        );
+
         return await Member.create(
           {
             name,
