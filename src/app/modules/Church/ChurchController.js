@@ -2,6 +2,7 @@ const { Church, Address, User, Member } = require("../../models");
 const models = require("../../models/index");
 const checkUserPermission = require("../../../validation/checkUserPermission");
 const createUsername = require("../../../utils/createUsername");
+const deleteAllAddress = require("../../../utils/deleteAllAddress");
 
 class ChurchController {
   async show(req, res) {
@@ -166,7 +167,7 @@ class ChurchController {
       }
 
       await models.sequelize.transaction(async (transaction) => {
-        await church.destroy({ transaction });
+        await deleteAllAddress(cnpj, transaction);
 
         await Address.destroy({
           where: { id: church.address_id },
@@ -177,6 +178,8 @@ class ChurchController {
           where: { id: church.user_id },
           transaction,
         });
+
+        await church.destroy({ transaction });
       });
 
       return res
