@@ -2,6 +2,10 @@ const { Member, Address, User } = require("../../../app/models");
 const models = require("../../models/index");
 const checkUserPermission = require("../../../validation/checkUserPermission");
 const checkChurch = require("../../../validation/checkChurch");
+const {
+  memberAlreadyExist,
+  memberEmailAlreadyExist,
+} = require("../../../validation/validatePKAndUniqueKey");
 const paginate = require("../../../utils/paginate");
 
 class MemberController {
@@ -91,6 +95,22 @@ class MemberController {
         city,
         state,
       } = req.body;
+
+      const memberExists = await memberAlreadyExist(cpf);
+
+      if (memberExists) {
+        return res
+          .status(400)
+          .json({ message: "This member is already registered" });
+      }
+
+      const emailExists = await memberEmailAlreadyExist(email);
+
+      if (emailExists) {
+        return res
+          .status(400)
+          .json({ message: "This email is already registered" });
+      }
 
       const cnpj = await checkChurch(req);
 

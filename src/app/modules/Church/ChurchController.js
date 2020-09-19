@@ -2,6 +2,10 @@ const { Church, Address, User, Member } = require("../../models");
 const models = require("../../models/index");
 const checkUserPermission = require("../../../validation/checkUserPermission");
 const createUsername = require("../../../utils/createUsername");
+const {
+  churchAlreadyExist,
+  churchEmailAlreadyExist,
+} = require("../../../validation/validatePKAndUniqueKey");
 const deleteAllAddress = require("../../../utils/deleteAllAddress");
 
 class ChurchController {
@@ -47,14 +51,19 @@ class ChurchController {
         password,
       } = req.body;
 
-      const churchExists = await Church.findOne({
-        where: { cnpj },
-      });
+      const churchExists = await churchAlreadyExist(cnpj);
 
       if (churchExists) {
         return res
           .status(400)
           .json({ message: "This church is already registered" });
+      }
+
+      const emailExists = await churchEmailAlreadyExist(email);
+      if (emailExists) {
+        return res
+          .status(400)
+          .json({ message: "This email is already registered" });
       }
 
       const church = await models.sequelize.transaction(async (transaction) => {
