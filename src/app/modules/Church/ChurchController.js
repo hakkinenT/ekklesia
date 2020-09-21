@@ -1,11 +1,11 @@
 const { Church, Address, User, Member } = require("../../models");
 const models = require("../../models/index");
-const checkUserPermission = require("../../../validation/checkUserPermission");
+const checkUserPermission = require("../../validators/checkUserPermission");
 const createUsername = require("../../../utils/createUsername");
 const {
   churchAlreadyExist,
   churchEmailAlreadyExist,
-} = require("../../../validation/validatePKAndUniqueKey");
+} = require("../../validators/validatePKAndUniqueKey");
 const deleteAllAddress = require("../../../utils/deleteAllAddress");
 
 class ChurchController {

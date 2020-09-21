@@ -1,10 +1,9 @@
 const { Router } = require("express");
 const UserController = require("./UserController");
 
-const userCreationValidation = require("../../../validation/User/userCreationValidation");
-const userUpdateValidation = require("../../../validation/User/userUpdateValidation");
-const churchNameValidation = require("../../../validation/churchNameValidation");
-const validate = require("../../../validation/validate");
+const { userCreation, userUpdate } = require("../../validators/User/user");
+const churchNameValidation = require("../../validators/churchNameValidation");
+const validate = require("../../validators/validate");
 const authentication = require("../../middleware/authentication");
 
 const routes = Router();
@@ -12,12 +11,7 @@ const routes = Router();
 const userRouter = () => {
   routes.use(authentication);
 
-  routes.post(
-    "/user",
-    userCreationValidation(),
-    validate,
-    UserController.store
-  );
+  routes.post("/user", userCreation(), validate, UserController.store);
 
   routes.get(
     "/user/:id",
@@ -28,12 +22,7 @@ const userRouter = () => {
 
   routes.get("/users", churchNameValidation(), validate, UserController.index);
 
-  routes.put(
-    "/user/:id",
-    userUpdateValidation(),
-    validate,
-    UserController.update
-  );
+  routes.put("/user/:id", userUpdate(), validate, UserController.update);
 
   routes.delete(
     "/user/:id",

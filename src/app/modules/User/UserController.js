@@ -1,6 +1,6 @@
 const { User, Member } = require("../../models");
-const checkUserPermission = require("../../../validation/checkUserPermission");
-const checkChurch = require("../../../validation/checkChurch");
+const checkUserPermission = require("../../validators/checkUserPermission");
+const checkChurch = require("../../validators/checkChurch");
 const createUsername = require("../../../utils/createUsername");
 const paginate = require("../../../utils/paginate");
 

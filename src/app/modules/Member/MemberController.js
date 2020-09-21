@@ -1,11 +1,11 @@
 const { Member, Address, User } = require("../../../app/models");
 const models = require("../../models/index");
-const checkUserPermission = require("../../../validation/checkUserPermission");
-const checkChurch = require("../../../validation/checkChurch");
+const checkUserPermission = require("../../validators/checkUserPermission");
+const checkChurch = require("../../validators/checkChurch");
 const {
   memberAlreadyExist,
   memberEmailAlreadyExist,
-} = require("../../../validation/validatePKAndUniqueKey");
+} = require("../../validators/validatePKAndUniqueKey");
 const paginate = require("../../../utils/paginate");
 
 class MemberController {

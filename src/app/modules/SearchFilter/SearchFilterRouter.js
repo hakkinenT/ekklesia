@@ -2,8 +2,8 @@ const { Router } = require("express");
 
 const SearchFilterController = require("./SearchFilterController");
 const authentication = require("../../middleware/authentication");
-const churchNameValidation = require("../../../validation/churchNameValidation");
-const validate = require("../../../validation/validate");
+const churchNameValidation = require("../../validators/churchNameValidation");
+const validate = require("../../validators/validate");
 
 const routes = Router();
 

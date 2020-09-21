@@ -7,7 +7,6 @@
 
 const { checkSchema } = require("express-validator");
 const validateString = require("./validateString");
-const { query } = require("express");
 
 const churchNameValidation = () => {
   return checkSchema({

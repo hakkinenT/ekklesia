@@ -1,11 +1,13 @@
 const { Router } = require("express");
 
 const MemberController = require("./MemberController");
-const memberCreationValidation = require("../../../validation/Member/memberCreationValidation");
-const memberUpdateValidation = require("../../../validation/Member/memberUpdateValidation");
-const churchNameValidation = require("../../../validation/churchNameValidation");
-const cpfAndChurchNameValidation = require("../../../validation/Member/cpfAndChurchNameValidation");
-const validate = require("../../../validation/validate");
+const {
+  memberCreation,
+  memberUpdate,
+  cpfAndChurchName,
+} = require("../../validators/Member/member");
+const churchNameValidation = require("../../validators/churchNameValidation");
+const validate = require("../../validators/validate");
 
 const authentication = require("../../middleware/authentication");
 
@@ -14,12 +16,7 @@ const routes = Router();
 const memberRouter = () => {
   routes.use(authentication);
 
-  routes.post(
-    "/member",
-    memberCreationValidation(),
-    validate,
-    MemberController.store
-  );
+  routes.post("/member", memberCreation(), validate, MemberController.store);
 
   routes.get(
     "/members",
@@ -30,21 +27,16 @@ const memberRouter = () => {
 
   routes.get(
     "/member/:cpf",
-    cpfAndChurchNameValidation(),
+    cpfAndChurchName(),
     validate,
     MemberController.show
   );
 
-  routes.put(
-    "/member/:cpf",
-    memberUpdateValidation(),
-    validate,
-    MemberController.update
-  );
+  routes.put("/member/:cpf", memberUpdate(), validate, MemberController.update);
 
   routes.delete(
     "/member/:cpf",
-    cpfAndChurchNameValidation(),
+    cpfAndChurchName(),
     validate,
     MemberController.destroy
   );

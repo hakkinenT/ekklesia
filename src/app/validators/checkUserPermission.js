@@ -1,4 +1,4 @@
-const { User } = require("../app/models");
+const { User } = require("../../app/models");
 
 const checkUserPermission = async (req, cnpj, module = "member") => {
   const { userId, userPermission } = req;

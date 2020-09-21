@@ -1,4 +1,4 @@
-const { Church } = require("../../src/app/models");
+const { Church } = require("../../app/models");
 
 const checkChurch = async (req) => {
   const { church_name } = req.query;

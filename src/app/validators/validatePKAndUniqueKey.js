@@ -1,4 +1,4 @@
-const { Member, Church } = require("../app/models");
+const { Member, Church } = require("../../app/models");
 
 const memberAlreadyExist = async (cpf) => {
   const member = await Member.findOne({ where: { cpf } });
