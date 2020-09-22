@@ -1,7 +1,11 @@
 const { Member, Address, User } = require("../../../app/models");
 const models = require("../../models/index");
-const checkUserPermission = require("../../validators/checkUserPermission");
-const checkChurch = require("../../validators/checkChurch");
+const {
+  checkUserPermission,
+  checkChurch,
+} = require("../../validators/validateUserPermission");
+//const checkUserPermission = require("../../validators/checkUserPermission");
+//const checkChurch = require("../../validators/checkChurch");
 const {
   memberAlreadyExist,
   memberEmailAlreadyExist,

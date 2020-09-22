@@ -1,4 +1,18 @@
-const { User } = require("../../app/models");
+const { Church, User } = require("../models");
+
+const checkChurch = async (req) => {
+  const { church_name } = req.query;
+
+  const church = await Church.findOne({ where: { name: church_name } });
+
+  if (!church) {
+    return null;
+  }
+
+  const { cnpj } = church;
+
+  return cnpj;
+};
 
 const checkUserPermission = async (req, cnpj, module = "member") => {
   const { userId, userPermission } = req;
@@ -37,4 +51,4 @@ const checkUserPermission = async (req, cnpj, module = "member") => {
   return true;
 };
 
-module.exports = checkUserPermission;
+module.exports = { checkChurch, checkUserPermission };

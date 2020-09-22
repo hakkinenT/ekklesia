@@ -1,6 +1,9 @@
 const { Church, Address, User, Member } = require("../../models");
 const models = require("../../models/index");
-const checkUserPermission = require("../../validators/checkUserPermission");
+const {
+  checkUserPermission,
+} = require("../../validators/validateUserPermission");
+//const checkUserPermission = require("../../validators/checkUserPermission");
 const createUsername = require("../../../utils/createUsername");
 const {
   churchAlreadyExist,
