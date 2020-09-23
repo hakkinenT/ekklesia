@@ -6,7 +6,6 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        unique: true,
         allowNull: false,
       },
       name: {
@@ -18,6 +17,11 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
       creation_date: {
         type: Sequelize.DATEONLY,
         allowNull: false,
@@ -25,8 +29,22 @@ module.exports = {
       address_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        unique: true,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         references: {
           model: "Addresses",
+          key: "id",
+        },
+      },
+      user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        unique: true,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        references: {
+          model: "Users",
           key: "id",
         },
       },

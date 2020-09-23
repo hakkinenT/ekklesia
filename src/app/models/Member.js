@@ -3,7 +3,9 @@ const sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   const Member = sequelize.define("Member", {
     name: DataTypes.STRING,
-    genre: DataTypes.STRING,
+    cpf: DataTypes.STRING,
+    genre: DataTypes.ENUM("Masculino", "Feminino"),
+    age: DataTypes.INTEGER,
     date_of_birth: DataTypes.DATEONLY,
     email: {
       type: DataTypes.STRING,
@@ -26,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     address_id: DataTypes.INTEGER,
+    user_id: DataTypes.INTEGER,
   });
 
   Member.associate = function (models) {
@@ -36,13 +39,13 @@ module.exports = (sequelize, DataTypes) => {
     Member.belongsTo(models.Church, {
       foreignKey: "church_cnpj",
       as: "Church",
+      targetKey: "cnpj",
     });
-    Member.hasOne(models.User, { foreignKey: "member_id" });
-    Member.hasMany(models.Role, { as: "Role" });
-    Member.belongsToMany(models.Group, {
-      through: "Members_Groups",
-      foreignKey: "member_id",
-      as: "Group",
+
+    Member.belongsTo(models.User, {
+      as: "User",
+      foreignKey: "user_id",
+      targetKey: "id",
     });
   };
   return Member;

@@ -2,34 +2,26 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("Groups_Roles", {
+    return queryInterface.createTable("Invalid_tokens", {
       id: {
-        type: Sequelize.INTEGER,
+        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false,
-      },
-      group_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Groups",
-          key: "id",
-        },
       },
-      role_id: {
-        type: Sequelize.INTEGER,
+      token: {
         allowNull: false,
-        references: {
-          model: "Roles",
-          key: "id",
-        },
+        type: Sequelize.STRING,
       },
-      created_at: {
+      date: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: {
+      updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
       },
@@ -37,6 +29,11 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("Groups_Roles");
+    /**
+     * Add reverting commands here.
+     *
+     * Example:
+     * await queryInterface.dropTable('users');
+     */
   },
 };

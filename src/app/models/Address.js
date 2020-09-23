@@ -15,10 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "address_id",
       sourceKey: "id",
     });
-    Address.hasOne(models.Member, {
+    Address.hasMany(models.Member, {
       as: "Member",
       foreignKey: "address_id",
-      sourceKey: "id",
     });
   };
 

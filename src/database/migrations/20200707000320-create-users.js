@@ -2,26 +2,31 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("Groups", {
+    return queryInterface.createTable("Users", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      name: {
+      username: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      initials: {
+      password: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      created_at: {
+      permission: {
+        type: Sequelize.ENUM("super", "admin"),
+        defaultValue: "admin",
+        allowNull: false,
+      },
+      createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: {
+      updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
       },
@@ -29,6 +34,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("Groups");
+    return queryInterface.dropTable("Users");
   },
 };

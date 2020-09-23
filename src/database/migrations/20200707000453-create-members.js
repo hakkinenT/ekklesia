@@ -5,16 +5,25 @@ module.exports = {
     return queryInterface.createTable("Members", {
       id: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
         autoIncrement: true,
         allowNull: false,
+        unique: true,
       },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      genre: {
+      cpf: {
         type: Sequelize.STRING,
+        primaryKey: true,
+        allowNull: false,
+      },
+      genre: {
+        type: Sequelize.ENUM("Masculino", "Feminino"),
+        allowNull: false,
+      },
+      age: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       date_of_birth: {
@@ -23,11 +32,12 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
+        unique: true,
       },
       whatsapp: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       profession: {
         type: Sequelize.STRING,
@@ -35,15 +45,17 @@ module.exports = {
       },
       conversion_date: {
         type: Sequelize.DATEONLY,
-        allowNull: false,
+        allowNull: true,
       },
       baptism_date: {
         type: Sequelize.DATEONLY,
-        allowNull: false,
+        allowNull: true,
       },
       church_cnpj: {
         type: Sequelize.STRING,
         allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         references: {
           model: "Churches",
           key: "cnpj",
@@ -52,16 +64,29 @@ module.exports = {
       address_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         references: {
           model: "Addresses",
           key: "id",
         },
       },
-      created_at: {
+      user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        unique: true,
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
+        references: {
+          model: "Users",
+          key: "id",
+        },
+      },
+      createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: {
+      updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
       },
