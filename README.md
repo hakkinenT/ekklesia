@@ -139,9 +139,9 @@ As seguintes tecnologias foram usadas na construção do projeto até o momento:
 Também é possível testar a API diretamente na documentação. Acesse:
 `http://localhost:3333/doc/`
 
-1. Execute a funcionalidade de criar uma Igreja
+1. Execute a funcionalidade de cadastrar uma Igreja
 2. Logo depois, execute o login para obter o token
-3. Clique no botão Authorize, que fica no topo da página da documentação, digite a palavra Bearer e cole o token obtido no login. Como é mostrado abaixo:
+3. Clique no botão Authorize, que fica no topo da página da documentação, digite a palavra Bearer e cole o token obtido no login. Como mostrado:
    `Bearer <token>.`
 4. No lugar do <token> informe o token obtido no login
 5. Clique em Authorize
