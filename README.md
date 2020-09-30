@@ -1,6 +1,10 @@
 # Ekklesia API
 
-O software Ekklesia já foi desenvolvido em Delphi, por Tawanna Hakkinen e por Arthur D'Avila, para o TCC (Trabalho de Conclusão de Curso) do curso Técnico em Informatica da Pio X, no ano de 2011. O Ekklesia API é uma nova versão do antigo projeto, desenvolvido em javascript e com algumas alterações no diagrama de classe.
+O software Ekklesia já foi desenvolvido em Delphi, por Tawanna Hakkinen e por Arthur D'Avila dos Santos, para o TCC (Trabalho de Conclusão de Curso) do curso Técnico em Informatica da Pio X, no ano de 2011. O Ekklesia API é uma nova versão do antigo projeto, desenvolvido em javascript e com algumas alterações no diagrama de classe.
+
+Esta nova versão foi desenvolvida apenas por Tawanna Hakkinen.
+
+Existem outros softwares com o nome Ekklesia que possuem a mesma função que este.
 
 # Tabela de conteúdos
 
@@ -53,6 +57,12 @@ Em desenvolvimento
 - [ ] Permitir que um membro cadastre uma foto
 - [ ] Enviar e-mail de confirmação de cadastro para a igreja
 - [ ] Recuperação de senha
+- [ ] Gerenciamento de novos convertidos
+  - [ ] Cadastrar novos convertidos
+  - [ ] Pesquisar por um novo convertido
+  - [ ] Listar todos os novos convertidos
+  - [ ] Atualizar os dados de um novo convertido
+  - [ ] Excluir um novo convertido
 - [ ] Gerenciamento dos cargos da igreja
   - [ ] Cadastrar os cargos da igreja
   - [ ] Alocar um membro em um cargo
@@ -154,4 +164,4 @@ Este projeto está sobe a licença [MIT](./LICENSE).
 
 ## Autor
 
-Tawanna Hakkinen Oliveira Leite e Arthur D'Avila
+Tawanna Hakkinen Oliveira Leite
