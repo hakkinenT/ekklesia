@@ -123,7 +123,7 @@ As seguintes tecnologias foram usadas na construção do projeto até o momento:
    `npm install`
 5. Depois que as dependências forem instaladas, digite o seguinte comando:
    `yarn dev`
-6. O servidor será iniciado e uma mensagem dizendo: ** Rodando na porta 3333 **deve aparecer
+6. O servidor será iniciado e uma mensagem dizendo: **Rodando na porta 3333** deve aparecer
 7. Abra a documentação da API em um browser:
    `http://localhost:3333/doc/`
 8. Abra o Insomnia
@@ -139,14 +139,14 @@ As seguintes tecnologias foram usadas na construção do projeto até o momento:
 Também é possível testar a API diretamente na documentação. Acesse:
 `http://localhost:3333/doc/`
 
-    Execute a funcionalidade de criar uma Igreja
-    Logo depois, execute o login para obter o token
-    Clique no botão Authorize, que fica no topo da página da documentação, digite a palavra Bearer e cole o token obtido no login. Como é mostrado abaixo:
-    Bearer <token>.
-    No lugar do <token> informe o token obtido no login
-    Clique em Authorize
-    Observe se os cadeados mostrados nas rotas estão fechados e na cor preta
-    Depois, basta testar as rotas que desejar
+1. Execute a funcionalidade de criar uma Igreja
+2. Logo depois, execute o login para obter o token
+3. Clique no botão Authorize, que fica no topo da página da documentação, digite a palavra Bearer e cole o token obtido no login. Como é mostrado abaixo:
+   `Bearer <token>.`
+4. No lugar do <token> informe o token obtido no login
+5. Clique em Authorize
+6. Observe se os cadeados mostrados nas rotas estão fechados e na cor preta
+7. Depois, basta testar as rotas que desejar
 
 ## Licença
 
