@@ -1,10 +1,8 @@
 # Ekklesia API
 
-O software Ekklesia já foi desenvolvido em Delphi, por Tawanna Hakkinen e por Arthur D'Avila dos Santos, para o TCC (Trabalho de Conclusão de Curso) do curso Técnico em Informatica da Pio X, no ano de 2011. O Ekklesia API é uma nova versão do antigo projeto, desenvolvido em javascript e com algumas alterações no diagrama de classe.
+O software Ekklesia já foi desenvolvido em Delphi, por Tawanna Hakkinen e por Arthur D'Avila dos Santos, para o TCC (Trabalho de Conclusão de Curso) do curso Técnico em Informatica da Pio X, no ano de 2011. O Ekklesia API é uma nova versão do backend do antigo projeto, desenvolvido em javascript e com algumas alterações no diagrama de classe.
 
 Esta nova versão foi desenvolvida apenas por Tawanna Hakkinen.
-
-Existem outros softwares com o nome Ekklesia que possuem a mesma função que este.
 
 # Tabela de conteúdos
 
