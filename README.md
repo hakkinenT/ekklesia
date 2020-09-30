@@ -143,7 +143,7 @@ Também é possível testar a API diretamente na documentação. Acesse:
 2. Logo depois, execute o login para obter o token
 3. Clique no botão Authorize, que fica no topo da página da documentação, digite a palavra Bearer e cole o token obtido no login. Como mostrado:
    `Bearer <token>.`
-4. No lugar do <token> informe o token obtido no login
+4. No lugar do &lt;token&gt; informe o token obtido no login
 5. Clique em Authorize
 6. Observe se os cadeados mostrados nas rotas estão fechados e na cor preta
 7. Depois, basta testar as rotas que desejar
