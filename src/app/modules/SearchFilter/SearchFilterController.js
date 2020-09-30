@@ -3,8 +3,7 @@ const {
   checkUserPermission,
   checkChurch,
 } = require("../../validators/validateUserPermission");
-//const checkUserPermission = require("../../validators/checkUserPermission");
-//const checkChurch = require("../../validators/checkChurch");
+
 const paginate = require("../../../utils/paginate");
 const { Op } = require("sequelize");
 

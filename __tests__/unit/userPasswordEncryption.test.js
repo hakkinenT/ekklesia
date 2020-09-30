@@ -1,5 +1,3 @@
-const { internet } = require("faker");
-
 const factory = require("../factories");
 const bcrypt = require("bcryptjs");
 
